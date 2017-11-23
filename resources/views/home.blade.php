@@ -15,6 +15,9 @@
                     @endif
 
                     You are logged in!
+                    @if($usertype == "Budget Requestee")
+                        <a href="{{ route('request_petty_cash') }}">Request Petty Cash</a>
+                    @endif
                 </div>
             </div>
         </div>

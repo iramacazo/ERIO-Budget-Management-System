@@ -18,3 +18,6 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+//Petty Cash Routes
+Route::get('/request/petty_cash', 'PettyCashController@requestPettyCashForm')->name('request_petty_cash');
