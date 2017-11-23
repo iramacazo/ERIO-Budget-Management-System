@@ -61,6 +61,24 @@
                             </div>
                         </div>
 
+                        <div class="form-group{{ $errors->has('usertype') ? ' has-error' : '' }}">
+                            <label for="usertype" class="col-md-4 control-label">Usertype</label>
+
+                            <div class="col-md-6">
+                                <select id="usertype" class="form-control" name="usertype" required>
+                                    <option>System Admin</option>
+                                    <option>Budget Requestee</option>
+                                    <option>Budget Admin</option>
+                                    <option>Executive</option>
+                                </select>
+                                @if ($errors->has('usertype'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('usertype') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
                                 <button type="submit" class="btn btn-primary">
