@@ -26,4 +26,16 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function pcv_requests(){
+        return $this->hasMany("App\PettyCashVoucher", "requested_by", 'id');
+    }
+
+    public function pcv_approve(){
+        return $this->hasMany("App\PettyCashVoucher", 'approved_by', 'id');
+    }
+
+    public function pcv_receive(){
+        return $this->hasMany("App\PettyCashVoucher", 'received_by', 'id');
+    }
 }

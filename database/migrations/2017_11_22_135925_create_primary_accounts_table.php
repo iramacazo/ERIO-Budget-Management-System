@@ -16,6 +16,7 @@ class CreatePrimaryAccountsTable extends Migration
         Schema::create('primary_accounts', function (Blueprint $table) {
             $table->increments('id');
             $table->string("name");
+            $table->string("code");
             $table->timestamps();
         });
     }

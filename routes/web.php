@@ -14,6 +14,17 @@ Route::get('/', function(){
     return view('welcome');
 });
 
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+//Petty Cash Routes
+Route::get('/request/petty_cash', 'PettyCashController@requestPettyCashForm')->name('request_petty_cash');
+
+Route::post('/getSubAccounts', 'PettyCashController@getSubAccounts')->name('getSubAccounts');
+
+
 Route::get('/propose', function () {
     return view('proposeBudget');
 });
+
