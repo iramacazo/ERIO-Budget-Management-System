@@ -28,3 +28,5 @@ Route::get('/propose', function () {
     return view('proposeBudget');
 });
 
+Route::post('propose/submit_budget', 'BudgetController@submitBudget')->name('submit_budget');
+

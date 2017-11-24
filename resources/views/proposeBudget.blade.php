@@ -6,6 +6,8 @@
             var acc_num = 1;
             var form = document.forms['accounts_form'];
             var div = document.getElementById("accounts_list_added");
+            var primary_acc_count = 0;
+            var total_budget = 0;
 
             $("#add").click(function(){
                 $("#budget_error").text('');
@@ -22,6 +24,8 @@
                     return false;
                 }
                 var account = $("#account_list option:selected").text();
+                primary_acc_count++
+                $("#counter").val(primary_acc_count);
                 addHidden(form, acc_num, account);
                 addAccList(account);
                 acc_num++;
@@ -33,6 +37,8 @@
                 console.log("removed and added to options");
                 $div = $(this).parent('div');
                 text = $div[0].childNodes[0].nodeValue;
+                budget = $(this).parent().find('#budget').val();
+                console.log(budget);
                 $("#account_list").append($('<option>', {
                     value: text,
                     text: text
@@ -43,7 +49,10 @@
                 $(this).closest('div').remove();
                 $("input[name='account_num_"+ id +"']").remove();
                 $("input[name='budget_num_"+ id +"']").remove();
-
+                primary_acc_count--;
+                $("#counter").val(primary_acc_count);
+                total_budget = total_budget-parseInt(budget);
+                $("#tb").text(total_budget);
             });
             //
             function addHidden(form, key, value){
@@ -62,7 +71,6 @@
                 console.log("added to accounts");
                 var ndiv = document.createElement('div');
                 ndiv.id = acc_num;
-                var h = document.createElement('p');
                 var t = document.createTextNode(name);
                 var addbtn = document.createElement('button');
                 addbtn.id = 'add_btn';
@@ -80,10 +88,17 @@
                 ndiv.appendChild(addbtn);
                 ndiv.appendChild(rembtn);
 
-                budget = $("#acc_budget").val();
-                t4 = document.createTextNode("Budget: "+budget);
-                ndiv.appendChild(t4);
+                var bInput = document.createElement('input');
+                bInput.type = 'hidden';
+                bInput.id = 'budget';
 
+                budget = $("#acc_budget").val();
+                bInput.value = budget;
+                ndiv.appendChild(bInput);
+                t4 = document.createTextNode("Budget: "+budget);
+                total_budget = total_budget+parseInt(budget);
+                ndiv.appendChild(t4);  /// APPEND THE BUDGET TEXT NODE WALA PA SA DIV
+                $("#tb").text(total_budget);
             }
         });
     </script>
@@ -98,7 +113,7 @@
             <option value="Publication">Publication</option>
         </select> <br> <br>
         Previous Year Budget: <!-- todo get budget of this acc from prev year --><br> <br>
-        Input New Budget: <input type="text" id="acc_budget"> <div id="budget_error"></div><br> <br>
+        Input New Budget: <input type="text" id="acc_budget"> <div id="budget_error"></div> <br> <br>
         <a href="" id="add">Add</a>
     </div>
     <br>
@@ -107,11 +122,14 @@
 
     </div>
     <div id="hidden_form">
-        <form action="" id="accounts_form">
+        <form action="{{ route('submit_budget') }}" method="post" id="accounts_form">
+            <input type="hidden" name="counter" id="counter">
+            {{ csrf_field() }}
+            <input type="submit">
         </form>
     </div>
     <div>
-        <h1>Total Budget: </h1>
+        <h1>Total Budget: <span id="tb"></span></h1>
     </div>
 </body>
 </html>
