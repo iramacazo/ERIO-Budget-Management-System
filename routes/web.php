@@ -18,6 +18,19 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+Route::get('/add_user', function (){
+    if(Auth::guest())
+        return redirect('unauthorized_access');
+    else if (Auth::user()->usertype == "System Admin")
+        return view('addUsers');
+    else
+        return redirect('unauthorized_access');
+})->name('add_user');
+
+Route::get('/unauthorized_access', function (){
+    return view('unauthorizedAccess');
+})->name('unauthorized_access');
+
 //Petty Cash Routes
 Route::get('/request/petty_cash', 'PettyCashController@requestPettyCashForm')->name('request_petty_cash');
 
