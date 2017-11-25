@@ -40,6 +40,8 @@ Route::get('/request/petty_cash', 'PettyCashController@requestPettyCashForm')->n
 
 Route::post('/getSubAccounts', 'PettyCashController@getSubAccounts')->name('getSubAccounts');
 
+Route::post('/request/petty_cash/record', 'PettyCashController@recordRequestPCV')->name('recordRequestPCV');
+
 Route::get('/propose', function () {
     return view('proposeBudget');
 });

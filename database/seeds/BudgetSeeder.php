@@ -33,7 +33,8 @@ class BudgetSeeder extends Seeder
         ]);
 
         $la = DB::table('list_of_primary_accounts')->latest()->first();
-        $sec = $pa->secondary_accounts;
+        $sec = DB::table('secondary_accounts')->where('account_id', $pa->id)->get();
+
         foreach($sec as $s){
             DB::table('list_of_secondary_accounts')->insert([
                 'list_id' => $la->id,
@@ -43,12 +44,11 @@ class BudgetSeeder extends Seeder
                 'amount' => 1500000
             ]);
 
-            $sa = SecondaryAccounts::latest()->first();
-            $third = $s->tertiary_accounts;
+            $third = DB::table('tertiary_accounts')->where('subaccount_id', $s->id)->get();
 
             foreach($third as $t){
                 DB::table('list_of_tertiary_accounts')->insert([
-                    'list_id' => $sa->id,
+                    'list_id' => $s->id,
                     'account_id' => $t->id,
                     'created_at' => Carbon::now(),
                     'updated_at' => Carbon::now(),
