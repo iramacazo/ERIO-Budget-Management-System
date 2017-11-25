@@ -38,7 +38,7 @@
             </ul>
         </div>
     </nav>
-    <div class="container section" >
+    <div class="container section">
         <div class="row">
             <div class="col s3"></div>
             <div class="col s6 white z-depth-2" style="padding: 25px">

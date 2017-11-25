@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
     public function getAllUsers(){
-        $listOfUsers = User::all()->sortByDesc('email');
+        $listOfUsers = User::all()->sortBy('usertype');
         return view('listOfUsers', ['users' => $listOfUsers]);
     }
 
@@ -19,8 +20,10 @@ class AdminController extends Controller
             'password' => 'required|string|min:6|confirmed',
             'usertype' => 'required'
         ]);
-        $password = hash($request->password);
-        $user = User::create();
+        $user = new User;
+        $user->fill(['name' => $request->name, 'email' => $request->email,
+                    'password' => Hash::make($request->password), 'usertype' => $request->usertype]);
         $user->save();
+        return redirect('all-users')->with('newuser', $request->email);
     }
 }
