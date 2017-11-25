@@ -49,8 +49,8 @@
                 $(this).closest('div').remove();
                 $("input[name='account_num_"+ id +"']").remove();
                 $("input[name='budget_num_"+ id +"']").remove();
-                primary_acc_count--;
-                $("#counter").val(primary_acc_count);
+                //primary_acc_count--;
+                //$("#counter").val(primary_acc_count);
                 total_budget = total_budget-parseInt(budget);
                 $("#tb").text(total_budget);
             });
@@ -121,9 +121,13 @@
     <div id="accounts_list_added">
 
     </div>
+    <br>
     <div id="hidden_form">
         <form action="{{ route('submit_budget') }}" method="post" id="accounts_form">
-            <input type="hidden" name="counter" id="counter">
+            <input type="hidden" name="counter" id="counter" value="0">
+            Start of AY: <input type="date" name="start_date" id="start_date">
+            End of AY:(not sure dito pero nasa db) <input type="date" name="end_date" id="end_date">
+            <br>
             {{ csrf_field() }}
             <input type="submit">
         </form>
