@@ -4,7 +4,8 @@
         <script src="{{ asset('js\jquery-3.2.1.min.js') }}"></script>
     </head>
     <body>
-        <form action="{{ route('recordRequestPCV') }}" method="POST">
+        <form action='{{ route("recordRequestPCV") }}' method="POST">
+            {{ csrf_field() }}
             <label>Purpose: </label>
             <input type="text" name="purpose"><br>
             <label>Amount: </label>

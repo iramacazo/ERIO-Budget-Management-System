@@ -15,362 +15,474 @@
     <table id="9" parent="2" name="list_of_tertiary_accounts"/>
     <table id="10" parent="2" name="migrations"/>
     <table id="11" parent="2" name="password_resets"/>
-    <table id="12" parent="2" name="primary_accounts"/>
-    <table id="13" parent="2" name="secondary_accounts"/>
-    <table id="14" parent="2" name="sqlite_master">
+    <table id="12" parent="2" name="petty_cash_vouchers"/>
+    <table id="13" parent="2" name="primary_accounts"/>
+    <table id="14" parent="2" name="secondary_accounts"/>
+    <table id="15" parent="2" name="sqlite_master">
       <System>1</System>
     </table>
-    <table id="15" parent="2" name="sqlite_sequence">
+    <table id="16" parent="2" name="sqlite_sequence">
       <System>1</System>
     </table>
-    <table id="16" parent="2" name="tertiary_accounts"/>
-    <table id="17" parent="2" name="users"/>
-    <column id="18" parent="6" name="id">
+    <table id="17" parent="2" name="tertiary_accounts"/>
+    <table id="18" parent="2" name="users"/>
+    <column id="19" parent="6" name="id">
       <DataType>integer|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="19" parent="6" name="start_range">
+    <column id="20" parent="6" name="start_range">
       <Position>1</Position>
       <DataType>datetime|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="20" parent="6" name="end_range">
+    <column id="21" parent="6" name="end_range">
       <Position>2</Position>
       <DataType>datetime|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="21" parent="6" name="created_at">
+    <column id="22" parent="6" name="created_at">
       <Position>3</Position>
       <DataType>datetime|0</DataType>
     </column>
-    <column id="22" parent="6" name="updated_at">
+    <column id="23" parent="6" name="updated_at">
       <Position>4</Position>
       <DataType>datetime|0</DataType>
     </column>
-    <key id="23" parent="6">
+    <key id="24" parent="6">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="24" parent="7" name="id">
+    <column id="25" parent="7" name="id">
       <DataType>integer|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="25" parent="7" name="budget_id">
+    <column id="26" parent="7" name="budget_id">
       <Position>1</Position>
       <DataType>integer|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="26" parent="7" name="account_id">
+    <column id="27" parent="7" name="account_id">
       <Position>2</Position>
       <DataType>integer|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="27" parent="7" name="amount">
+    <column id="28" parent="7" name="amount">
       <Position>3</Position>
       <DataType>numeric|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="28" parent="7" name="created_at">
+    <column id="29" parent="7" name="created_at">
       <Position>4</Position>
       <DataType>datetime|0</DataType>
     </column>
-    <column id="29" parent="7" name="updated_at">
+    <column id="30" parent="7" name="updated_at">
       <Position>5</Position>
       <DataType>datetime|0</DataType>
     </column>
-    <key id="30" parent="7">
+    <key id="31" parent="7">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="31" parent="7">
+    <foreign-key id="32" parent="7">
       <ColNames>budget_id</ColNames>
       <RefTableName>budgets</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <foreign-key id="32" parent="7">
+    <foreign-key id="33" parent="7">
       <ColNames>account_id</ColNames>
       <RefTableName>primary_accounts</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <column id="33" parent="8" name="id">
+    <column id="34" parent="8" name="id">
       <DataType>integer|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="34" parent="8" name="account_id">
+    <column id="35" parent="8" name="account_id">
       <Position>1</Position>
       <DataType>integer|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="35" parent="8" name="list_id">
+    <column id="36" parent="8" name="list_id">
       <Position>2</Position>
       <DataType>integer|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="36" parent="8" name="amount">
+    <column id="37" parent="8" name="amount">
       <Position>3</Position>
       <DataType>numeric|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="37" parent="8" name="created_at">
+    <column id="38" parent="8" name="created_at">
       <Position>4</Position>
       <DataType>datetime|0</DataType>
     </column>
-    <column id="38" parent="8" name="updated_at">
+    <column id="39" parent="8" name="updated_at">
       <Position>5</Position>
       <DataType>datetime|0</DataType>
     </column>
-    <key id="39" parent="8">
+    <key id="40" parent="8">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="40" parent="8">
+    <foreign-key id="41" parent="8">
       <ColNames>account_id</ColNames>
       <RefTableName>secondary_accounts</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <foreign-key id="41" parent="8">
+    <foreign-key id="42" parent="8">
       <ColNames>list_id</ColNames>
       <RefTableName>list_of_primary_accounts</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <column id="42" parent="9" name="id">
+    <column id="43" parent="9" name="id">
       <DataType>integer|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="43" parent="9" name="account_id">
+    <column id="44" parent="9" name="account_id">
       <Position>1</Position>
       <DataType>integer|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="44" parent="9" name="list_id">
+    <column id="45" parent="9" name="list_id">
       <Position>2</Position>
       <DataType>integer|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="45" parent="9" name="amount">
+    <column id="46" parent="9" name="amount">
       <Position>3</Position>
       <DataType>numeric|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="46" parent="9" name="created_at">
+    <column id="47" parent="9" name="created_at">
       <Position>4</Position>
       <DataType>datetime|0</DataType>
     </column>
-    <column id="47" parent="9" name="updated_at">
+    <column id="48" parent="9" name="updated_at">
       <Position>5</Position>
       <DataType>datetime|0</DataType>
     </column>
-    <key id="48" parent="9">
+    <key id="49" parent="9">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="49" parent="9">
+    <foreign-key id="50" parent="9">
       <ColNames>account_id</ColNames>
       <RefTableName>tertiary_accounts</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <foreign-key id="50" parent="9">
+    <foreign-key id="51" parent="9">
       <ColNames>list_id</ColNames>
       <RefTableName>list_of_secondary_accounts</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <column id="51" parent="10" name="id">
+    <column id="52" parent="10" name="id">
       <DataType>integer|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="52" parent="10" name="migration">
+    <column id="53" parent="10" name="migration">
       <Position>1</Position>
       <DataType>varchar|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="53" parent="10" name="batch">
+    <column id="54" parent="10" name="batch">
       <Position>2</Position>
       <DataType>integer|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <key id="54" parent="10">
+    <key id="55" parent="10">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="55" parent="11" name="email">
+    <column id="56" parent="11" name="email">
       <DataType>varchar|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="56" parent="11" name="token">
+    <column id="57" parent="11" name="token">
       <Position>1</Position>
       <DataType>varchar|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="57" parent="11" name="created_at">
+    <column id="58" parent="11" name="created_at">
       <Position>2</Position>
       <DataType>datetime|0</DataType>
     </column>
-    <index id="58" parent="11" name="password_resets_email_index">
+    <index id="59" parent="11" name="password_resets_email_index">
       <ColNames>email</ColNames>
       <ColumnCollations></ColumnCollations>
     </index>
-    <column id="59" parent="12" name="id">
+    <column id="60" parent="12" name="id">
       <DataType>integer|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="60" parent="12" name="name">
+    <column id="61" parent="12" name="amount">
       <Position>1</Position>
-      <DataType>varchar|0</DataType>
+      <DataType>numeric|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="61" parent="12" name="code">
+    <column id="62" parent="12" name="purpose">
       <Position>2</Position>
       <DataType>varchar|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="62" parent="12" name="created_at">
+    <column id="63" parent="12" name="requested_by">
       <Position>3</Position>
-      <DataType>datetime|0</DataType>
+      <DataType>integer|0</DataType>
+      <NotNull>1</NotNull>
     </column>
-    <column id="63" parent="12" name="updated_at">
+    <column id="64" parent="12" name="status">
       <Position>4</Position>
+      <DataType>varchar|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="65" parent="12" name="list_pa_id">
+      <Position>5</Position>
+      <DataType>integer|0</DataType>
+    </column>
+    <column id="66" parent="12" name="list_sa_id">
+      <Position>6</Position>
+      <DataType>integer|0</DataType>
+    </column>
+    <column id="67" parent="12" name="list_ta_id">
+      <Position>7</Position>
+      <DataType>integer|0</DataType>
+    </column>
+    <column id="68" parent="12" name="approved_by">
+      <Position>8</Position>
+      <DataType>integer|0</DataType>
+    </column>
+    <column id="69" parent="12" name="num_of_participants">
+      <Position>9</Position>
+      <DataType>integer|0</DataType>
+    </column>
+    <column id="70" parent="12" name="duration">
+      <Position>10</Position>
+      <DataType>time|0</DataType>
+    </column>
+    <column id="71" parent="12" name="destination">
+      <Position>11</Position>
+      <DataType>varchar|0</DataType>
+    </column>
+    <column id="72" parent="12" name="distance">
+      <Position>12</Position>
+      <DataType>numeric|0</DataType>
+    </column>
+    <column id="73" parent="12" name="amount_spent">
+      <Position>13</Position>
+      <DataType>numeric|0</DataType>
+    </column>
+    <column id="74" parent="12" name="date_returned">
+      <Position>14</Position>
       <DataType>datetime|0</DataType>
     </column>
-    <key id="64" parent="12">
+    <column id="75" parent="12" name="received_by">
+      <Position>15</Position>
+      <DataType>integer|0</DataType>
+    </column>
+    <column id="76" parent="12" name="created_at">
+      <Position>16</Position>
+      <DataType>datetime|0</DataType>
+    </column>
+    <column id="77" parent="12" name="updated_at">
+      <Position>17</Position>
+      <DataType>datetime|0</DataType>
+    </column>
+    <key id="78" parent="12">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="65" parent="13" name="id">
+    <foreign-key id="79" parent="12">
+      <ColNames>requested_by</ColNames>
+      <RefTableName>users</RefTableName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <foreign-key id="80" parent="12">
+      <ColNames>list_pa_id</ColNames>
+      <RefTableName>list_of_primary_accounts</RefTableName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <foreign-key id="81" parent="12">
+      <ColNames>list_sa_id</ColNames>
+      <RefTableName>list_of_secondary_accounts</RefTableName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <foreign-key id="82" parent="12">
+      <ColNames>list_ta_id</ColNames>
+      <RefTableName>list_of_tertiary_accounts</RefTableName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <foreign-key id="83" parent="12">
+      <ColNames>approved_by</ColNames>
+      <RefTableName>users</RefTableName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <foreign-key id="84" parent="12">
+      <ColNames>received_by</ColNames>
+      <RefTableName>users</RefTableName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <column id="85" parent="13" name="id">
       <DataType>integer|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="66" parent="13" name="name">
+    <column id="86" parent="13" name="name">
       <Position>1</Position>
       <DataType>varchar|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="67" parent="13" name="account_id">
+    <column id="87" parent="13" name="code">
+      <Position>2</Position>
+      <DataType>varchar|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="88" parent="13" name="created_at">
+      <Position>3</Position>
+      <DataType>datetime|0</DataType>
+    </column>
+    <column id="89" parent="13" name="updated_at">
+      <Position>4</Position>
+      <DataType>datetime|0</DataType>
+    </column>
+    <key id="90" parent="13">
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="91" parent="14" name="id">
+      <DataType>integer|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="92" parent="14" name="name">
+      <Position>1</Position>
+      <DataType>varchar|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="93" parent="14" name="account_id">
       <Position>2</Position>
       <DataType>integer|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="68" parent="13" name="created_at">
+    <column id="94" parent="14" name="created_at">
       <Position>3</Position>
       <DataType>datetime|0</DataType>
     </column>
-    <column id="69" parent="13" name="updated_at">
+    <column id="95" parent="14" name="updated_at">
       <Position>4</Position>
       <DataType>datetime|0</DataType>
     </column>
-    <key id="70" parent="13">
+    <key id="96" parent="14">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="71" parent="13">
+    <foreign-key id="97" parent="14">
       <ColNames>account_id</ColNames>
       <RefTableName>primary_accounts</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <column id="72" parent="14" name="type">
+    <column id="98" parent="15" name="type">
       <DataType>text|0</DataType>
     </column>
-    <column id="73" parent="14" name="name">
+    <column id="99" parent="15" name="name">
       <Position>1</Position>
       <DataType>text|0</DataType>
     </column>
-    <column id="74" parent="14" name="tbl_name">
+    <column id="100" parent="15" name="tbl_name">
       <Position>2</Position>
       <DataType>text|0</DataType>
     </column>
-    <column id="75" parent="14" name="rootpage">
+    <column id="101" parent="15" name="rootpage">
       <Position>3</Position>
       <DataType>integer|0</DataType>
     </column>
-    <column id="76" parent="14" name="sql">
+    <column id="102" parent="15" name="sql">
       <Position>4</Position>
       <DataType>text|0</DataType>
     </column>
-    <column id="77" parent="15" name="name"/>
-    <column id="78" parent="15" name="seq">
+    <column id="103" parent="16" name="name"/>
+    <column id="104" parent="16" name="seq">
       <Position>1</Position>
     </column>
-    <column id="79" parent="16" name="id">
+    <column id="105" parent="17" name="id">
       <DataType>integer|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="80" parent="16" name="name">
+    <column id="106" parent="17" name="name">
       <Position>1</Position>
       <DataType>varchar|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="81" parent="16" name="subaccount_id">
+    <column id="107" parent="17" name="subaccount_id">
       <Position>2</Position>
       <DataType>integer|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="82" parent="16" name="created_at">
+    <column id="108" parent="17" name="created_at">
       <Position>3</Position>
       <DataType>datetime|0</DataType>
     </column>
-    <column id="83" parent="16" name="updated_at">
+    <column id="109" parent="17" name="updated_at">
       <Position>4</Position>
       <DataType>datetime|0</DataType>
     </column>
-    <key id="84" parent="16">
+    <key id="110" parent="17">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="85" parent="16">
+    <foreign-key id="111" parent="17">
       <ColNames>subaccount_id</ColNames>
       <RefTableName>secondary_accounts</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <column id="86" parent="17" name="id">
+    <column id="112" parent="18" name="id">
       <DataType>integer|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="87" parent="17" name="name">
+    <column id="113" parent="18" name="name">
       <Position>1</Position>
       <DataType>varchar|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="88" parent="17" name="email">
+    <column id="114" parent="18" name="email">
       <Position>2</Position>
       <DataType>varchar|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="89" parent="17" name="password">
+    <column id="115" parent="18" name="password">
       <Position>3</Position>
       <DataType>varchar|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="90" parent="17" name="usertype">
+    <column id="116" parent="18" name="usertype">
       <Position>4</Position>
       <DataType>varchar|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="91" parent="17" name="remember_token">
+    <column id="117" parent="18" name="remember_token">
       <Position>5</Position>
       <DataType>varchar|0</DataType>
     </column>
-    <column id="92" parent="17" name="created_at">
+    <column id="118" parent="18" name="created_at">
       <Position>6</Position>
       <DataType>datetime|0</DataType>
     </column>
-    <column id="93" parent="17" name="updated_at">
+    <column id="119" parent="18" name="updated_at">
       <Position>7</Position>
       <DataType>datetime|0</DataType>
     </column>
-    <index id="94" parent="17" name="users_email_unique">
+    <index id="120" parent="18" name="users_email_unique">
       <ColNames>email</ColNames>
       <ColumnCollations></ColumnCollations>
       <Unique>1</Unique>
     </index>
-    <key id="95" parent="17">
+    <key id="121" parent="18">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>

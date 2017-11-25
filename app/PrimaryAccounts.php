@@ -14,4 +14,8 @@ class PrimaryAccounts extends Model
     public function secondary_accounts(){
         return $this->hasMany("App\SecondaryAccounts", 'account_id', 'id');
     }
+
+    public function petty_cash_vouchers(){
+        return $this->hasMany("App\PettyCashVouchers", 'account_id', 'id');
+    }
 }

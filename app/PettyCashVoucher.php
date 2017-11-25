@@ -18,4 +18,16 @@ class PettyCashVoucher extends Model
     public function received_by(){
         return $this->belongsTo("App\User", "received_by", 'id');
     }
+
+    public function primary_account(){
+        return $this->belongsTo("App\ListOfPrimaryAccounts", "list_pa_id", 'id');
+    }
+
+    public function secondary_account(){
+        return $this->belongsTo("App\ListOfSecondaryAccounts", "list_sa_id", 'id');
+    }
+
+    public function tertiary_account(){
+        return $this->belongsTo('App\ListOfTertiaryAccounts', 'list_ta_id', 'id');
+    }
 }
