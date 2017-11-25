@@ -12,11 +12,13 @@
 */
 Route::get('/', function(){
     return view('homepage');
-});
+})->name('homepage');
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/all-users', 'AdminController@getAllUsers')->name('get-all-users');
 
 Route::get('/add_user', function (){
     if(Auth::guest())
@@ -27,6 +29,8 @@ Route::get('/add_user', function (){
         return redirect('unauthorized_access');
 })->name('add_user');
 
+Route::post('/add_user/submit', 'AdminController@createUser')->name('create_user');
+
 Route::get('/unauthorized_access', function (){
     return view('unauthorizedAccess');
 })->name('unauthorized_access');
@@ -35,7 +39,6 @@ Route::get('/unauthorized_access', function (){
 Route::get('/request/petty_cash', 'PettyCashController@requestPettyCashForm')->name('request_petty_cash');
 
 Route::post('/getSubAccounts', 'PettyCashController@getSubAccounts')->name('getSubAccounts');
-
 
 Route::get('/propose', function () {
     return view('proposeBudget');

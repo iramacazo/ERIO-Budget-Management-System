@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>ERIO BMS</title>
-
+    <link rel="icon" href="{{asset('images/dlsu_logo.png')}}">
     {{-- JQuery --}}
     <script src="{{ asset('js\jquery-3.2.1.min.js') }}"></script>
 
@@ -28,6 +28,7 @@
                     <a class="green-text text-darken-3 menu-item" href="{{route('register')}}">Register</a>
                 @elseif(Auth::user()->usertype == "System Admin")
                     <a class="green-text text-darken-3 menu-item" href="{{route('add_user')}}">Add New User</a>
+                    <a class="green-text text-darken-3 menu-item" href="{{route('get-all-users')}}">List of Users</a>
                     <a class="green-text text-darken-3 menu-item" href="{{ route('logout') }}"
                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
