@@ -4,15 +4,34 @@
         <script src="{{ asset('js\jquery-3.2.1.min.js') }}"></script>
     </head>
     <body>
-        <form action="" method="POST">
+        <form action="{{ route('recordRequestPCV') }}" method="POST">
             <label>Purpose: </label>
             <input type="text" name="purpose"><br>
             <label>Amount: </label>
             <input type="number" name="amount"><br>
             <select name="account" id="account">
-                <!-- TODO check for secondary accounts then check for tertiary AJAX -->
+                <!-- TODO REVISE FOR BETTER UX and Create Fields when Account is Transportation and Meeting Expense -->
                 @foreach($accounts as $a)
-                    <option value="{{ $a->primary_accounts->name }}" class="option">{{ $a->primary_accounts->name }}</option>
+                    <option value="p-{{ $a->primary_accounts->id }}">
+                        {{ $a->primary_accounts->name }}
+                    </option>
+
+                    @foreach($a->list_of_secondary_accounts as $s)
+                        <option value="s-{{ $s->secondary_accounts->id }}">
+                            {{ $a->primary_accounts->name }}:
+                            {{ $s->secondary_accounts->name }}
+                        </option>
+
+                        @foreach($s->list_of_tertiary_accounts as $t)
+                            <option value="t-{{ $t->tertiary_accounts->id }}">
+                                {{ $a->primary_accounts->name }}:
+                                {{ $s->secondary_accounts->name }}:
+                                {{ $t->tertiary_accounts->name }}
+                            </option>
+                        @endforeach
+
+                    @endforeach
+
                 @endforeach
             </select><br>
             <input type="submit" name="submit" id="submit"><br>

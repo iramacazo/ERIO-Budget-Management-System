@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Budget;
+use App\PettyCashVoucher;
 use App\PrimaryAccounts;
 use Illuminate\Http\Request;
 
@@ -19,5 +20,23 @@ class PettyCashController extends Controller
         $name = $request->name;
         $account = PrimaryAccounts::where('name', $name)->first();
         return $account;
+    }
+
+    public function recordRequestPCV(Request $request){
+        $this->validate($request, [
+            'purpose' => 'required',
+            'amount' => 'required',
+            'account' => 'required'
+        ]);
+
+        //GET Account ID
+        $acc = $request->account;
+        
+
+        $pcv = new PettyCashVoucher();
+        $pcv->requested_by = Auth::user();
+        $pcv->amount = $request->amount;
+        $pcv->purpose = $request->purpose;
+        $pcv->status = 'Approval';
     }
 }
