@@ -22,10 +22,29 @@ class PettyCashController extends Controller
         return view('requestPettyCash')->with('accounts', $list);
     }
 
-    public function getSubAccounts(Request $request){
-        $name = $request->name;
-        $account = PrimaryAccounts::where('name', $name)->first();
-        return $account;
+    public function pettyCashView(){
+        $pending = PettyCashVoucher::where('status', 'Approval')->get();
+        $receiving = PettyCashVoucher::where('status', 'Receive')->get();
+        $refill = PettyCashVoucher::where('status', 'Refill')->get();
+        $completed = PettyCashVoucher::where('status', 'Complete')->get();
+
+        $br_completed = PettyCashVoucher::where('status', '!=', 'Approval')
+                                        ->where('status', '!=', 'Receive')->get();
+
+        if(Auth::user()->usertype == "Budget Requestee"){
+            return view("pettyCash", [
+                'pending' => $pending,
+                'receiving' => $receiving,
+                'complete' => $br_completed
+            ]);
+        } else {
+            return view("pettyCash", [
+                'pending' => $pending,
+                'receiving' => $receiving,
+                'refill' => $refill,
+                'completed' => $completed
+            ]);
+        }
     }
 
     public function recordRequestPCV(Request $request){

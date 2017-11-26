@@ -14,7 +14,6 @@
             @else
                 Account: {{ $result["list_ta_id"] }} (Tertiary)<br>
             @endif
-
             Amount: {{ $result["amount"] }}<br>
         @endif
     </body>

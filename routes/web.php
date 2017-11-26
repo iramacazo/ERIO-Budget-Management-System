@@ -38,7 +38,7 @@ Route::get('/unauthorized_access', function (){
 //Petty Cash Routes
 Route::get('/request/petty_cash', 'PettyCashController@requestPettyCashForm')->name('request_petty_cash');
 
-Route::post('/getSubAccounts', 'PettyCashController@getSubAccounts')->name('getSubAccounts');
+Route::get('/petty_cash', 'PettyCashController@pettyCashView')->name('pettyCashView');
 
 Route::post('/request/petty_cash/record', 'PettyCashController@recordRequestPCV')->name('recordRequestPCV');
 
