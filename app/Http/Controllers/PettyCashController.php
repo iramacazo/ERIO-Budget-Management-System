@@ -10,6 +10,7 @@ use App\PettyCashVoucher;
 use App\PrimaryAccounts;
 use App\SecondaryAccounts;
 use App\TertiaryAccounts;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
@@ -103,6 +104,25 @@ class PettyCashController extends Controller
 
         $pettyCash = PettyCashVoucher::find($request->id);
         $pettyCash->status = 'Receive';
+        $pettyCash->save();
+
+        return redirect()->route('pettyCashView');
+    }
+
+    public function receivePettyCashForm(Request $request){
+        return view('receivePettyCashForm')->with('id', $request->id);
+    }
+
+    public function receivePettyCash(Request $request){
+        $this->validate($request, [
+            'id' => 'required'
+        ]);
+
+        $pettyCash = PettyCashVoucher::find($request->id);
+        $pettyCash->status = 'Refill';
+        $pettyCash->date_returned = Carbon::now();
+        $pettyCash->received_by = Auth::user()->id;
+        $pettyCash->amount_spent = $request->amount;
         $pettyCash->save();
 
         return redirect()->route('pettyCashView');

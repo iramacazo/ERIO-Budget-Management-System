@@ -46,6 +46,10 @@ Route::post('/petty_cash/cancel', 'PettyCashController@cancelPettyCashRequest')-
 
 Route::post('/petty_cash/approve', 'PettyCashController@approvePettyCashRequest')->name('approvePettyCash');
 
+Route::post('/petty_cash/receive/form', 'PettyCashController@receivePettyCashForm')->name('receivePettyCashForm');
+
+Route::post('/petty_cash/receive', 'PettyCashController@receivePettyCash')->name('receivePettyCash');
+
 Route::get('/propose', function () {
     return view('proposeBudget');
 });

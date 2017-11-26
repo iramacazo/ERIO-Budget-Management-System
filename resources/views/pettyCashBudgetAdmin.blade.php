@@ -51,7 +51,47 @@
             @endforeach
         </table>
     @else
-        There are currently NO PETTY CASH VOUCHERS Pending for Approval
+        There are currently NO PETTY CASH VOUCHERS Pending for Approval <br>
+    @endif
+
+    <h2>Receive Petty Cash</h2>
+    @if($receiving != null)
+        <table>
+            <tr>
+                <th>Purpose</th>
+                <th>Amount</th>
+                <th>Account</th>
+                <th>Receive PCV</th>
+            </tr>
+            @foreach($receiving as $p)
+                <tr>
+                    <td>{{ $p->purpose }}</td>
+                    <td>{{ $p->amount }}</td>
+                    <td>
+                        @if($p->list_pa_id != null)
+                            {{ $p->primary_account->primary_accounts->name }} (Primary)
+                        @elseif($p->list_sa_id != null)
+                            {{ $p->secondary_account->secondary_accounts->name }} to
+                            {{ $p->secondary_account->secondary_accounts->primary_accounts->name }}
+                            (Secondary)
+                        @else
+                            {{ $p->tertiary_account->tertiary_accounts->name }} to
+                            {{ $p->tertiary_account->tertiary_accounts->secondary_accounts->name }} to
+                            {{ $p->tertiary_account->tertiary_accounts->secondary_accounts->primary_accounts->name }}
+                        @endif
+                    </td>
+                    <td>
+                        <form action="{{ route('receivePettyCashForm') }}" method="POST">
+                            {{ csrf_field() }}
+                            <input type="hidden" name="id" value="{{ $p->id }}">
+                            <input type="submit" value="Receive">
+                        </form>
+                    </td>
+                </tr>
+            @endforeach
+        </table>
+    @else
+        There are currently NO PETTY CASH VOUCHERS to be returned <br>
     @endif
     </body>
 </html>
