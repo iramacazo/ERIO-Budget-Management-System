@@ -39,6 +39,16 @@
                     </form>
                 @elseif(Auth::user()->usertype == 'Budget Requestee')
                     <a href="{{ route('pettyCashView') }}">Petty Cash</a>
+                    <a class="green-text text-darken-3 menu-item" href="{{ route('logout') }}"
+                       onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                        Logout
+                    </a>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        {{ csrf_field() }}
+                    </form>
+                @elseif(Auth::user()->usertype == 'Budget Admin')
+                    <a href="{{ route('pettyCashView') }}">Petty Cash</a>
                 @endif
             </div>
         </div>

@@ -44,7 +44,7 @@ class PettyCashController extends Controller
             $refill = PettyCashVoucher::where('status', 'Refill')->get();
             $completed = PettyCashVoucher::where('status', 'Complete')->get();
 
-            return view("pettyCash")
+            return view("pettyCashBudgetAdmin")
                 ->with('pending', $pending)
                 ->with('receiving', $receiving)
                 ->with('refill', $refill)
@@ -88,9 +88,21 @@ class PettyCashController extends Controller
         $this->validate($request, [
            'id' => 'required'
         ]);
-        
+
         $pettyCash = PettyCashVoucher::find($request->id);
         $pettyCash->status = 'Canceled';
+        $pettyCash->save();
+
+        return redirect()->route('pettyCashView');
+    }
+
+    public function approvePettyCashRequest(Request $request){
+        $this->validate($request, [
+            'id' => 'required'
+        ]);
+
+        $pettyCash = PettyCashVoucher::find($request->id);
+        $pettyCash->status = 'Receive';
         $pettyCash->save();
 
         return redirect()->route('pettyCashView');
