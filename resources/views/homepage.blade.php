@@ -37,6 +37,8 @@
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                         {{ csrf_field() }}
                     </form>
+                @elseif(Auth::user()->usertype == 'Budget Requestee')
+                    <a href="{{ route('request_petty_cash') }}">Request Petty Cash</a>
                 @endif
             </div>
         </div>

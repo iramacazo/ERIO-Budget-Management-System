@@ -36,9 +36,9 @@ class PettyCashController extends Controller
         ]);
 
         //GET Account ID
-        $type = str_before('-', $request->account);
-        $acc = str_after('-', $request->account);
-        $id = intval($acc, 8); //TODO ETO ATA PROBLEMA :D
+        $type = str_before($request->account, '-');
+        $acc = str_after($request->account, '-');
+        $id = (int) $acc; //TODO ETO ATA PROBLEMA :D
 
         $pcv = new PettyCashVoucher();
         $pcv->requested_by = Auth::user();

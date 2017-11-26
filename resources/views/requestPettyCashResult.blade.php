@@ -7,7 +7,14 @@
         @if($result != null)
             PCV Results <br>
             Purpose: {{ $result["purpose"] }}<br>
-            Account: {{ $result["list_ta_id"] }}<br>
+            @if($result["list_pa_id"] != null)
+                Account: {{ $result["list_pa_id"] }} (Primary)<br>
+            @elseif($result["list_sa_id"] != null)
+                Account: {{ $result["list_sa_id"] }} (Secondary)<br>
+            @else
+                Account: {{ $result["list_ta_id"] }} (Tertiary)<br>
+            @endif
+
             Amount: {{ $result["amount"] }}<br>
         @endif
     </body>
