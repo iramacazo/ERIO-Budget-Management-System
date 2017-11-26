@@ -23,27 +23,32 @@ class PettyCashController extends Controller
     }
 
     public function pettyCashView(){
-        $pending = PettyCashVoucher::where('status', 'Approval')->get();
-        $receiving = PettyCashVoucher::where('status', 'Receive')->get();
-        $refill = PettyCashVoucher::where('status', 'Refill')->get();
-        $completed = PettyCashVoucher::where('status', 'Complete')->get();
-
-        $br_completed = PettyCashVoucher::where('status', '!=', 'Approval')
-                                        ->where('status', '!=', 'Receive')->get();
 
         if(Auth::user()->usertype == "Budget Requestee"){
-            return view("pettyCash", [
-                'pending' => $pending,
-                'receiving' => $receiving,
-                'complete' => $br_completed
-            ]);
+            $pending = PettyCashVoucher::where('status', 'Approval')
+                                        ->where('requested_by', Auth::user()->id)->get();
+            $receiving = PettyCashVoucher::where('status', 'Receive')
+                                        ->where('requested_by', Auth::user()->id)->get();
+            $br_completed = PettyCashVoucher::where('status', '!=', 'Approval')
+                                        ->where('status', '!=', 'Receive')
+                                        ->where('requested_by', Auth::user()->id)->get();
+
+            return view("pettyCash")
+                ->with('pending', $pending)
+                ->with('receiving', $receiving)
+                ->with('br_completed', $br_completed);
+
         } else {
-            return view("pettyCash", [
-                'pending' => $pending,
-                'receiving' => $receiving,
-                'refill' => $refill,
-                'completed' => $completed
-            ]);
+            $pending = PettyCashVoucher::where('status', 'Approval')->get();
+            $receiving = PettyCashVoucher::where('status', 'Receive')->get();
+            $refill = PettyCashVoucher::where('status', 'Refill')->get();
+            $completed = PettyCashVoucher::where('status', 'Complete')->get();
+
+            return view("pettyCash")
+                ->with('pending', $pending)
+                ->with('receiving', $receiving)
+                ->with('refill', $refill)
+                ->with('completed', $completed);
         }
     }
 
@@ -60,7 +65,7 @@ class PettyCashController extends Controller
         $id = (int) $acc; //TODO ETO ATA PROBLEMA :D
 
         $pcv = new PettyCashVoucher();
-        $pcv->requested_by = Auth::user();
+        $pcv->requested_by = Auth::user()->id;
         $pcv->amount = $request->amount;
         $pcv->purpose = $request->purpose;
         $pcv->status = 'Approval';
