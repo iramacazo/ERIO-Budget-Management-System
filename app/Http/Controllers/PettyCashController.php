@@ -82,6 +82,17 @@ class PettyCashController extends Controller
         $pcv->save();
 
         return view('requestPettyCashResult')->with("result", $pcv);
+    }
 
+    public function cancelPettyCashRequest(Request $request){
+        $this->validate($request, [
+           'id' => 'required'
+        ]);
+        
+        $pettyCash = PettyCashVoucher::find($request->id);
+        $pettyCash->status = 'Canceled';
+        $pettyCash->save();
+
+        return redirect()->route('pettyCashView');
     }
 }

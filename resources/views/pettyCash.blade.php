@@ -33,7 +33,9 @@
                         @endif
                     </td>
                     <td>
-                        <form>
+                        <form action="{{ route('cancelPettyCash') }}" method="POST">
+                            {{ csrf_field() }}
+                            <input type="hidden" name="id" value="{{ $p->id }}">
                             <input type="submit" value="Cancel Request">
                         </form>
                     </td>
