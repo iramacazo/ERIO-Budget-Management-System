@@ -127,4 +127,16 @@ class PettyCashController extends Controller
 
         return redirect()->route('pettyCashView');
     }
+
+    public function denyPettyCash(Request $request){
+        $this->validate($request, [
+            'id' => 'required'
+        ]);
+
+        $pettyCash = PettyCashVoucher::find($request->id);
+        $pettyCash->status = 'Denied';
+        $pettyCash->save();
+
+        return redirect()->route('pettyCashView');
+    }
 }

@@ -50,6 +50,8 @@ Route::post('/petty_cash/receive/form', 'PettyCashController@receivePettyCashFor
 
 Route::post('/petty_cash/receive', 'PettyCashController@receivePettyCash')->name('receivePettyCash');
 
+Route::post('/petty_cash/deny', 'PettyCashController@denyPettyCash')->name('denyPettyCash');
+
 Route::get('/propose', function () {
     return view('proposeBudget');
 });

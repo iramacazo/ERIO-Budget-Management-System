@@ -15,6 +15,7 @@
                 <th>Account</th>
                 <th>Approve Request</th>
                 <th>Cancel Request</th>
+                <th>Deny Request</th>
             </tr>
             @foreach($pending as $p)
                 <tr>
@@ -45,6 +46,13 @@
                             {{ csrf_field() }}
                             <input type="hidden" name="id" value="{{ $p->id }}">
                             <input type="submit" value="Cancel">
+                        </form>
+                    </td>
+                    <td>
+                        <form action="{{ route('denyPettyCash') }}" method="POST">
+                            {{ csrf_field() }}
+                            <input type="hidden" name="id" value="{{ $p->id }}">
+                            <input type="submit" value="Deny">
                         </form>
                     </td>
                 </tr>
