@@ -52,9 +52,15 @@ Route::post('/petty_cash/receive', 'PettyCashController@receivePettyCash')->name
 
 Route::post('/petty_cash/deny', 'PettyCashController@denyPettyCash')->name('denyPettyCash');
 
+//Request Access Accounts Routes
+Route::get('/accounts', 'AccountController@accessedAccountsView')->name('accessedAccountsView');
+
+
 Route::get('/propose', function () {
     return view('proposeBudget');
 });
 
 Route::post('propose/submit_budget', 'BudgetController@submitBudget')->name('submit_budget');
+
+
 
