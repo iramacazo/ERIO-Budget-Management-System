@@ -20,7 +20,6 @@ class CreateListOfPrimaryAccountsTable extends Migration
             $table->foreign("budget_id")->references("id")->on("budgets");
             $table->foreign("account_id")->references("id")->on("primary_accounts");
             $table->decimal("amount");
-            $table->string('status')->default("Open");
             $table->timestamps();
         });
     }

@@ -20,7 +20,6 @@ class CreateListOfSecondaryAccountsTable extends Migration
             $table->foreign("account_id")->references("id")->on("secondary_accounts");
             $table->foreign("list_id")->references("id")->on("list_of_primary_accounts");
             $table->decimal("amount");
-            $table->string('status')->default("Open");
             $table->timestamps();
         });
     }
