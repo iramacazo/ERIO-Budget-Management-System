@@ -4,7 +4,7 @@
     </head>
     <body>
         <h1> Accessed Accounts </h1><br>
-        <a href="">Request Access</a><br>
+        <a href="{{ route('requestAccessForm') }}">Request Access</a><br>
         <br>
         @if($primary != null)
             @foreach($primary as $p)

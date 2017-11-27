@@ -55,6 +55,10 @@ Route::post('/petty_cash/deny', 'PettyCashController@denyPettyCash')->name('deny
 //Request Access Accounts Routes
 Route::get('/accounts', 'AccountController@accessedAccountsView')->name('accessedAccountsView');
 
+Route::get('/accounts/request', 'AccountController@requestAccessForm')->name('requestAccessForm');
+
+Route::post('/accounts/request/save', 'AccountController@requestAccessSave')->name('requestAccessSave');
+
 
 Route::get('/propose', function () {
     return view('proposeBudget');
