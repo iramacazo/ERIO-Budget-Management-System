@@ -17,12 +17,4 @@ class AccessedSecondaryAccounts extends Model
     public function accessedSecondaryAccount(){
         return $this->belongsTo('App\ListOfSecondaryAccounts', 'list_id', 'id');
     }
-
-    public function thisUpperAccount(){
-        return $this->belongsTo('App\AccessedPrimaryAccounts', 'accessedPA_id', 'id');
-    }
-
-    public function thisLowerAccounts(){
-        return $this->hasMany('App\AccessedTertiaryAccounts', 'accessedSA_id', 'id');
-    }
 }

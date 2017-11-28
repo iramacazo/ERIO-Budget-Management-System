@@ -23,8 +23,6 @@ class CreateAccessedTertiaryAccountsTable extends Migration
             $table->string('status')->default('Pending');
             $table->integer('approved_by')->nullable();
             $table->foreign('approved_by')->references('id')->on('users');
-            $table->integer('accessedSA_id');
-            $table->foreign('accessedSA_id')->references('id')->on('accessed_secondary_accounts');
             $table->timestamps();
         });
     }

@@ -134,6 +134,6 @@ class AccountController extends Controller
             $access->save();
         }
 
-        return route('accessedAccountsView');
+        return redirect()->route('accessedAccountsView');
     }
 }
