@@ -40,29 +40,4 @@
     </body>
 </html>
 <script>
-    $(document).ready(function(){
-        $('.option').click(function(){
-            var name = $('.option').val();
-
-            //TODO Magaral ng AJAX :D
-            /**$.post("{{ route('getSubAccounts') }}", name, function(data, status){
-                if(data != null){
-                    var selectStart = "<select name='subaccount' id='subaccount'>";
-                    var selectEnd = "</select><br>";
-                    for()
-                    $('#submit').prepend();
-                }
-            });
-            */
-            //TODO append input fields (Num of participants and Duration) for Meeting Expenses
-            //TODO append input fields (Distance and Destination) for Transportation
-
-            /**if($('.option').text() == "Transportation"){
-                $('#account').append(
-                    '<label>Destination: </label><input type="text" name="destination"><br>' +
-                    '<label>Distance: </label><input type="number" name="distance"><br>'
-                );
-            }*/
-        });
-    });
 </script>

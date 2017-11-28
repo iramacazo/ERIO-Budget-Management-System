@@ -10,6 +10,7 @@ use App\PettyCashVoucher;
 use App\PrimaryAccounts;
 use App\SecondaryAccounts;
 use App\TertiaryAccounts;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
@@ -22,10 +23,34 @@ class PettyCashController extends Controller
         return view('requestPettyCash')->with('accounts', $list);
     }
 
-    public function getSubAccounts(Request $request){
-        $name = $request->name;
-        $account = PrimaryAccounts::where('name', $name)->first();
-        return $account;
+    public function pettyCashView(){
+
+        if(Auth::user()->usertype == "Budget Requestee"){
+            $pending = PettyCashVoucher::where('status', 'Approval')
+                                        ->where('requested_by', Auth::user()->id)->get();
+            $receiving = PettyCashVoucher::where('status', 'Receive')
+                                        ->where('requested_by', Auth::user()->id)->get();
+            $br_completed = PettyCashVoucher::where('status', '!=', 'Approval')
+                                        ->where('status', '!=', 'Receive')
+                                        ->where('requested_by', Auth::user()->id)->get();
+
+            return view("pettyCash")
+                ->with('pending', $pending)
+                ->with('receiving', $receiving)
+                ->with('br_completed', $br_completed);
+
+        } else {
+            $pending = PettyCashVoucher::where('status', 'Approval')->get();
+            $receiving = PettyCashVoucher::where('status', 'Receive')->get();
+            $refill = PettyCashVoucher::where('status', 'Refill')->get();
+            $completed = PettyCashVoucher::where('status', 'Complete')->get();
+
+            return view("pettyCashBudgetAdmin")
+                ->with('pending', $pending)
+                ->with('receiving', $receiving)
+                ->with('refill', $refill)
+                ->with('completed', $completed);
+        }
     }
 
     public function recordRequestPCV(Request $request){
@@ -36,12 +61,12 @@ class PettyCashController extends Controller
         ]);
 
         //GET Account ID
-        $type = str_before('-', $request->account);
-        $acc = str_after('-', $request->account);
-        $id = intval($acc, 8); //TODO ETO ATA PROBLEMA :D
+        $type = str_before($request->account, '-');
+        $acc = str_after($request->account, '-');
+        $id = (int) $acc; //TODO ETO ATA PROBLEMA :D
 
         $pcv = new PettyCashVoucher();
-        $pcv->requested_by = Auth::user();
+        $pcv->requested_by = Auth::user()->id;
         $pcv->amount = $request->amount;
         $pcv->purpose = $request->purpose;
         $pcv->status = 'Approval';
@@ -58,6 +83,60 @@ class PettyCashController extends Controller
         $pcv->save();
 
         return view('requestPettyCashResult')->with("result", $pcv);
+    }
 
+    public function cancelPettyCashRequest(Request $request){
+        $this->validate($request, [
+           'id' => 'required'
+        ]);
+
+        $pettyCash = PettyCashVoucher::find($request->id);
+        $pettyCash->status = 'Canceled';
+        $pettyCash->save();
+
+        return redirect()->route('pettyCashView');
+    }
+
+    public function approvePettyCashRequest(Request $request){
+        $this->validate($request, [
+            'id' => 'required'
+        ]);
+
+        $pettyCash = PettyCashVoucher::find($request->id);
+        $pettyCash->status = 'Receive';
+        $pettyCash->save();
+
+        return redirect()->route('pettyCashView');
+    }
+
+    public function receivePettyCashForm(Request $request){
+        return view('receivePettyCashForm')->with('id', $request->id);
+    }
+
+    public function receivePettyCash(Request $request){
+        $this->validate($request, [
+            'id' => 'required'
+        ]);
+
+        $pettyCash = PettyCashVoucher::find($request->id);
+        $pettyCash->status = 'Refill';
+        $pettyCash->date_returned = Carbon::now();
+        $pettyCash->received_by = Auth::user()->id;
+        $pettyCash->amount_spent = $request->amount;
+        $pettyCash->save();
+
+        return redirect()->route('pettyCashView');
+    }
+
+    public function denyPettyCash(Request $request){
+        $this->validate($request, [
+            'id' => 'required'
+        ]);
+
+        $pettyCash = PettyCashVoucher::find($request->id);
+        $pettyCash->status = 'Denied';
+        $pettyCash->save();
+
+        return redirect()->route('pettyCashView');
     }
 }

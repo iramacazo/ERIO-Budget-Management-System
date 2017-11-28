@@ -38,13 +38,37 @@ Route::get('/unauthorized_access', function (){
 //Petty Cash Routes
 Route::get('/request/petty_cash', 'PettyCashController@requestPettyCashForm')->name('request_petty_cash');
 
-Route::post('/getSubAccounts', 'PettyCashController@getSubAccounts')->name('getSubAccounts');
+Route::get('/petty_cash', 'PettyCashController@pettyCashView')->name('pettyCashView');
 
 Route::post('/request/petty_cash/record', 'PettyCashController@recordRequestPCV')->name('recordRequestPCV');
+
+Route::post('/petty_cash/cancel', 'PettyCashController@cancelPettyCashRequest')->name('cancelPettyCash');
+
+Route::post('/petty_cash/approve', 'PettyCashController@approvePettyCashRequest')->name('approvePettyCash');
+
+Route::post('/petty_cash/receive/form', 'PettyCashController@receivePettyCashForm')->name('receivePettyCashForm');
+
+Route::post('/petty_cash/receive', 'PettyCashController@receivePettyCash')->name('receivePettyCash');
+
+Route::post('/petty_cash/deny', 'PettyCashController@denyPettyCash')->name('denyPettyCash');
+
+//Request Access Accounts Routes
+Route::get('/accounts', 'AccountController@accessedAccountsView')->name('accessedAccountsView');
+
+Route::get('/accounts/request', 'AccountController@requestAccessForm')->name('requestAccessForm');
+
+Route::post('/accounts/request/save', 'AccountController@requestAccessSave')->name('requestAccessSave');
+
+Route::get('/request-accounts', 'AccountController@requestsForAccess')->name('requestsForAccess');
+
+Route::post('/request-accounts/response', 'AccountController@respondRequest')->name('respondRequest');
+
 
 Route::get('/propose', function () {
     return view('proposeBudget');
 });
 
 Route::post('propose/submit_budget', 'BudgetController@submitBudget')->name('submit_budget');
+
+
 

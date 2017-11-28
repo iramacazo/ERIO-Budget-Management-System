@@ -37,6 +37,21 @@
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                         {{ csrf_field() }}
                     </form>
+                @elseif(Auth::user()->usertype == 'Budget Requestee')
+                    <a href="{{ route('pettyCashView') }}">Petty Cash</a>
+                    <a href="{{ route('accessedAccountsView') }}">Accessed Accounts</a>
+                    <a class="green-text text-darken-3 menu-item" href="{{ route('logout') }}"
+                       onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                        Logout
+                    </a>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        {{ csrf_field() }}
+                    </form>
+                @elseif(Auth::user()->usertype == 'Budget Admin')
+                    <a href="{{ route('pettyCashView') }}">Petty Cash</a>
+                @elseif(Auth::user()->usertype == 'Executive')
+                    <a href="{{ route('requestsForAccess') }}">Accessed Budgets</a>
                 @endif
             </div>
         </div>

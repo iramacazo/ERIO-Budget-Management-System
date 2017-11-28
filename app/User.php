@@ -38,4 +38,16 @@ class User extends Authenticatable
     public function pcv_receive(){
         return $this->hasMany("App\PettyCashVoucher", 'received_by', 'id');
     }
+
+    public function approvedRequestOfAccessPA(){
+        return $this->hasMany('App\AccessedPrimaryAccounts', 'approved_by', 'id');
+    }
+
+    public function approvedRequestOfAccessSA(){
+        return $this->hasMany('App\AccessedSecondaryAccounts', 'approved_by', 'id');
+    }
+
+    public function approvedRequestOfAccessTA(){
+        return $this->hasMany('App\AccessedTertiaryAccounts', 'approved_by', 'id');
+    }
 }
