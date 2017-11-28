@@ -26,5 +26,41 @@ class AccessedAccountsSeeder extends Seeder
             'updated_at' => Carbon::now()
         ]);
 
+        AccessedSecondaryAccounts::insert([
+            'user_id' => $user->id,
+            'explanation' => 'Testing',
+            'list_id' => 1,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+            'accessedPA_id' => 1
+        ]);
+
+        AccessedTertiaryAccounts::insert([
+            'user_id' => $user->id,
+            'explanation' => 'Testing',
+            'list_id' => 1,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+            'accessedSA_id' => 1
+        ]);
+
+        AccessedTertiaryAccounts::insert([
+            'user_id' => $user->id,
+            'explanation' => 'Testing',
+            'list_id' => 2,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+            'accessedSA_id' => 1
+        ]);
+
+        AccessedTertiaryAccounts::insert([
+            'user_id' => $user->id,
+            'explanation' => 'Testing',
+            'list_id' => 3,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+            'accessedSA_id' => 1
+        ]);
+
     }
 }

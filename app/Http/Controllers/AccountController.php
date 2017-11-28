@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use DB;
 
 class AccountController extends Controller
 {
@@ -40,52 +41,60 @@ class AccountController extends Controller
     public function requestAccessForm(){
         //TODO Ayusin yung filter... :D
         $latest_budget = Budget::latest()->whereDate('start_range', '<', Carbon::now())->first(); //can cause problems
-        $primary = ListOfPrimaryAccounts::where('budget_id', $latest_budget->id)->get();
-        $secondary = new Collection;
-        $tertiary = new Collection;
 
-        foreach($primary as $p){
-            $secondary = $p->list_of_secondary_accounts;
+        $primary = DB::table('list_of_primary_accounts')
+                        ->leftJoin('accessed_primary_accounts', 'list_of_primary_accounts.id', '=',
+                            'accessed_primary_accounts.list_id')
+                        ->join('primary_accounts', 'primary_accounts.id', '=',
+                            'list_of_primary_accounts.account_id')
+                        ->select(
+                            'primary_accounts.name as primary_name',
+                            'list_of_primary_accounts.id as id'
+                        )
+                        ->where('list_of_primary_accounts.budget_id', $latest_budget->id)
+                        ->whereNull('accessed_primary_accounts.id')
+                        ->get();
 
-            foreach($secondary as $s){
-                $secondary->push($s);
-                $tertiary = $s->list_of_tertiary_accounts;
+        $secondary = DB::table('list_of_secondary_accounts')
+                        ->leftJoin('accessed_secondary_accounts', 'list_of_secondary_accounts.id',
+                            '=', 'accessed_secondary_accounts.list_id')
+                        ->join('list_of_primary_accounts', 'list_of_primary_accounts.id', '=',
+                            'list_of_secondary_accounts.list_id')
+                        ->join('secondary_accounts', 'secondary_accounts.id', '=',
+                            'list_of_secondary_accounts.account_id')
+                        ->join('primary_accounts', 'primary_accounts.id', '=',
+                            'secondary_accounts.account_id')
+                        ->select(
+                            'secondary_accounts.name as secondary_name',
+                            'list_of_secondary_accounts.id as id',
+                            'primary_accounts.name as primary_name'
+                        )
+                        ->where('list_of_primary_accounts.budget_id', $latest_budget->id)
+                        ->whereNull('accessed_secondary_accounts.id')
+                        ->get();
 
-                foreach($tertiary as $t){
-                    $tertiary->push($t);
-                }
-            }
-        }
-
-        $primary->reject(function($p){
-            $accessedPA = AccessedPrimaryAccounts::where('user_id', Auth::user()->id)->get();
-            foreach($accessedPA as $AP){
-                if($p->id == $AP->list_id){
-                    return true;
-                }
-                return false;
-            }
-        });
-
-        $secondary->reject(function($s){
-            $accessedSA = AccessedSecondaryAccounts::where('user_id', Auth::user()->id)->get();
-            foreach($accessedSA as $AS){
-                if($s->id == $AS->list_id){
-                    return true;
-                }
-                return false;
-            }
-        });
-
-        $tertiary->reject(function($t){
-            $accessedTA = AccessedTertiaryAccounts::where('user_id', Auth::user()->id)->get();
-            foreach($accessedTA as $AT){
-                if($t->id == $AT->list_id){
-                    return true;
-                }
-                return false;
-            }
-        });
+        $tertiary = DB::table('list_of_tertiary_accounts')
+                        ->leftJoin('accessed_tertiary_accounts', 'list_of_tertiary_accounts.id', '=',
+                            'accessed_tertiary_accounts.list_id')
+                        ->join('list_of_secondary_accounts', 'list_of_secondary_accounts.id', '=',
+                            'list_of_tertiary_accounts.list_id')
+                        ->join('list_of_primary_accounts', 'list_of_primary_accounts.id', '=',
+                            'list_of_secondary_accounts.list_id')
+                        ->join('tertiary_accounts', 'list_of_tertiary_accounts.account_id', '=',
+                            'tertiary_accounts.id')
+                        ->join('secondary_accounts', 'secondary_accounts.id', '=',
+                            'tertiary_accounts.subaccount_id')
+                        ->join('primary_accounts', 'primary_accounts.id', '=',
+                            'secondary_accounts.account_id')
+                        ->select(
+                            'tertiary_accounts.name as tertiary_name',
+                            'list_of_tertiary_accounts.id as id',
+                            'secondary_accounts.name as secondary_name',
+                            'primary_accounts.name as primary_name'
+                        )
+                        ->where('list_of_primary_accounts.budget_id', $latest_budget->id)
+                        ->whereNull('accessed_tertiary_accounts.id')
+                        ->get();
 
 
         //return view form

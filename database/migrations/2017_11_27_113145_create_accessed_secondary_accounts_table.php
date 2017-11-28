@@ -21,8 +21,10 @@ class CreateAccessedSecondaryAccountsTable extends Migration
             $table->foreign('list_id')->references('id')->on('list_of_secondary_accounts');
             $table->string('explanation');
             $table->string('status')->default('Pending');
-            $table->integer('approved_by');
+            $table->integer('approved_by')->nullable();
             $table->foreign('approved_by')->references('id')->on('users');
+            $table->integer('accessedPA_id');
+            $table->foreign('accessedPA_id')->references('id')->on('accessed_primary_accounts');
             $table->timestamps();
         });
     }

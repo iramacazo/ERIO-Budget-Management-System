@@ -8,26 +8,27 @@
             <select name="account">
                 @if($primary != null)
                     @foreach($primary as $p)
-                        <option value="p-{{ $p->account_id }}">
-                            {{ $p->primary_accounts->name }}
+                        <option value="p-{{ $p->id }}">
+                            {{ $p->primary_name }}
                         </option>
                     @endforeach
                 @endif
 
                 @if($secondary != null)
                     @foreach($secondary as $s)
-                        <option value="s-{{ $s->account_id }}">
-                            {{ $s->secondary_accounts->name }} for
-                            {{ $s->secondary_accounts->primary_accounts->name }}
+                        <option value="s-{{ $s->id }}">
+                            {{ $s->secondary_name }} for
+                            {{ $s->primary_name }}
                         </option>
                     @endforeach
                 @endif
 
                 @if($tertiary != null)
                     @foreach($tertiary as $t)
-                        <option value="t-{{ $t->account_id }}">
-                            {{ $t->tertiary_accounts->name }} for
-                            {{ $t->tertiary_accounts->secondary_accounts->name }}
+                        <option value="t-{{ $t->id }}">
+                            {{ $t->tertiary_name }} for
+                            {{ $t->secondary_name }} for
+                            {{ $t->primary_name }}
                         </option>
                     @endforeach
                 @endif
