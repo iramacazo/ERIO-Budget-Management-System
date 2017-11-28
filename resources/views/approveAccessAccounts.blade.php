@@ -21,8 +21,8 @@
                         <form action="{{ route('respondRequest') }}" method="POST">
                             {{ csrf_field() }}
                             <input type="hidden" value="p-{{ $p->id }}" name="id">
-                            <input type="submit" value="Approve">
-                            <input type="submit" value="Deny">
+                            <input type="submit" value="Approve" name="submit">
+                            <input type="submit" value="Deny" name="submit">
                         </form>
                     </td>
                 </tr>
@@ -39,8 +39,8 @@
                          <form action="{{ route('respondRequest') }}" method="POST">
                              {{ csrf_field() }}
                              <input type="hidden" value="s-{{ $s->id }}" name="id">
-                             <input type="submit" value="Approve">
-                             <input type="submit" value="Deny">
+                             <input type="submit" value="Approve" name="submit">
+                             <input type="submit" value="Deny" name="submit">
                          </form>
                      </td>
                  </tr>
@@ -57,8 +57,8 @@
                         <form action="{{ route('respondRequest') }}" method="POST">
                             {{ csrf_field() }}
                             <input type="hidden" value="t-{{ $t->id }}" name="id">
-                            <input type="submit" value="Approve">
-                            <input type="submit" value="Deny">
+                            <input type="submit" value="Approve" name="submit">
+                            <input type="submit" value="Deny" name="submit">
                         </form>
                     </td>
                 </tr>
