@@ -104,7 +104,36 @@ class AccountController extends Controller
             ->with('tertiary', $tertiary);
     }
 
-    public function requestAccessSave(){
+    public function requestAccessSave(Request $request){
+        $this->validate($request, [
+            'explanation' => 'required',
+            'account' => 'required'
+        ]);
 
+        $type = str_before($request->account, '-');
+        $acc = str_after($request->account, '-');
+        $id = (int) $acc;
+
+        if($type == 'p'){
+            $access = new AccessedPrimaryAccounts();
+            $access->explanation = $request->explanation;
+            $access->user_id = Auth::user()->id;
+            $access->list_id = $id;
+            $access->save();
+        } else if($type == 's'){
+            $access = new AccessedSecondaryAccounts();
+            $access->explanation = $request->explanation;
+            $access->user_id = Auth::user()->id;
+            $access->list_id = $id;
+            $access->save();
+        } else {
+            $access = new AccessedTertiaryAccounts();
+            $access->explanation = $request->explanation;
+            $access->user_id = Auth::user()->id;
+            $access->list_id = $id;
+            $access->save();
+        }
+
+        return route('accessedAccountsView');
     }
 }

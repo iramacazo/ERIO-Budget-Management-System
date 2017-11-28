@@ -32,8 +32,9 @@
                         </option>
                     @endforeach
                 @endif
-            </select>
-            <input type="text" name="explanation">
+            </select><br>
+            <label>Explanation: </label>
+            <input type="text" name="explanation"><br>
             <input type="submit" value="Send">
         </form>
     </body>
