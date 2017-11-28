@@ -59,6 +59,10 @@ Route::get('/accounts/request', 'AccountController@requestAccessForm')->name('re
 
 Route::post('/accounts/request/save', 'AccountController@requestAccessSave')->name('requestAccessSave');
 
+Route::get('/request-accounts', 'AccountController@requestsForAccess')->name('requestsForAccess');
+
+Route::post('/request-accounts/response', 'AccountController@respondRequest')->name('respondRequest');
+
 
 Route::get('/propose', function () {
     return view('proposeBudget');

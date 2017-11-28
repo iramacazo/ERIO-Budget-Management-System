@@ -50,6 +50,8 @@
                     </form>
                 @elseif(Auth::user()->usertype == 'Budget Admin')
                     <a href="{{ route('pettyCashView') }}">Petty Cash</a>
+                @elseif(Auth::user()->usertype == 'Executive')
+                    <a href="{{ route('requestsForAccess') }}">Accessed Budgets</a>
                 @endif
             </div>
         </div>

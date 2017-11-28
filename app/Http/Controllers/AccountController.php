@@ -136,4 +136,102 @@ class AccountController extends Controller
 
         return redirect()->route('accessedAccountsView');
     }
+
+    public function requestsForAccess(){
+        $primary = DB::table('accessed_primary_accounts')
+                        ->join('users', 'users.id', '=',
+                            'accessed_primary_accounts.user_id')
+                        ->join('list_of_primary_accounts', 'list_of_primary_accounts.id', '=',
+                            'accessed_primary_accounts.list_id')
+                        ->join('primary_accounts', 'primary_accounts.id', '=',
+                            'list_of_primary_accounts.account_id')
+                        ->select(
+                            'accessed_primary_accounts.id as id',
+                            'users.name as user_name',
+                            'primary_accounts.name as account_name',
+                            'accessed_primary_accounts.explanation as explanation'
+                        )
+                        ->where('status', 'Pending')
+                        ->get();
+
+        $secondary = DB::table('accessed_secondary_accounts')
+                        ->join('users', 'users.id', '=',
+                            'accessed_secondary_accounts.user_id')
+                        ->join('list_of_secondary_accounts', 'list_of_secondary_accounts.id', '=',
+                            'accessed_secondary_accounts.list_id')
+                        ->join('secondary_accounts', 'secondary_accounts.id', '=',
+                            'list_of_secondary_accounts.list_id')
+                        ->select(
+                            'accessed_secondary_accounts.id as id',
+                            'users.name as user_name',
+                            'secondary_accounts.name as account_name',
+                            'accessed_secondary_accounts.explanation as explanation'
+                        )
+                        ->where('status', 'Pending')
+                        ->get();
+
+        $tertiary = DB::table('accessed_tertiary_accounts')
+                        ->join('users', 'users.id', '=',
+                            'accessed_tertiary_accounts.user_id')
+                        ->join('list_of_tertiary_accounts', 'list_of_tertiary_accounts.id', '=',
+                            'accessed_tertiary_accounts.list_id')
+                        ->join('tertiary_accounts', 'tertiary_accounts.id', '=',
+                            'list_of_tertiary_accounts.account_id')
+                        ->select(
+                            'accessed_tertiary_accounts.id as id',
+                            'users.name as user_name',
+                            'tertiary_accounts.name as account_name',
+                            'accessed_tertiary_accounts.explanation as explanation'
+                        )
+                        ->where('status', 'Pending')
+                        ->get();
+
+        return view('approveAccessAccounts')
+            ->with('primary', $primary)
+            ->with('secondary', $secondary)
+            ->with('tertiary', $tertiary);
+    }
+
+    public function respondRequest(Request $request){
+        $id = (int) str_after($request->id, '-');
+        $type = str_before($request->id, '-');
+
+        if($request->submit == 'Approve'){
+            if($type == 'p'){
+                $acc = AccessedPrimaryAccounts::find($id);
+                $acc->status = 'Open';
+                $acc->approved_by = Auth::user()->id;
+                $acc->save();
+            } else if($type == 's'){
+                $acc = AccessedSecondaryAccounts::find($id);
+                $acc->status = 'Open';
+                $acc->approved_by = Auth::user()->id;
+                $acc->save();
+            } else {
+                $acc = AccessedTertiaryAccounts::find($id);
+                $acc->status = 'Open';
+                $acc->approved_by = Auth::user()->id;
+                $acc->save();
+            }
+        } else {
+            if($type == 'p'){
+                $acc = AccessedPrimaryAccounts::find($id);
+                $acc->status = 'Denied';
+                $acc->approved_by = Auth::user()->id;
+                $acc->save();
+            } else if($type == 's'){
+                $acc = AccessedSecondaryAccounts::find($id);
+                $acc->status = 'Denied';
+                $acc->approved_by = Auth::user()->id;
+                $acc->save();
+            } else {
+                $acc = AccessedTertiaryAccounts::find($id);
+                $acc->status = 'Denied';
+                $acc->approved_by = Auth::user()->id;
+                $acc->save();
+            }
+        }
+
+        return redirect()->route('requestsForAccess');
+    }
 }
