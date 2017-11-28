@@ -17,6 +17,8 @@ class CreateBudgetsTable extends Migration
             $table->increments('id');
             $table->dateTime("start_range");
             $table->dateTime("end_range");
+            $table->boolean('approved_by_vp');
+            $table->boolean('approved_by_acc');
             $table->timestamps();
         });
     }

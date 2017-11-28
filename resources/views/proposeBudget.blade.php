@@ -4,9 +4,11 @@
     <script>
         $(function(){
             var acc_num = 1;
+            var sec_acc_num = 1; //todo fix this :((
             var form = document.forms['accounts_form'];
             var div = document.getElementById("accounts_list_added");
             var primary_acc_count = 0;
+            var secondary_max_acc_count = 0;
             var total_budget = 0;
 
             $("#add").click(function(){
@@ -54,6 +56,17 @@
                 total_budget = total_budget-parseInt(budget);
                 $("#tb").text(total_budget);
             });
+            $("#accounts_list_added").on('click', '#add_btn', function(){
+               console.log("clicked added button");
+               $div = $(this).parent('div');
+               $parent_id = $(this).parent('div').attr('id');
+               $new_id = $parent_id+'_'+sec_acc_num;
+               jQuery('</div>', {
+                   id: $new_id,
+               }).appendTo($div);
+
+               //todo also append tertiary accounts div here
+            });
             //
             function addHidden(form, key, value){
                 var input = document.createElement('input');
@@ -95,6 +108,10 @@
                 budget = $("#acc_budget").val();
                 bInput.value = budget;
                 ndiv.appendChild(bInput);
+
+                //todo append secondary accounts div here
+                //todo append hidden value to secondary accounts div saying max counter?
+
                 t4 = document.createTextNode("Budget: "+budget);
                 total_budget = total_budget+parseInt(budget);
                 ndiv.appendChild(t4);  /// APPEND THE BUDGET TEXT NODE WALA PA SA DIV
