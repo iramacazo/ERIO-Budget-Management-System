@@ -11,6 +11,23 @@ use App\ListOfPrimaryAccounts;
 class BudgetController extends Controller
 {
     //
+    public function viewLastBudget(){
+        $budgetId = Budget::where([
+            ['approved_by_vp', '=', '1'],
+            ['approved_by_exec', '=', '1'],
+        ])->orderBy('created_at', 'desc')
+            ->first()
+            ->pluck('id');
+
+        $budgetP = Budget::where('approved_by_vp', '=', '0')
+            ->orWhere('approved_by_acc', '=', '0')
+            ->get();
+
+        if(is_null($budgetP)){
+
+            return; //return to view with data of previous years budget
+        }
+    }
     public function submitBudget(Request $request){
         $validator = Validator::make($request->all(),[
             'counter' => 'required|min:1',
@@ -35,6 +52,8 @@ class BudgetController extends Controller
         $budget->end_range = $request->end_date;
         $budget->id = $budget_max_id;
         //TODO add boolean sa budgets DB to know if executive approves of budget
+        $budget->approved_by_acc = false;
+        $budget->approved_by_vp = false;
         $budget->save();
 
         /*

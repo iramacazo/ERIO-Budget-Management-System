@@ -17,6 +17,8 @@ class BudgetSeeder extends Seeder
         DB::table('budgets')->insert([
             'start_range' => Carbon::now(),
             'end_range' => Carbon::now()->addYear(),
+            'approved_by_vp' => true,
+            'approved_by_acc' => true,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
