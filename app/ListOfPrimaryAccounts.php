@@ -26,4 +26,8 @@ class ListOfPrimaryAccounts extends Model
     public function mrf(){
         return $this->hasMany('App\MaterialRequisitionForm', 'list_pa_id', 'id');
     }
+
+    public function otherTransactions(){
+        return $this->hasMany('App\OtherTransactions', 'list_pa_id', 'id');
+    }
 }

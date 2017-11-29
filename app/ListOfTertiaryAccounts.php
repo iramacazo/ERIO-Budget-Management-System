@@ -22,4 +22,8 @@ class ListOfTertiaryAccounts extends Model
     public function mrf_entries(){
         return $this->hasMany('App\MaterialRequisitionFormEntries', 'list_ta_id', 'id');
     }
+
+    public function otherTransactions(){
+        return $this->hasMany('App\OtherTransactions', 'list_ta_id', 'id');
+    }
 }

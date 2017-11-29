@@ -26,4 +26,8 @@ class ListOfSecondaryAccounts extends Model
     public function mrf_entries(){
         return $this->hasMany('App\MaterialRequisitionFormEntries', 'list_sa_id', 'id');
     }
+
+    public function otherTransactions(){
+        return $this->hasMany('App\OtherTransactions', 'list_sa_id', 'id');
+    }
 }

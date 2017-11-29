@@ -50,4 +50,8 @@ class User extends Authenticatable
     public function approvedRequestOfAccessTA(){
         return $this->hasMany('App\AccessedTertiaryAccounts', 'approved_by', 'id');
     }
+
+    public function otherTransactions(){
+        return $this->hasMany('App\OtherTransactions', 'user_id', 'id');
+    }
 }
