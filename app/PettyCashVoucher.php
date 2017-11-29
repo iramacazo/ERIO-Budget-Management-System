@@ -30,4 +30,8 @@ class PettyCashVoucher extends Model
     public function tertiary_account(){
         return $this->belongsTo('App\ListOfTertiaryAccounts', 'list_ta_id', 'id');
     }
+
+    public function journal_entry(){
+        return $this->belongsTo('App\JournalEntries', 'pcv_id', 'id');
+    }
 }

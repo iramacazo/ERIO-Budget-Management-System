@@ -18,4 +18,8 @@ class ListOfPrimaryAccounts extends Model
     public function list_of_secondary_accounts(){
         return $this->hasMany("App\ListOfSecondaryAccounts", 'list_id', 'id');
     }
+
+    public function brf(){
+        return $this->hasMany('App\BookstoreRequisitionForm', 'brf_id', 'id');
+    }
 }
