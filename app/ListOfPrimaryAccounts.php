@@ -22,4 +22,8 @@ class ListOfPrimaryAccounts extends Model
     public function brf(){
         return $this->hasMany('App\BookstoreRequisitionForm', 'brf_id', 'id');
     }
+
+    public function mrf(){
+        return $this->hasMany('App\MaterialRequisitionForm', 'list_pa_id', 'id');
+    }
 }

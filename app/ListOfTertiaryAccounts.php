@@ -18,4 +18,8 @@ class ListOfTertiaryAccounts extends Model
     public function brf(){
         return $this->hasMany('App\BookstoreRequisitionForm', 'brf_id', 'id');
     }
+
+    public function mrf_entries(){
+        return $this->hasMany('App\MaterialRequisitionFormEntries', 'list_ta_id', 'id');
+    }
 }
