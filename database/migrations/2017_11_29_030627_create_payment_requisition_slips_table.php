@@ -16,7 +16,6 @@ class CreatePaymentRequisitionSlipsTable extends Migration
         Schema::create('payment_requisition_slips', function (Blueprint $table) {
             $table->increments('id');
             $table->string('code');
-            $table->decimal('amount');
             $table->integer('approved_by')->nullable();
             $table->foreign('approved_by')->references('id')->on('users');
             $table->timestamps();

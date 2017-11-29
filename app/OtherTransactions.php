@@ -21,4 +21,8 @@ class OtherTransactions extends Model
     public function user(){
         return $this->belongsTo('App\User', 'user_id', 'id');
     }
+
+    public function entries(){
+        return $this->hasMany('App\JournalEntries', 'entry_id', 'id');
+    }
 }

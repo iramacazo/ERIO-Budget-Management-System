@@ -25,6 +25,8 @@ class CreateOtherTransactionsTable extends Migration
             $table->decimal('amount');
             $table->integer('user_id');
             $table->foreign('user_id')->references('id')->on('users');
+            $table->integer('entry_id');
+            $table->foreign('entry_id')->references('id')->on('journal_entries');
             $table->timestamps();
         });
     }
