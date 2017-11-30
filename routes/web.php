@@ -15,6 +15,8 @@ Route::get('/', function(){
         return view('homepage');
     else if(Auth::user()->usertype == "System Admin"){
         return redirect("/all-users");
+    }else{
+        return view('homepage');
     }
 })->name('homepage');
 
