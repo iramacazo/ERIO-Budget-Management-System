@@ -63,6 +63,9 @@ Route::get('/request-accounts', 'AccountController@requestsForAccess')->name('re
 
 Route::post('/request-accounts/response', 'AccountController@respondRequest')->name('respondRequest');
 
+//BRF Routes
+Route::get('/brf', 'BRFController@brfView')->name('brfView');
+
 
 Route::get('/propose', function () {
     return view('proposeBudget');
