@@ -53,14 +53,14 @@
             <a href="#!email"><span class="white-text email">{{Auth::user()->email}}</span></a>
         </div></li>
     <li><a href="{{route('add_user')}}">Add a New User</a></li>
-    <li><a href="{{route('get-all-users')}}">View All Users</a></li>
+    <li class="active"><a href="{{route('get-all-users')}}">View All Users</a></li>
 </ul>
 <a href="#" data-activates="slide-out"
    class="btn-floating btn-large waves-effect waves-light green darken-4 button-collapse"
-   style="margin-top: 20px; margin-left: 20px; z-index: 0"><i class="material-icons">menu</i></a>
+   style="margin-top: 20px; margin-left: 20px; z-index: 0; position: fixed;"><i class="material-icons">menu</i></a>
 <div class="valign-wrapper center-align main-body"
-     style="height: calc(100vh - 250px)">
-    <div class="row" style="width: 100%; margin-top: -10vh">
+     style="margin-top: 75px">
+    <div class="row" style="width: 100%;">
         <div class="col s8 offset-s2 white z-depth-2" style="padding: 25px">
             <h2>List of Users</h2>
             <table class="bordered striped highlight">

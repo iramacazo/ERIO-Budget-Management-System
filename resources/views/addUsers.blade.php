@@ -16,18 +16,21 @@
     {{--Icons--}}
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
+    <link rel="stylesheet" href="{{asset('css\sidenav.css')}}">
+
     {{-- Use this Stylesheet on every page with a form --}}
     <link rel="stylesheet" href="{{asset('css/globalform.css')}}">
 </head>
-<body class="grey lighten-4">
-    <nav class="navbar-fixed white">
+<body class="teal lighten-5">
+<div class="navbar-fixed">
+    <nav class="green darken-4">
         <div class="nav-wrapper">
             <a href="{{route('homepage')}}" class="brand-logo" style="padding-left: 20px">
                 <div style="height: 64px;" class="valign-wrapper">
-                    <img src="{{asset('images/Logo.png')}}" height="55px">
+                    <img src="{{asset('images/Logo.png')}}" height="50px">
                 </div></a>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
-                <li><a class="green-text text-darken-3 menu-item" href="{{ route('logout') }}"
+                <li><a class="white-text menu-item" href="{{ route('logout') }}"
                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                         Logout
@@ -38,10 +41,25 @@
             </ul>
         </div>
     </nav>
-    <div class="container section">
+</div>
+
+<ul id="slide-out" class="side-nav fixed" style="margin-top: 64px">
+    <li><div class="user-view">
+            <div class="background">
+                <img src="{{asset('images/dlsu.png')}}" style="width: 100%; -webkit-filter: brightness(50%)">
+            </div>
+            <a href="#!name"><span class="white-text name">{{Auth::user()->name}}</span></a>
+            <a href="#!email"><span class="white-text email">{{Auth::user()->email}}</span></a>
+        </div></li>
+    <li class="active"><a href="{{route('add_user')}}">Add a New User</a></li>
+    <li><a href="{{route('get-all-users')}}">View All Users</a></li>
+</ul>
+<a href="#" data-activates="slide-out"
+   class="btn-floating btn-large waves-effect waves-light green darken-4 button-collapse"
+   style="margin-top: 20px; margin-left: 20px; z-index: 0; position: fixed;"><i class="material-icons">menu</i></a>
+    <div class="main-body" style="margin-top: 75px">
         <div class="row">
-            <div class="col s3"></div>
-            <div class="col s6 white z-depth-2" style="padding: 25px">
+            <div class="col s8 offset-s2 white z-depth-2" style="padding: 25px">
                 <div class="row">
                     <form class="col s12" method="POST" action="{{route('create_user')}}">
                         {{csrf_field()}}
@@ -104,6 +122,7 @@
 </html>
 <script>
     $(document).ready(function() {
+        $(".button-collapse").sideNav();
         $('select').material_select();
         $(".dropdown-content>li>a").css("color", "#2e7d32 !important");
     });
