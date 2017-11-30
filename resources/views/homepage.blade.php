@@ -94,7 +94,6 @@
         @elseif(Auth::user()->usertype == 'Budget Requestee')
             <a href="{{ route('pettyCashView') }}">Petty Cash</a>
             <a href="{{ route('accessedAccountsView') }}">Accessed Accounts</a>
-            <a href="{{ route('') }}">Bookstore Requisition Form</a>
             <a class="green-text text-darken-3 menu-item" href="{{ route('logout') }}"
                onclick="event.preventDefault();
                                                  document.getElementById('logout-form').submit();">
