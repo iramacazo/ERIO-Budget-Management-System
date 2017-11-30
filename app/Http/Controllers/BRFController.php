@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\BookstoreRequisitionForm;
 use Illuminate\Support\Facades\Auth;
-use DB;
 
 class BRFController extends Controller
 {
@@ -14,7 +13,7 @@ class BRFController extends Controller
         $brfA = BookstoreRequisitionForm::where('user_id', Auth::user()->id)
                                         ->where('status', 'Billed')->get();
 
-        //where entries doesnt have amount
+        //where entries doesn't have amount
         $brfB = BookstoreRequisitionForm::where('user_id', Auth::user()->id)
                                         ->where('status', 'Pending')->get();
 
@@ -24,7 +23,7 @@ class BRFController extends Controller
     }
 
     public function brfAdd(){
-
+        return view('addBRF');
     }
 
     public function accessBRF(Request $request){
