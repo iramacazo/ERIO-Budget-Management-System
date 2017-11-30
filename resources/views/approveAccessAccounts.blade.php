@@ -49,7 +49,7 @@
             <a href="#!name"><span class="white-text name">{{Auth::user()->name}}</span></a>
             <a href="#!email"><span class="white-text email">{{Auth::user()->email}}</span></a>
         </div></li>
-    <li class="active"><a href="{{route('add_user')}}">Account Access Requests</a></li>
+    <li class="active"><a href="{{route('requestsForAccess')}}">Account Access Requests</a></li>
 </ul>
 <a href="#" data-activates="slide-out"
    class="btn-floating btn-large waves-effect waves-light green darken-4 button-collapse"
@@ -59,90 +59,109 @@
     <div class="row">
         <div class="col s8 offset-s2 white z-depth-2 center" style="padding: 25px">
             <h4> Requests for Access </h4>
-            <table class="bordered highlight">
-                <thead>
+            @if($primary->isEmpty() && $secondary->isEmpty() && $tertiary->isEmpty())
+                <br>
+                <h2>There are no pending requests</h2>
+
+            @else
+                <table class="bordered highlight">
+                    <thead>
                     <tr>
                         <th>Account Name</th>
                         <th>Requestee</th>
                         <th>Explanation</th>
                     </tr>
-                </thead>
-                <tbody>
-                @if($primary != null)
-                    @foreach($primary as $p)
-                        <tr>
-                            <td>{{ $p->account_name }}</td>
-                            <td>{{ $p->user_name }}</td>
-                            <td>{{ $p->explanation }}</td>
-                            <td class="right">
-                                <form action="{{ route('respondRequest') }}" method="POST">
-                                    {{ csrf_field() }}
-                                    <input type="hidden" value="p-{{ $p->id }}" name="id">
-                                    <button class="waves-effect waves-light btn green darken-3"
-                                            type="submit" value="Approve">
-                                        <i class="material-icons">check</i>
-                                    </button>
-                                    <button class="waves-effect waves-light btn red darken-2"
-                                            type="submit" value="Deny">
-                                        <i class="material-icons">close</i>
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                    @endforeach
-                @endif
+                    </thead>
+                    <tbody>
+                    @if($primary != null)
+                        @foreach($primary as $p)
+                            <tr>
+                                <td>{{ $p->account_name }}</td>
+                                <td>{{ $p->user_name }}</td>
+                                <td>{{ $p->explanation }}</td>
+                                <td class="right">
+                                    <form action="{{ route('respondRequest') }}" method="POST">
+                                        {{ csrf_field() }}
+                                        <input type="hidden" value="{{ $p->user_name }}" name="owner">
+                                        <input type="hidden" value="{{ $p->account_name }}" name="account">
+                                        <input type="hidden" value="p-{{ $p->id }}" name="id">
+                                        <button class="waves-effect waves-light btn green darken-3"
+                                                type="submit" value="Approve">
+                                            <i class="material-icons">check</i>
+                                        </button>
+                                        <button class="waves-effect waves-light btn red darken-2"
+                                                type="submit" value="Deny">
+                                            <i class="material-icons">close</i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
+                    @endif
 
-                @if($secondary != null)
-                    @foreach($secondary as $s)
-                        <tr>
-                            <td>{{ $s->account_name }}</td>
-                            <td>{{ $s->user_name }}</td>
-                            <td>{{ $s->explanation }}</td>
-                            <td class="right">
-                                <form action="{{ route('respondRequest') }}" method="POST">
-                                    {{ csrf_field() }}
-                                    <input type="hidden" value="s-{{ $s->id }}" name="id">
-                                    <button class="waves-effect waves-light btn green darken-3"
-                                            type="submit" value="Approve">
-                                        <i class="material-icons">check</i>
-                                    </button>
-                                    <button class="waves-effect waves-light btn red darken-2"
-                                            type="submit" value="Deny">
-                                        <i class="material-icons">close</i>
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                    @endforeach
-                @endif
+                    @if($secondary != null)
+                        @foreach($secondary as $s)
+                            <tr>
+                                <td>{{ $s->account_name }}</td>
+                                <td>{{ $s->user_name }}</td>
+                                <td>{{ $s->explanation }}</td>
+                                <td class="right">
+                                    <form action="{{ route('respondRequest') }}" method="POST">
+                                        {{ csrf_field() }}
+                                        <input type="hidden" value="{{ $s->user_name }}" name="owner">
+                                        <input type="hidden" value="{{ $s->account_name }}" name="account">
+                                        <input type="hidden" value="s-{{ $s->id }}" name="id">
+                                        <button class="waves-effect waves-light btn green darken-3"
+                                                type="submit" value="Approve">
+                                            <i class="material-icons">check</i>
+                                        </button>
+                                        <button class="waves-effect waves-light btn red darken-2"
+                                                type="submit" value="Deny">
+                                            <i class="material-icons">close</i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
+                    @endif
 
-                @if($tertiary != null)
-                    @foreach($tertiary as $t)
-                        <tr>
-                            <td>{{ $t->account_name }}</td>
-                            <td>{{ $t->user_name }}</td>
-                            <td>{{ $t->explanation }}</td>
-                            <td class="right">
-                                <form action="{{ route('respondRequest') }}" method="POST">
-                                    {{ csrf_field() }}
-                                    <input type="hidden" value="t-{{ $t->id }}" name="id">
-                                    <button class="waves-effect waves-light btn green darken-3"
-                                            type="submit" value="Approve">
-                                        <i class="material-icons">check</i>
-                                    </button>
-                                    <button class="waves-effect waves-light btn red darken-2"
-                                            type="submit" value="Deny">
-                                        <i class="material-icons">close</i>
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                    @endforeach
-                @endif
-                </tbody>
-            </table>
+                    @if($tertiary != null)
+                        @foreach($tertiary as $t)
+                            <tr>
+                                <td>{{ $t->account_name }}</td>
+                                <td>{{ $t->user_name }}</td>
+                                <td>{{ $t->explanation }}</td>
+                                <td class="right">
+                                    <form action="{{ route('respondRequest') }}" method="POST">
+                                        {{ csrf_field() }}
+                                        <input type="hidden" value="{{ $t->user_name }}" name="owner">
+                                        <input type="hidden" value="{{ $t->account_name }}" name="account">
+                                        <input type="hidden" value="t-{{ $t->id }}" name="id">
+                                        <button class="waves-effect waves-light btn green darken-3"
+                                                type="submit" value="Approve">
+                                            <i class="material-icons">check</i>
+                                        </button>
+                                        <button class="waves-effect waves-light btn red darken-2"
+                                                type="submit" value="Deny">
+                                            <i class="material-icons">close</i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
+                    @endif
+                    </tbody>
+                </table>
+            @endif
         </div>
     </div>
 </div>
 </body>
 </html>
+<script>
+    $(document).ready(function () {
+        @if(session()->has('message'))
+        Materialize.toast("{{session('message')}}", 4000);
+        @endif
+    })
+</script>

@@ -195,12 +195,14 @@ class AccountController extends Controller
     public function respondRequest(Request $request){
         $id = (int) str_after($request->id, '-');
         $type = str_before($request->id, '-');
-
+        $status = "";
         if($request->submit == 'Approve'){
+            $status = 'approved';
             if($type == 'p'){
                 $acc = AccessedPrimaryAccounts::find($id);
                 $acc->status = 'Open';
                 $acc->approved_by = Auth::user()->id;
+                $result = $acc->name;
                 $acc->save();
             } else if($type == 's'){
                 $acc = AccessedSecondaryAccounts::find($id);
@@ -214,6 +216,7 @@ class AccountController extends Controller
                 $acc->save();
             }
         } else {
+            $status = "denied";
             if($type == 'p'){
                 $acc = AccessedPrimaryAccounts::find($id);
                 $acc->status = 'Denied';
@@ -232,6 +235,7 @@ class AccountController extends Controller
             }
         }
 
-        return redirect()->route('requestsForAccess');
+        $send_string = $request->owner . " request to access " . $request->account . " was " . $status;
+        return redirect('request-accounts')->with('message', $send_string);
     }
 }
