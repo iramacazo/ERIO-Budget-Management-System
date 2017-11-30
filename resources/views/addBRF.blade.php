@@ -12,7 +12,7 @@
             ADD
         </button>
         <form action="{{ route('testResults') }}" method="POST" id="form">
-
+            {{csrf_field()}}
             <!-- APPEND THIS -->
             <input type="number" name="qty[]" placeholder="Quantity">
             <input type="description" name="desc[]" placeholder="Description">

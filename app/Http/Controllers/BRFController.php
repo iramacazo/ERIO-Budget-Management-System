@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class BRFController extends Controller
 {
-    public function brfView(){
+    public function brfView(Request $request){
         //where entries already have amount
         $brfA = BookstoreRequisitionForm::where('user_id', Auth::user()->id)
                                         ->where('status', 'Billed')->get();
@@ -33,7 +33,6 @@ class BRFController extends Controller
     public function testResults(Request $request){
 
         //insert logic :D
-
-        return redirect()->route('brfView');
+        return view('test', ['sent' => $request->desc]);
     }
 }
