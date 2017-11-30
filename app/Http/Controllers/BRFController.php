@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\BookstoreRequisitionForm;
+use Illuminate\Support\Facades\Auth;
 
 class BRFController extends Controller
 {
@@ -18,7 +19,7 @@ class BRFController extends Controller
     }
 
     public function brfAdd(){
-        
+
     }
 
     public function accessBRF(Request $request){

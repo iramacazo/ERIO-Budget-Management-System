@@ -4,12 +4,12 @@
     </head>
     <body>
         <h1>Bookstore Requisition Forms</h1><br>
-        <a href="{{ route('') }}">Add BRF</a><br>
+        <a href="{{ route('brfAdd')}}">Add BRF</a><br>
         <h2> Pending BRF with Amount </h2>
         @if($brfB != null)
             @foreach($brfB as $b)
                 Date:{{ $b->created_at }}<br>
-                <form action="{{ route('') }}" method="POST">
+                <form action="{{ route('brfAccess') }}" method="POST">
                     <input type="hidden" value="{{ $b->id }}" name="id">
                     <input type="submit" value="Retrieve Amounts">
                     <input type="print" value="Print">
@@ -35,7 +35,7 @@
         @if($brfA != null)
             @foreach($brfA as $a)
                 Date:{{ $a->created_at }}<br>
-                <form action="{{ route('') }}" method="POST">
+                <form action="{{ route('brfAccess') }}" method="POST">
                     <input type="hidden" value="{{ $b->id }}" name="id">
                     <input type="print" value="Print">
                 </form>
