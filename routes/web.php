@@ -11,7 +11,11 @@
 |
 */
 Route::get('/', function(){
-    return view('homepage');
+    if(Auth::guest())
+        return view('homepage');
+    else if(Auth::user()->usertype == "System Admin"){
+        return redirect("/all-users");
+    }
 })->name('homepage');
 
 Auth::routes();
