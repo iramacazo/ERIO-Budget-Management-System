@@ -18,7 +18,8 @@ class CreateBookstoreRequisitionFormEntriesTable extends Migration
             $table->integer('brf_id');
             $table->foreign('brf_id')->references('id')->on('bookstore_requisition_form');
             $table->string('description');
-            $table->decimal('amount');
+            $table->integer('quantity');
+            $table->decimal('amount')->nullable();
             $table->timestamps();
         });
     }
