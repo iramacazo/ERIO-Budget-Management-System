@@ -10,9 +10,10 @@
             @foreach($brfB as $b)
                 Date:{{ $b->created_at }}<br>
                 <form action="{{ route('brfAccess') }}" method="POST">
+                    {{ csrf_field() }}
                     <input type="hidden" value="{{ $b->id }}" name="id">
-                    <input type="submit" value="Retrieve Amounts">
-                    <input type="submit" value="Print">
+                    <input type="submit" name='submit' value="Retrieve Amounts">
+                    <input type="submit" name='submit' value="Print">
                 </form>
                 <table>
                     <tr>
@@ -36,6 +37,7 @@
             @foreach($brfA as $a)
                 Date:{{ $a->created_at }}<br>
                 <form action="{{ route('brfAccess') }}" method="POST">
+                    {{ csrf_field() }}
                     <input type="hidden" value="{{ $a->id }}" name="id">
                     <input type="print" value="Print">
                 </form>

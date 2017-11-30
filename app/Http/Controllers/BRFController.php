@@ -118,6 +118,12 @@ class BRFController extends Controller
     }
 
     public function accessBRF(Request $request){
+        if($request->submit == 'Retrieve Amounts'){
+            $brf = BookstoreRequisitionForm::find($request->id);
+            return view('retrieveAmounts')->with('brf', $brf);
+        } else {
+            return redirect()->route('brfView'); //print
+        }
 
     }
 
