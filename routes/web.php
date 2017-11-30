@@ -70,6 +70,10 @@ Route::post('/request-accounts/response', 'AccountController@respondRequest')->n
 //BRF Routes
 Route::get('/brf', 'BRFController@brfView')->name('brfView');
 
+Route::get('/brf/add', 'BRFController@brfAdd')->name('brfAdd');
+
+Route::post('/brf/access', 'BRFController@accessBRF')->name('brfAccess');
+
 
 Route::get('/propose', function () {
     return view('proposeBudget');
