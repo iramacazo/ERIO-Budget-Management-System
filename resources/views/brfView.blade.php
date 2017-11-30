@@ -12,7 +12,7 @@
                 <form action="{{ route('brfAccess') }}" method="POST">
                     <input type="hidden" value="{{ $b->id }}" name="id">
                     <input type="submit" value="Retrieve Amounts">
-                    <input type="print" value="Print">
+                    <input type="submit" value="Print">
                 </form>
                 <table>
                     <tr>
@@ -36,7 +36,7 @@
             @foreach($brfA as $a)
                 Date:{{ $a->created_at }}<br>
                 <form action="{{ route('brfAccess') }}" method="POST">
-                    <input type="hidden" value="{{ $b->id }}" name="id">
+                    <input type="hidden" value="{{ $a->id }}" name="id">
                     <input type="print" value="Print">
                 </form>
                 <table>
