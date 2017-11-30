@@ -53,7 +53,7 @@
                         <div class="input-field col s12">
                             <i class="material-icons prefix">email</i>
                             <input name="email" id="email" type="email" class="validate" value="{{ old('email') }}">
-                            <label for="email" data-error="">E-mail Address</label>
+                            <label for="email" data-error="Please enter a valid E-mail address">E-mail Address</label>
                         </div>
                     </div>
                     <div class="row">
@@ -77,7 +77,7 @@
                         </script>
                     @endif
                     @if($errors->has('password'))
-                        boi
+
                     @endif
                 @endif
             @elseif(Auth::user()->usertype == "System Admin")
@@ -110,3 +110,12 @@
         </div>
 </body>
 </html>
+<script>
+    $(document).ready(function(){
+        $(".dropdown-button").dropdown();
+        $('#email').on("click", function(){
+            $("#email").next('label').attr('data-error', "Please enter a valid E-mail address");
+            Materialize.updateTextFields();
+        });
+    })
+</script>
