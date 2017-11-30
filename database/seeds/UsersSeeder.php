@@ -15,21 +15,21 @@ class UsersSeeder extends Seeder
         User::create([
             'name' => 'Budget Requestee',
             'email' => 'br@gmail.com',
-            'password' => bcrypt('1234'),
+            'password' => bcrypt('123456'),
             'usertype' => 'Budget Requestee'
         ]);
 
         User::create([
             'name' => 'Budget Admin',
             'email' => 'ba@gmail.com',
-            'password' => bcrypt('1234'),
+            'password' => bcrypt('123456'),
             'usertype' => 'Budget Admin'
         ]);
 
         User::create([
             'name' => 'Executive',
             'email' => 'exec@gmail.com',
-            'password' => bcrypt('1234'),
+            'password' => bcrypt('123456'),
             'usertype' => 'Executive'
         ]);
 
