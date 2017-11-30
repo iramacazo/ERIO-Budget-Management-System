@@ -21,8 +21,8 @@
     {{-- Use this Stylesheet on every page with a form --}}
     <link rel="stylesheet" href="{{asset('css/globalform.css')}}">
 </head>
-<body class="grey lighten-4">
-<nav class="navbar-fixed white">
+<body class="grey darken-4">
+<nav class="navbar-fixed green darken-4">
     <div class="nav-wrapper">
         <a href="{{route('homepage')}}" class="brand-logo" style="padding-left: 20px">
             <div style="height: 64px;" class="valign-wrapper">
