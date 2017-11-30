@@ -23,6 +23,8 @@ class CreateBookstoreRequisitionFormsTable extends Migration
             $table->foreign('list_sa_id')->references('id')->on('list_of_secondary_accounts');
             $table->integer('list_ta_id')->nullable();
             $table->foreign('list_ta_id')->references('id')->on('list_of_tertiary_accounts');
+            $table->integer('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });
     }

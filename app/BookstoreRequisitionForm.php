@@ -25,4 +25,8 @@ class BookstoreRequisitionForm extends Model
     public function listTertiary(){
         return $this->belongsTo('App\ListOfTertiaryAccounts', 'list_ta_id', 'id');
     }
+
+    public function user(){
+        return $this->belongsTo('App\User', 'user_id', 'id');
+    }
 }
