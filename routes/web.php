@@ -76,6 +76,8 @@ Route::get('/brf', 'BRFController@brfView')->name('brfView');
 
 Route::get('/brf/add', 'BRFController@brfAdd')->name('brfAdd');
 
+Route::post('brf/add/save', 'BRFController@saveBRF')->name('saveBRF');
+
 Route::post('/brf/access', 'BRFController@accessBRF')->name('brfAccess');
 
 Route::post('/brf/add/testResults', 'BRFController@testResults')->name('testResults');

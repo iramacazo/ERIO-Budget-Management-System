@@ -11,12 +11,40 @@
         <button id="chook">
             ADD
         </button>
-        <form action="{{ route('testResults') }}" method="POST" id="form">
-            {{csrf_field()}}
+        <form action="{{ route('saveBRF') }}" method="POST" id="form">
+            {{ csrf_field() }}
+            <select name="account">
+                @if($primary != null)
+                    @foreach($primary as $p)
+                        <option value="p-{{ $p->id }}">
+                            {{ $p->pa_name }}
+                        </option>
+                    @endforeach
+                @endif
+
+                @if($secondary != null)
+                    @foreach($secondary as $s)
+                        <option value="s-{{ $s->id }}">
+                            {{ $s->sa_name }} for
+                            {{ $s->pa_name }}
+                        </option>
+                    @endforeach
+                @endif
+
+                @if($tertiary != null)
+                    @foreach($tertiary as $t)
+                        <option value="t-{{ $t->id }}">
+                            {{ $t->ta_name }} for
+                            {{ $t->sa_name }} for
+                            {{ $t->pa_name }}
+                        </option>
+                    @endforeach
+                @endif
+            </select><br>
             <!-- APPEND THIS -->
             <input type="number" name="qty[]" placeholder="Quantity">
             <input type="description" name="desc[]" placeholder="Description">
-            <p>Remove</p><br>
+            <p id="remove"> Remove </p>
 
             <input type="submit" value="submit">
         </form>
@@ -25,7 +53,9 @@
 <script>
     $(document).ready(function(){
         $("#chook").click(function () {
-            $("#form").append('<input type="description" name="desc[]" placeholder="Description">');
+            $("#remove").append('<br><input type="number" name="qty[]" placeholder="Quantity">' +
+                '<input type="description" name="desc[]" placeholder="Description"><br>' +
+                '<p id="remove"> Remove </p>')
         })
     });
 </script>
