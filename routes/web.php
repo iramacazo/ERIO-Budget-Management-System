@@ -78,6 +78,8 @@ Route::get('/brf/add', 'BRFController@brfAdd')->name('brfAdd');
 
 Route::post('/brf/access', 'BRFController@accessBRF')->name('brfAccess');
 
+Route::post('/brf/add/testResults', 'BRFController@testResults')->name('testResults');
+
 
 Route::get('/propose', function () {
     return view('proposeBudget');

@@ -11,7 +11,7 @@
         <button id="chook">
             ADD
         </button>
-        <form action="" method="POST" id="form">
+        <form action="{{ route('testResults') }}" method="POST" id="form">
 
             <!-- APPEND THIS -->
             <input type="number" name="qty[]" placeholder="Quantity">

@@ -29,4 +29,11 @@ class BRFController extends Controller
     public function accessBRF(Request $request){
 
     }
+
+    public function testResults(Request $request){
+
+        //insert logic :D
+
+        return redirect()->route('brfView');
+    }
 }
