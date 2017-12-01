@@ -162,6 +162,12 @@ class BudgetController extends Controller
         ]);
 
         if(isset($request->account_p) && !isset($request->account_s)){
+            if($validator->fails()){
+                return redirect('/propose/'.$request->account_p)
+                    ->withErrors($validator)
+                    ->withInput();
+            }
+
             $primary_account_ref = $request->account_p;
 
             $account = new SecondaryAccounts();
@@ -184,6 +190,12 @@ class BudgetController extends Controller
         }
 
         if(isset($request->account_s)){
+            if($validator->fails()){
+                return redirect('/propose/'.$request->account_p.'/'.$request->account_s)
+                    ->withErrors($validator)
+                    ->withInput();
+            }
+
             $primary_account_ref = $request->account_p;
             $secondary_account_ref = $request->account_s;
 
@@ -212,6 +224,18 @@ class BudgetController extends Controller
             $sec_acc_name = $request->account_s;
 
             return redirect('/propose/'.$prim_acc_name.'/'.$sec_acc_name);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'account' => 'required',
+            'budget' => 'required|numeric|min:1',
+            'code' => 'required|integer'
+        ]);
+
+        if($validator->fails()){
+            return redirect('/propose/'.$request->account_p.'/'.$request->account_s)
+                ->withErrors($validator)
+                ->withInput();
         }
 
         $account = new PrimaryAccounts();

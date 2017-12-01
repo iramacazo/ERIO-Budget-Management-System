@@ -23,6 +23,15 @@
             </li>
         @endif
     </ul>
+    <div id="erros">
+        @if($errors->any())
+            <ul>
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        @endif
+    </div>
     <form action="{{ url('add-account-proposal') }}" method="post">
         <h3>Add Account</h3>
         <input type="text" id="add-account" name="account">
