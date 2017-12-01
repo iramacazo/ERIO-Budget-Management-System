@@ -5,7 +5,7 @@
     <script>
         $(function(){
             $("#add-primary-account-btn").click(function(){
-                //TODO validate
+                //TOO validate
                 $("#errors").text('');
                 var budget = $("#primary-acc-budget-input").val();
                 if(budget === 0 || budget === ""){
@@ -61,7 +61,7 @@
                         <option value="{{$pa->name}}">{{$pa->name}}</option>
                     @endforeach
                 </select>
-                <!-- TODO move these to modals
+                <!-- TOO move these to modals
                 <select name="" id="">
                     @foreach($secondary_accounts as $sa)
                         <option value="">{{$sa->name}}</option>

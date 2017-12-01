@@ -97,7 +97,6 @@
                 </div>
             @endforeach
         @else
-            lapa laman
             <!-- TODO sabihin walang laman -->
         @endif
     </div>
