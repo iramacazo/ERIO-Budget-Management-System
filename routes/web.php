@@ -84,6 +84,12 @@ Route::post('/brf/access/saveAmount', 'BRFController@saveAmount')->name('saveAmo
 
 Route::post('/brf/add/testResults', 'BRFController@testResults')->name('testResults');
 
+//MRF Routes
+Route::get('/mrf', 'MRFController@viewMRF')->name('viewMRF');
+
+Route::get('/mrf/add', 'MRFController@addMRFView')->name('addMRFView');
+
+Route::get('/mrf/add/json', 'MRFController@ajaxAddEntry')->name('ajaxAddEntry');
 
 Route::get('/propose', function () {
     return view('proposeBudget');
