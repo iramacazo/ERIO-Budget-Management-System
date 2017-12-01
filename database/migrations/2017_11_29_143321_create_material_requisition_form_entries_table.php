@@ -29,6 +29,9 @@ class CreateMaterialRequisitionFormEntriesTable extends Migration
             //each entry can have a different prs number since iba iba supplier (payable to)
             $table->integer('entry_id')->nullable();
             $table->foreign('entry_id')->references('id')->on('journal_entries');
+
+            //input once returned
+            $table->decimal('amount')->nullable();
             $table->timestamps();
         });
     }
