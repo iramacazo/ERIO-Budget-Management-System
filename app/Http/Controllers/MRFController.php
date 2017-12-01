@@ -13,6 +13,13 @@ use Illuminate\Support\Facades\Auth;
 class MRFController extends Controller
 {
     public function viewMRF(){
+        $pending = MaterialRequisitionForm::where('status', 'Pending')
+                    ->where('requested_by', Auth::user()->id)->get();
+        $procure = MaterialRequisitionForm::where('status', 'Procure')
+                    ->where('requested_by', Auth::user()->id)->get();
+        $complete = MaterialRequisitionForm::where('status', 'Complete')
+                    ->where('requested_by', Auth::user()->id)->get();
+
         return view('mrfView');
     }
 

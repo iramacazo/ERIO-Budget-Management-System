@@ -21,6 +21,9 @@ class CreateMaterialRequisitionFormsTable extends Migration
             $table->foreign('approved_by')->references('id')->on('users');
             $table->string('status')->default('Pending');
 
+            $table->integer('requested_by');
+            $table->foreign('requested_by')->references('id')->on('users');
+
             $table->string('contact_person');
             $table->string('contact_person_email');
 
