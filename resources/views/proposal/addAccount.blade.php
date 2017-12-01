@@ -69,7 +69,9 @@
                     Budget: {{$s->amount}}
                         <form action="{{url('')}}" method="post">
                             <input type="text" placeholder="New Account Name..." name="account">
+                            @if(isset($s->list_id) && $s->list_id == null)
                             <input type="number" placeholder="New Budget..." name="budget">
+                            @endif
                             <input type="submit" name="edit" value="Edit">
                             <input type="submit" name="delete" value="Delete">
                             <input type="hidden" name="secondary_account" value="{{$s->name}}">
@@ -87,7 +89,9 @@
                     Code: {{ $s->code }}
                         <form action="{{url('')}}" method="post">
                             <input type="text" placeholder="New Account Name..." name="account">
+                            @if(isset($s->list_id) && $s->list_id == null)
                             <input type="number" placeholder="New Budget..." name="budget">
+                            @endif
                             <input type="number" placeholder="New Oracle Code..." name="code">
                             <input type="submit" name="edit" value="Edit">
                             <input type="submit" name="delete" value="Delete">
