@@ -67,35 +67,40 @@
                         <div class="row">
                             <div class="input-field col s12">
                                 <i class="material-icons prefix">account_circle</i>
-                                <input name="name" id="name" type="text" class="validate">
-                                <label for="name">Name</label>
+                                <input name="name" id="name" type="text" value="{{old('name')}}"
+                                       class="validate">
+                                <label for="name" data-error="Please enter your name">Name</label>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-field col s12">
                                 <i class="material-icons prefix">email</i>
-                                <input name="email" id="email" type="email" class="validate">
-                                <label for="email">E-mail Address</label>
+                                <input name="email" id="email" value="{{old('email')}}" type="email"
+                                       class="validate">
+                                <label for="email" data-error="Please enter a valid e-mail address">
+                                    E-mail Address</label>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-field col s12">
                                 <i class="material-icons prefix">lock_outline</i>
                                 <input name="password" id="password" type="password" class="validate">
-                                <label for="password">Password</label>
+                                <label for="password" data-error="Please enter a password">Password</label>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-field col s12">
                                 <i class="material-icons prefix">lock</i>
-                                <input name="password_confirmation" id="password-confirm" type="password" class="validate">
-                                <label for="password-confirm">Confirm Password</label>
+                                <input name="password_confirmation" id="password-confirm" type="password"
+                                       class="validate">
+                                <label for="password-confirm" data-error="Please confirm your password">
+                                    Confirm Password</label>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-field col s12">
                                 <i class="material-icons prefix">accessibility</i>
-                                <select name="usertype" id="user_type">
+                                <select name="usertype" id="user_type" required>
                                     <option value="" disabled selected>Choose your option</option>
                                     <option value="System Admin">System Admin</option>
                                     <option value="Budget Requestee">Budget Requestee</option>
@@ -113,9 +118,34 @@
             <div class="col s3"></div>
         </div>
         @if($errors->any())
-            @foreach($errors->all() as $error)
-                {{$error}}
-            @endforeach
+            @if($errors->has('email'))
+                <script>
+                    var email = $("#email");
+                    email.next('label').attr('data-error', "{{ $errors->first('email') }}");
+                    email.addClass("invalid");
+                    email.prop("aria-invalid", "true");
+                    Materialize.updateTextFields();
+                </script>
+            @endif
+            @if($errors->has('name'))
+                <script>
+                    var name = $("#name");
+                    name.next('label').attr('data-error', "{{ $errors->first('name') }}");
+                    name.addClass("invalid");
+                    name.prop("aria-invalid", "true");
+                    Materialize.updateTextFields();
+                </script>
+            @endif
+            @if($errors->has('password'))
+                <script>
+                    var password = $("#password");
+                    password.next('label').attr('data-error', "{{ $errors->first('password') }}");
+                    password.addClass("invalid");
+                    password.addClass("active");
+                    password.prop("aria-invalid", "true");
+                    Materialize.updateTextFields();
+                </script>
+            @endif
         @endif
     </div>
 </body>
@@ -125,5 +155,9 @@
         $(".button-collapse").sideNav();
         $('select').material_select();
         $(".dropdown-content>li>a").css("color", "#2e7d32 !important");
+        $('#email').on("click", function(){
+            $("#email").next('label').attr('data-error', "Please enter a valid E-mail address");
+            Materialize.updateTextFields();
+        });
     });
 </script>

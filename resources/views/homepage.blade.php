@@ -53,7 +53,7 @@
                     <div class="input-field col s12">
                         <i class="material-icons prefix">email</i>
                         <input name="email" id="email" type="email" class="validate" value="{{ old('email') }}">
-                        <label for="email" data-error="Please enter a valid E-mail address">E-mail Address</label>
+                        <label for="email" data-error="Please enter a valid e-mail address">E-mail Address</label>
                     </div>
                 </div>
                 <div class="row">
@@ -75,9 +75,6 @@
                         email.prop("aria-invalid", "true");
                         Materialize.updateTextFields();
                     </script>
-                @endif
-                @if($errors->has('password'))
-
                 @endif
             @endif
         @elseif(Auth::user()->usertype == "System Admin")
