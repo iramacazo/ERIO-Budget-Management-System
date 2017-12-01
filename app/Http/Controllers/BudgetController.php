@@ -156,6 +156,11 @@ class BudgetController extends Controller
 
     public function addAccount(Request $request){
         //TODO validation
+        $validator = Validator::make($request->all(), [
+            'account' => 'required',
+            'budget' => 'required|numeric|min:1'
+        ]);
+
         if(isset($request->account_p) && !isset($request->account_s)){
             $primary_account_ref = $request->account_p;
 
@@ -169,6 +174,11 @@ class BudgetController extends Controller
             $list_account->amount = $request->budget;
             $list_account->list_id = $this->getPrimaryListId($primary_account_ref);
             $list_account->save();
+
+            $pid = $this->getPrimaryListId($primary_account_ref);
+            $primary_list = ListOfPrimaryAccounts::find($pid);
+            $primary_list->amount = $this->getPrimaryAccountBudget($primary_account_ref);
+            $primary_list->save();
 
             return redirect('/propose/'.$request->account_p);
         }
@@ -187,6 +197,16 @@ class BudgetController extends Controller
             $list_account->list_id  = $this->getSecondaryListId($primary_account_ref, $secondary_account_ref);
             $list_account->amount = $request->budget;
             $list_account->save();
+
+            $sid = $this->getSecondaryListId($primary_account_ref, $secondary_account_ref);
+            $secondary_list = ListOfSecondaryAccounts::find($sid);
+            $secondary_list->amount = $this->getSecondaryAccountBudget($primary_account_ref, $secondary_account_ref);
+            $secondary_list->save();
+
+            $pid = $this->getPrimaryListId($primary_account_ref);
+            $primary_list = ListOfPrimaryAccounts::find($pid);
+            $primary_list->amount = $this->getPrimaryAccountBudget($primary_account_ref);
+            $primary_list->save();
 
             $prim_acc_name = $request->account_p;
             $sec_acc_name = $request->account_s;
@@ -278,6 +298,18 @@ class BudgetController extends Controller
         return $sec_acc_id;
     }
 
+    public function getSecondaryAccountBudget($primary_account_ref, $secondary_account_ref){
+        $sub_accounts = $this->getTertiaryAccounts($secondary_account_ref, $primary_account_ref);
+
+        $total_budget = 0;
+
+        foreach($sub_accounts as $sa){
+            $total_budget+=$sa->amount;
+        }
+
+        return $total_budget;
+    }
+
     public function getPrimaryListId($primary_account_ref){
         $primary_list_id = DB::table('budgets')
                                 ->select('list_of_primary_accounts.id')
@@ -320,6 +352,18 @@ class BudgetController extends Controller
         }
 
         return $acc_id;
+    }
+
+    public function getPrimaryAccountBudget($primary_account_ref){
+        $sub_accounts = $this->getSecondaryAccounts($primary_account_ref);
+
+        $total_budget = 0;
+
+        foreach($sub_accounts as $sa){
+            $total_budget+=$sa->amount;
+        }
+
+        return $total_budget;
     }
 
     public function createEmptyBudget(Request $request){
@@ -477,6 +521,14 @@ class BudgetController extends Controller
         }
 
     }
+
+    //modify account functions
+
+    public function modifyAccount(Request $request){
+
+    }
+
+    //redirect to view functions
 
     public function showLinks(){ //TEMPO
         return view('proposal/links');
