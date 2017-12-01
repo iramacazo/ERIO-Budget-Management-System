@@ -56,7 +56,7 @@
             $("#remove").append('<br><input type="text" name="desc[]" placeholder="Description">' +
                 '<input type="number" name="qty[]" placeholder="Quantity"><br>' +
                 '<select name="acc[]" id="accounts">' +
-                    select +
+                    options +
                 '</select>' +
                 '<p id="remove"> Remove </p>')
         })
