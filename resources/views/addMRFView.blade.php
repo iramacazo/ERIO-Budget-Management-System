@@ -6,13 +6,13 @@
     </head>
     <body>
         <h1> Add MRF </h1>
-        <form action="" method="POST">
+        <button id="chook"> Add Entry </button><br>
+        <form action="{{ route('saveMRF') }}" method="POST">
+            {{ csrf_field() }}
             <input type="text" placeholder="Form Num" name="form_num"><br>
             <input type="date" placeholder="Date Needed" name="date_needed"><br>
             <input type="text" placeholder="Place of Delivery" name="place_of_delivery"><br>
             <input type="text" placeholder="Department Unit" name="dept"><br>
-
-            <button id="addEntry"> Add Entry </button><br>
             <h2>Entries</h2><br>
             <input type="text" placeholder="Description" name="desc[]">
             <input type="number" placeholder="Quantity" name="qty[]">
@@ -50,20 +50,15 @@
     </body>
 </html>
 <script>
-
-
     $(document).ready(function(){
-        $("#addEntry").click(function(){
-            var select = $('#accounts').html();
-            var outer = $('#amounts')[0].outerHTML;
-
-            console.log(select);
-            console.log(outer);
-//            $("#remove").append(
-//                '<br><input type="text" placeholder="Description" name="desc[]">' +
-//                '<input type="number" placeholder="Quantity" name="qty[]">' +
-//                select  + '<button id="remove">Remove</button>'
-//            )
+        $("#chook").click(function () {
+            var options = $('#accounts').html();
+            $("#remove").append('<br><input type="text" name="desc[]" placeholder="Description">' +
+                '<input type="number" name="qty[]" placeholder="Quantity"><br>' +
+                '<select name="acc[]" id="accounts">' +
+                    select +
+                '</select>' +
+                '<p id="remove"> Remove </p>')
         })
     });
 </script>

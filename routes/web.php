@@ -91,6 +91,8 @@ Route::get('/mrf/add', 'MRFController@addMRFView')->name('addMRFView');
 
 Route::get('/mrf/add/json', 'MRFController@ajaxAddEntry')->name('ajaxAddEntry');
 
+Route::post('/mrf/save', 'MRFController@saveMRF')->name('saveMRF');
+
 //Budget Proposal Routes
 
 Route::get('/links', 'BudgetController@showLinks');
