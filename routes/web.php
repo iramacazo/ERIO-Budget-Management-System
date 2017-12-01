@@ -80,6 +80,8 @@ Route::post('brf/add/save', 'BRFController@saveBRF')->name('saveBRF');
 
 Route::post('/brf/access', 'BRFController@accessBRF')->name('brfAccess');
 
+Route::post('/brf/access/saveAmount', 'BRFController@saveAmount')->name('saveAmountBRF');
+
 Route::post('/brf/add/testResults', 'BRFController@testResults')->name('testResults');
 
 

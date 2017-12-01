@@ -124,7 +124,24 @@ class BRFController extends Controller
         } else {
             return redirect()->route('brfView'); //print
         }
+    }
 
+    public function saveAmount(Request $request){
+        $total = 0;
+        foreach($request->id as $id){
+            $total++;
+        }
+
+        for($i = 0; $i < $total; $i++){
+            $brfEntry = BookstoreRequisitionFormEntries::find($request->id[$i]);
+            $brfEntry->amount = $request->amount[$i];
+            $brf = BookstoreRequisitionForm::find($brfEntry->brf_id);
+            $brfEntry->save();
+            $brf->status = 'Billed';
+            $brf->save();
+        }
+
+        return redirect()->route('brfView');
     }
 
     public function testResults(Request $request){

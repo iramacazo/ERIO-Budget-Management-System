@@ -43,7 +43,7 @@
             </select><br>
             <!-- APPEND THIS -->
             <input type="number" name="qty[]" placeholder="Quantity">
-            <input type="description" name="desc[]" placeholder="Description">
+            <input type="text" name="desc[]" placeholder="Description">
             <p id="remove"> Remove </p>
 
             <input type="submit" value="submit">
