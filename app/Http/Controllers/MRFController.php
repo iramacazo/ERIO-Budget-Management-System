@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\MaterialRequisitionForm;
+use App\MaterialRequisitionFormEntries;
 use Illuminate\Http\Request;
 use App\Budget;
 use Carbon\Carbon;
@@ -11,13 +13,24 @@ use Illuminate\Support\Facades\Auth;
 class MRFController extends Controller
 {
     public function viewMRF(){
-        return view('mrfView');
+        $pending = MaterialRequisitionForm::where('status', 'Pending')
+                    ->where('requested_by', Auth::user()->id)->get();
+        $procure = MaterialRequisitionForm::where('status', 'Procure')
+                    ->where('requested_by', Auth::user()->id)->get();
+        $complete = MaterialRequisitionForm::where('status', 'Complete')
+                    ->where('requested_by', Auth::user()->id)->get();
+
+        return view('mrfView')
+            ->with('pending', $pending)
+            ->with('procure', $procure)
+            ->with('complete', $complete);
     }
 
     public function addMRFView(){
         $latest_budget = Budget::latest()->whereDate('start_range', '<', Carbon::now())->first(); //can cause problems
 
         //TODO implement latest_budget in queries
+        //TODO only get primary accounts then ajax the secondary&tertiary accounts of selected PA
 
         $primary = DB::table('list_of_primary_accounts')
                         ->join('accessed_primary_accounts', 'accessed_primary_accounts.list_id',
@@ -75,6 +88,7 @@ class MRFController extends Controller
 
     public function ajaxAddEntry()
     {
+        //TODO get entries of chosen primary account
         $primary = DB::table('list_of_primary_accounts')
             ->join('accessed_primary_accounts', 'accessed_primary_accounts.list_id',
                 '=', 'list_of_primary_accounts.id')
@@ -131,6 +145,42 @@ class MRFController extends Controller
     }
 
     public function saveMRF(Request $request){
+        $total = 0;
+        foreach($request->desc as $d){
+            $total++;
+        }
+
+        $mrf = new MaterialRequisitionForm();
+        $mrf->form_num = $request->form_num;
+        $mrf->date_needed = $request->date_needed;
+        $mrf->place_of_delivery = $request->place_of_delivery;
+        $mrf->requested_by = Auth::user()->id;
+        $mrf->contact_person = $request->contact_person;
+        $mrf->contact_person_email = $request->contact_person_email;
+        $mrf->dept = 'VPERI'; //katamad tangalin sa code
+        $mrf->save();
+
+        $latest_mrf = MaterialRequisitionForm::latest()->first();
+
+        for($i = 0; $i < $total; $i++){
+            $mrfEntry = new MaterialRequisitionFormEntries();
+            $mrfEntry->quantity = $request->qty[$i];
+            $mrfEntry->description = $request->desc[$i];
+
+            $entryAcc = $request->acc[$i];
+            $type = str_before($entryAcc, '-');
+            $id = str_after($entryAcc, '-');
+
+            if($type == 's'){
+                $mrfEntry->list_sa_id = $id;
+            } else {
+                $mrfEntry->list_ta_id = $id;
+            }
+
+            $mrfEntry->mrf_id = $latest_mrf->id;
+            $mrfEntry->save();
+        }
+
         return redirect()->route('viewMRF');
     }
 }

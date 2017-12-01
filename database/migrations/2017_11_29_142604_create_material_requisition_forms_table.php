@@ -17,6 +17,15 @@ class CreateMaterialRequisitionFormsTable extends Migration
             $table->increments('id');
             $table->string('form_num');
             $table->dateTime('date_needed');
+            $table->integer('approved_by')->nullable();
+            $table->foreign('approved_by')->references('id')->on('users');
+            $table->string('status')->default('Pending');
+
+            $table->integer('requested_by');
+            $table->foreign('requested_by')->references('id')->on('users');
+
+            $table->string('contact_person');
+            $table->string('contact_person_email');
 
             //Primary Account for (Budget Item/Account Allocation)
             $table->integer('list_pa_id')->nullable();

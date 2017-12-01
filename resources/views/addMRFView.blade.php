@@ -12,7 +12,8 @@
             <input type="text" placeholder="Form Num" name="form_num"><br>
             <input type="date" placeholder="Date Needed" name="date_needed"><br>
             <input type="text" placeholder="Place of Delivery" name="place_of_delivery"><br>
-            <input type="text" placeholder="Department Unit" name="dept"><br>
+            <input type="text" placeholder="Contact Person" name="contact_person"><br>
+            <input type="text" placeholder="Contact Person's Email" name="contact_person_email"><br>
             <h2>Entries</h2><br>
             <input type="text" placeholder="Description" name="desc[]">
             <input type="number" placeholder="Quantity" name="qty[]">
