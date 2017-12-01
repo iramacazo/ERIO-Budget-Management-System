@@ -153,7 +153,7 @@ class BudgetController extends Controller
 
     public function addAccount(Request $request){
         //TODO validation
-        if(isset($request->account_p)){
+        if(isset($request->account_p) && !isset($request->account_s)){
                 $account = new SecondaryAccounts();
                 $account->name = $request->account;
 
@@ -176,7 +176,7 @@ class BudgetController extends Controller
             $list_account->amount = $request->budget;
             $list_account->save();
 
-            $prim_acc_name = rawurlencode($request->account_p);
+            $prim_acc_name = $request->account_p;
             $sec_acc_name = $request->account_s;
 
             return redirect('/propose/'.$prim_acc_name.'/'.$sec_acc_name);
