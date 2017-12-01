@@ -64,7 +64,7 @@
                         <input type="submit" name="submit" value="Edit">
                         <input type="submit" name="submit" value="Delete">
                         <input type="hidden" name="tertiary_account" value="{{$s->name}}">
-                        <input type="hidden" name="secondary_account" value="{{$account_2}}}">
+                        <input type="hidden" name="secondary_account" value="{{$account_2}}">
                         <input type="hidden" name="primary_account" value="{{$account_1}}">
                         {{csrf_field()}}
                     </form>

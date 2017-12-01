@@ -505,6 +505,74 @@ class BudgetController extends Controller
 
     }
 
+    public function getTertiaryListId($primary_account_ref, $secondary_account_ref, $tertiary_account_ref){
+        $tertiary_list_id = DB::table('budgets')
+            ->select('list_of_tertiary_accounts.id')
+            ->join('list_of_primary_accounts', 'list_of_primary_accounts.budget_id',
+                '=','budgets.id')
+            ->join('list_of_secondary_accounts', 'list_of_secondary_accounts.list_id',
+                '=', 'list_of_primary_accounts.id')
+            ->join('list_of_tertiary_accounts', 'list_of_tertiary_accounts.list_id', '=',
+                'list_of_secondary_accounts.id')
+            ->join('primary_accounts', 'primary_accounts.id', '=',
+                'list_of_primary_accounts.account_id')
+            ->join('secondary_accounts', 'secondary_accounts.id', '=',
+                'list_of_secondary_accounts.account_id')
+            ->join('tertiary_accounts', 'tertiary_accounts.id', '=',
+                'list_of_tertiary_accounts.account_id')
+            ->where([
+                ['tertiary_accounts.name', '=', $tertiary_account_ref],
+                ['secondary_accounts.name', '=', $secondary_account_ref],
+                ['primary_accounts.name', '=', $primary_account_ref],
+                ['approved_by_vp', '=', '0']])
+            ->orWhere([
+                ['tertiary_accounts.name', '=', $tertiary_account_ref],
+                ['secondary_accounts.name', '=', $secondary_account_ref],
+                ['primary_accounts.name', '=', $primary_account_ref],
+                ['approved_by_acc', '=', '0']])
+            ->get();
+
+        foreach($tertiary_list_id as $ter){
+            $list_id = $ter->id;
+        }
+
+        return $list_id;
+    }
+
+    public function getTertiaryAccountId($primary_account_ref, $secondary_account_ref, $tertiary_account_ref){
+        $tertiary_account_id = DB::table('budgets')
+            ->select('tertiary_accounts.id')
+            ->join('list_of_primary_accounts', 'list_of_primary_accounts.budget_id',
+                '=','budgets.id')
+            ->join('list_of_secondary_accounts', 'list_of_secondary_accounts.list_id',
+                '=', 'list_of_primary_accounts.id')
+            ->join('list_of_tertiary_accounts', 'list_of_tertiary_accounts.list_id', '=',
+                'list_of_secondary_accounts.id')
+            ->join('primary_accounts', 'primary_accounts.id', '=',
+                'list_of_primary_accounts.account_id')
+            ->join('secondary_accounts', 'secondary_accounts.id', '=',
+                'list_of_secondary_accounts.account_id')
+            ->join('tertiary_accounts', 'tertiary_accounts.id', '=',
+                'list_of_tertiary_accounts.account_id')
+            ->where([
+                ['tertiary_accounts.name', '=', $tertiary_account_ref],
+                ['secondary_accounts.name', '=', $secondary_account_ref],
+                ['primary_accounts.name', '=', $primary_account_ref],
+                ['approved_by_vp', '=', '0']])
+            ->orWhere([
+                ['tertiary_accounts.name', '=', $tertiary_account_ref],
+                ['secondary_accounts.name', '=', $secondary_account_ref],
+                ['primary_accounts.name', '=', $primary_account_ref],
+                ['approved_by_acc', '=', '0']])
+            ->get();
+
+        foreach($tertiary_account_id as $ter){
+            $ter_acc_id = $ter->id;
+        }
+
+        return $ter_acc_id;
+    }
+
     //get all tertiary accounts
     public function getTertiaryAccounts($secondary_account, $primary_account){
         $sub_accounts = DB::table('budgets')
@@ -592,13 +660,31 @@ class BudgetController extends Controller
 
     public function editAccount($primary_account, $secondary_account, $tertiary_account, $name, $budget, $code){
         if($tertiary_account != null){
+            $tid = $this->getTertiaryAccountId($primary_account, $secondary_account, $tertiary_account);
+            $account = TertiaryAccounts::find($tid);
+            $lid = $this->getTertiaryListId($primary_account, $secondary_account, $tertiary_account);
+            $list = ListOfTertiaryAccounts::find($lid);
+
             if($name != null){
-                //TODO edit tertiary account name
+                $account->name = $name;
             }
 
             if($budget != null){
-                //TODO edit tertiary account budget
+                $list->amount = $budget;
+                $list->save();
+
+                $sid = $this->getSecondaryListId($primary_account, $secondary_account);
+                $secondary_list = ListOfSecondaryAccounts::find($sid);
+                $secondary_list->amount = $this->getSecondaryAccountBudget($primary_account, $secondary_account);
+                $secondary_list->save();
+
+                $pid = $this->getPrimaryListId($primary_account);
+                $primary_list = ListOfPrimaryAccounts::find($pid);
+                $primary_list->amount = $this->getPrimaryAccountBudget($primary_account);
+                $primary_list->save();
             }
+
+            $account->save();
 
         }
         else if($secondary_account != null){
@@ -619,6 +705,7 @@ class BudgetController extends Controller
                 $primary_list = ListOfPrimaryAccounts::find($pid);
                 $primary_list->amount = $this->getPrimaryAccountBudget($primary_account);
                 $primary_list->save();
+
             }
 
             $account->save();
