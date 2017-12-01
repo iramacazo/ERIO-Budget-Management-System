@@ -106,8 +106,6 @@
                 mdiv.appendChild(hiddenBudgetVal);
                 mdiv.appendChild(hiddenCtrVal); //di ata kailangan
                 console.log(hiddenNewIdVal);
-                //todo move all below this to modal
-
                 var pdiv = document.getElementById($div);
                 var ndiv = document.createElement('div');
                 ndiv.id = $new_id;
@@ -120,7 +118,7 @@
             });
 
             $("#modal-sec-add").click(function(){
-                //TODO validate values
+                //Tdo validate values
                 $("#sec-modal-errors").text('');
                 if($("#sec_account_budget").val() == '' || $("#sec_account_budget").val()){
                     $("#sec-modal-errors").text('Budget cannot be empty');
@@ -134,7 +132,7 @@
                     $("#sec-modal-errors").text("Budget should be numerical");
                     return;
                 }
-                //if($("#secondary_acc_total_budget").val() < ) TODO Summation
+                //if($("#secondary_acc_total_budget").val() < ) TDO Summation
                 $div = $("#hiddenRefVal").val();
                 var pdiv = document.getElementById($div);
                 //create new secondary account div
@@ -152,12 +150,12 @@
                 bInput.type = 'hidden';
                 bInput.id = 'budget_num_'+$("#hiddenNewIdVal").val();
                 bInput.value = $("#sec_account_budget").val();
-                //TODO append these to form
-                
-                //TODO append list of tertiary accounts div to newly created secondary account div
+                //TDO append these to form
+
+                //TDO append list of tertiary accounts div to newly created secondary account div
                 var tdiv = document.createElement('div');
                 tdiv.id = "tertiary_accounts_list_added-";
-                //TODO remove newly added account from secondary accounts select option
+                //TDO remove newly added account from secondary accounts select option
                 //hide modal
                 secmodal.style.display = 'none';
                 //clear modal
@@ -244,11 +242,11 @@
     <br>
     <div>
         Choose Account: <select name="account" id="account_list">
-            <!-- todo previous accounts sample palang to-->
+            <!-- tdo previous accounts sample palang to-->
             <option value="Supplies & Stationary">Supplies & Stationary</option>
             <option value="Publication">Publication</option>
         </select> <br> <br>
-        Previous Year Budget: <!-- todo get budget of this acc from prev year --><br> <br>
+        Previous Year Budget: <!-- tdo get budget of this acc from prev year --><br> <br>
         Input New Budget: <input type="text" id="acc_budget"> <div id="budget_error"></div> <br> <br>
         <a href="" id="add">Add</a>
     </div>
@@ -286,7 +284,7 @@
                     <select name="sec_account_list" id="sec_account_list">
                         <option value="Supplies & Stationary">Supplies & Stationary</option>
                         <option value="Publication">Publication</option>
-                        <!-- TODO load all possible secondary accounts, sample pa lang to -->
+                        <!-- TDO load all possible secondary accounts, sample pa lang to -->
                     </select>
                 </div>
                 <div class="modal-budget">
