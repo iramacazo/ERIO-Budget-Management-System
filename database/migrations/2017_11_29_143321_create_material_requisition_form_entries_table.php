@@ -34,7 +34,7 @@ class CreateMaterialRequisitionFormEntriesTable extends Migration
             //input once returned
             $table->string('supplies')->nullable();
             $table->decimal('unit_price')->nullable();
-            $table->integer('prs_id');
+            $table->integer('prs_id')->nullable();
             $table->foreign('prs_id')->references('id')->on('payment_requisition_slips');
 
             $table->timestamps();

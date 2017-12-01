@@ -20,7 +20,10 @@ class MRFController extends Controller
         $complete = MaterialRequisitionForm::where('status', 'Complete')
                     ->where('requested_by', Auth::user()->id)->get();
 
-        return view('mrfView');
+        return view('mrfView')
+            ->with('pending', $pending)
+            ->with('procure', $procure)
+            ->with('complete', $complete);
     }
 
     public function addMRFView(){
@@ -151,6 +154,9 @@ class MRFController extends Controller
         $mrf->form_num = $request->form_num;
         $mrf->date_needed = $request->date_needed;
         $mrf->place_of_delivery = $request->place_of_delivery;
+        $mrf->requested_by = Auth::user()->id;
+        $mrf->contact_person = $request->contact_person;
+        $mrf->contact_person_email = $request->contact_person_email;
         $mrf->dept = 'VPERI'; //katamad tangalin sa code
         $mrf->save();
 
