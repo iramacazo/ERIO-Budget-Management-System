@@ -595,17 +595,33 @@ class BudgetController extends Controller
             if($name != null){
                 //TODO edit tertiary account name
             }
+
             if($budget != null){
                 //TODO edit tertiary account budget
             }
+
         }
         else if($secondary_account != null){
+            $sid = $this->getSecondaryAccountId($primary_account, $secondary_account);
+            $account = SecondaryAccounts::find($sid);
+            $lid = $this->getSecondaryListId($primary_account, $secondary_account);
+            $list = ListOfSecondaryAccounts::find($lid);
+
             if($name != null){
-                //TODO edit secondary account name
+                $account->name = $name;
             }
+
             if($budget != null){
-                //TODO edit secondary account budget
+                $list->amount = $budget;
+                $list->save();
+
+                $pid = $this->getPrimaryListId($primary_account);
+                $primary_list = ListOfPrimaryAccounts::find($pid);
+                $primary_list->amount = $this->getPrimaryAccountBudget($primary_account);
+                $primary_list->save();
             }
+
+            $account->save();
         }
         else if($primary_account != null){
             $pid = $this->getPrimaryAccountId($primary_account);
@@ -616,13 +632,16 @@ class BudgetController extends Controller
             if($name != null){
                 $account->name = $name;
             }
+
             if($budget != null){
                 $list->amount = $budget;
                 $list->save();
             }
+
             if($code != null){
                 $account->code = $code;
             }
+
             $account->save();
         }
     }
