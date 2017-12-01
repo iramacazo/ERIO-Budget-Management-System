@@ -474,9 +474,12 @@ class BudgetController extends Controller
     }
 
     public function createRangeView(){
-        return view('proposal/addRange');
+        if($this->getProposalBudgetId() == null){
+            return view('proposal/addRange');
+        }
+        else return redirect('/propose');
     }
 
 }
 
-//TODO CHECK if null list_ids
+//TODO check if accounts have subaccounts
