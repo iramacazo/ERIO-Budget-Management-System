@@ -91,9 +91,21 @@ Route::get('/mrf/add', 'MRFController@addMRFView')->name('addMRFView');
 
 Route::get('/mrf/add/json', 'MRFController@ajaxAddEntry')->name('ajaxAddEntry');
 
-Route::get('/propose', function () {
-    return view('proposeBudget');
-});
+//Budget Proposal Routes
+
+Route::get('/links', 'BudgetController@showLinks');
+
+Route::get('/propose/create-budget-range', 'BudgetController@createRangeView');
+
+Route::get('/propose/create', 'BudgetController@createEmptyBudget');
+
+Route::get('/propose/', 'BudgetController@getAccount');
+
+Route::post('/add-account-proposal', 'BudgetController@addAccount')->name('add_account');
+
+Route::get('/propose/{primary_account}', 'BudgetController@getAccount');
+
+Route::get('/propose/{primary_account}/{secondary_account}', 'BudgetController@getAccount');
 
 Route::post('propose/submit_budget', 'BudgetController@submitBudget')->name('submit_budget');
 
