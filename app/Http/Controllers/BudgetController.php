@@ -155,7 +155,6 @@ class BudgetController extends Controller
 */ //old submit proposal
 
     public function addAccount(Request $request){
-        //TODO validation
         $validator = Validator::make($request->all(), [
             'account' => 'required',
             'budget' => 'required|numeric|min:1'
@@ -168,62 +167,21 @@ class BudgetController extends Controller
                     ->withInput();
             }
 
-            $primary_account_ref = $request->account_p;
-
-            $account = new SecondaryAccounts();
-            $account->name = $request->account;
-            $account->account_id = $this->getPrimaryAccountId($primary_account_ref);
-            $account->save();
-
-            $list_account = new ListOfSecondaryAccounts();
-            $list_account->account_id = $account->id;
-            $list_account->amount = $request->budget;
-            $list_account->list_id = $this->getPrimaryListId($primary_account_ref);
-            $list_account->save();
-
-            $pid = $this->getPrimaryListId($primary_account_ref);
-            $primary_list = ListOfPrimaryAccounts::find($pid);
-            $primary_list->amount = $this->getPrimaryAccountBudget($primary_account_ref);
-            $primary_list->save();
+            $this->addSecondaryAccount($request->account_p, $request->account, $request->budget);
 
             return redirect('/propose/'.$request->account_p);
         }
 
-        if(isset($request->account_s)){
+        if(isset($request->account_s) && isset($request->account_p)){
             if($validator->fails()){
                 return redirect('/propose/'.$request->account_p.'/'.$request->account_s)
                     ->withErrors($validator)
                     ->withInput();
             }
 
-            $primary_account_ref = $request->account_p;
-            $secondary_account_ref = $request->account_s;
+            $this->addTertiaryAccount($request->account_p, $request->account_s, $request->account, $request->budget);
 
-            $account = new TertiaryAccounts();
-            $account->name = $request->account;
-            $account->subaccount_id = $this->getSecondaryAccountId($primary_account_ref, $secondary_account_ref);
-            $account->save();
-
-            $list_account = new ListOfTertiaryAccounts();
-            $list_account->account_id = $account->id;
-            $list_account->list_id  = $this->getSecondaryListId($primary_account_ref, $secondary_account_ref);
-            $list_account->amount = $request->budget;
-            $list_account->save();
-
-            $sid = $this->getSecondaryListId($primary_account_ref, $secondary_account_ref);
-            $secondary_list = ListOfSecondaryAccounts::find($sid);
-            $secondary_list->amount = $this->getSecondaryAccountBudget($primary_account_ref, $secondary_account_ref);
-            $secondary_list->save();
-
-            $pid = $this->getPrimaryListId($primary_account_ref);
-            $primary_list = ListOfPrimaryAccounts::find($pid);
-            $primary_list->amount = $this->getPrimaryAccountBudget($primary_account_ref);
-            $primary_list->save();
-
-            $prim_acc_name = $request->account_p;
-            $sec_acc_name = $request->account_s;
-
-            return redirect('/propose/'.$prim_acc_name.'/'.$sec_acc_name);
+            return redirect('/propose/'.$request->account_p.'/'.$request->account_s);
         }
 
         $validator = Validator::make($request->all(), [
@@ -238,16 +196,7 @@ class BudgetController extends Controller
                 ->withInput();
         }
 
-        $account = new PrimaryAccounts();
-        $account->name = $request->account;
-        $account->code = $request->code;
-        $account->save();
-
-        $list_account = new ListOfPrimaryAccounts();
-        $list_account->account_id = $account->id;
-        $list_account->budget_id = $this->getProposalBudgetId(); //
-        $list_account->amount = $request->budget;
-        $list_account->save();
+        $this->addPrimaryAccount($request->account, $request->budget, $request->code);
 
         return redirect('/propose');
     }
@@ -264,6 +213,50 @@ class BudgetController extends Controller
         }
 
         return $proposal_id;
+    }
+
+    public function addSecondaryAccount($primary_account_ref, $name, $budget){
+        $account = new SecondaryAccounts();
+        $account->name = $name;
+        $account->account_id = $this->getPrimaryAccountId($primary_account_ref);
+        $account->save();
+
+        $list_account = new ListOfSecondaryAccounts();
+        $list_account->account_id = $account->id;
+        $list_account->amount = $budget;
+        $list_account->list_id = $this->getPrimaryListId($primary_account_ref);
+        $list_account->save();
+
+        $pid = $this->getPrimaryListId($primary_account_ref);
+        $primary_list = ListOfPrimaryAccounts::find($pid);
+        $primary_list->amount = $this->getPrimaryAccountBudget($primary_account_ref);
+        $primary_list->save();
+    }
+
+    public function getSecondaryAccounts($primary_account){
+        $sub_accounts = DB::table('budgets')
+            ->select('secondary_accounts.name', 'list_of_secondary_accounts.amount',
+                'list_of_tertiary_accounts.list_id')
+            ->join('list_of_primary_accounts', 'list_of_primary_accounts.budget_id',
+                '=', 'budgets.id')
+            ->join('list_of_secondary_accounts', 'list_of_secondary_accounts.list_id', '=',
+                'list_of_primary_accounts.id')
+            ->join('secondary_accounts', 'secondary_accounts.id', '=',
+                'list_of_secondary_accounts.account_id')
+            ->join('primary_accounts', 'primary_accounts.id', '=',
+                'list_of_primary_accounts.account_id')
+            ->leftJoin('list_of_tertiary_accounts', 'list_of_tertiary_accounts.list_id', '=',
+                'list_of_secondary_accounts.id')
+            ->where([
+                ['primary_accounts.name', '=', $primary_account],
+                ['approved_by_vp', '=', '0']])
+            ->orWhere([
+                ['primary_accounts.name', '=', $primary_account],
+                ['approved_by_acc', '=', '0']])
+            ->groupBy('secondary_accounts.name')
+            ->get();
+
+        return $sub_accounts;
     }
 
     public function getSecondaryListId($primary_account_ref, $secondary_account_ref){
@@ -332,6 +325,19 @@ class BudgetController extends Controller
         }
 
         return $total_budget;
+    }
+
+    public function addPrimaryAccount($name, $budget, $code){
+        $account = new PrimaryAccounts();
+        $account->name = $name;
+        $account->code = $code;
+        $account->save();
+
+        $list_account = new ListOfPrimaryAccounts();
+        $list_account->account_id = $account->id;
+        $list_account->budget_id = $this->getProposalBudgetId(); //
+        $list_account->amount = $budget;
+        $list_account->save();
     }
 
     public function getPrimaryListId($primary_account_ref){
@@ -462,30 +468,28 @@ class BudgetController extends Controller
     }
     */ //get account names
 
-    public function getSecondaryAccounts($primary_account){
-        $sub_accounts = DB::table('budgets')
-            ->select('secondary_accounts.name', 'list_of_secondary_accounts.amount',
-                'list_of_tertiary_accounts.list_id')
-            ->join('list_of_primary_accounts', 'list_of_primary_accounts.budget_id',
-                '=', 'budgets.id')
-            ->join('list_of_secondary_accounts', 'list_of_secondary_accounts.list_id', '=',
-                'list_of_primary_accounts.id')
-            ->join('secondary_accounts', 'secondary_accounts.id', '=',
-                'list_of_secondary_accounts.account_id')
-            ->join('primary_accounts', 'primary_accounts.id', '=',
-                'list_of_primary_accounts.account_id')
-            ->leftJoin('list_of_tertiary_accounts', 'list_of_tertiary_accounts.list_id', '=',
-               'list_of_secondary_accounts.id')
-            ->where([
-                ['primary_accounts.name', '=', $primary_account],
-                ['approved_by_vp', '=', '0']])
-            ->orWhere([
-                ['primary_accounts.name', '=', $primary_account],
-                ['approved_by_acc', '=', '0']])
-            ->groupBy('secondary_accounts.name')
-            ->get();
+    public function addTertiaryAccount($primary_account_ref, $secondary_account_ref, $name, $budget){
+        $account = new TertiaryAccounts();
+        $account->name = $name;
+        $account->subaccount_id = $this->getSecondaryAccountId($primary_account_ref, $secondary_account_ref);
+        $account->save();
 
-        return $sub_accounts;
+        $list_account = new ListOfTertiaryAccounts();
+        $list_account->account_id = $account->id;
+        $list_account->list_id  = $this->getSecondaryListId($primary_account_ref, $secondary_account_ref);
+        $list_account->amount = $budget;
+        $list_account->save();
+
+        $sid = $this->getSecondaryListId($primary_account_ref, $secondary_account_ref);
+        $secondary_list = ListOfSecondaryAccounts::find($sid);
+        $secondary_list->amount = $this->getSecondaryAccountBudget($primary_account_ref, $secondary_account_ref);
+        $secondary_list->save();
+
+        $pid = $this->getPrimaryListId($primary_account_ref);
+        $primary_list = ListOfPrimaryAccounts::find($pid);
+        $primary_list->amount = $this->getPrimaryAccountBudget($primary_account_ref);
+        $primary_list->save();
+
     }
 
     public function getTertiaryAccounts($secondary_account, $primary_account){
