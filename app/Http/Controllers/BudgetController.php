@@ -320,6 +320,32 @@ class BudgetController extends Controller
         return $sec_acc_id;
     }
 
+    //get ids of both secondary list and secondary account itself
+    public function getSecondaryAccountAndListId($primary_account_ref, $secondary_account_ref){
+        $secondary_account_ids = DB::table('budgets')
+            ->select('list_of_secondary_accounts.id as lsid', 'secondary_accounts.id as sid')
+            ->join('list_of_primary_accounts', 'list_of_primary_accounts.budget_id', '=',
+                'budgets.id')
+            ->join('list_of_secondary_accounts', 'list_of_secondary_accounts.list_id', '=',
+                'list_of_primary_accounts.id')
+            ->join('primary_accounts', 'primary_accounts.id', '=',
+                'list_of_primary_accounts.account_id')
+            ->join('secondary_accounts', 'secondary_accounts.id', '=',
+                'list_of_secondary_accounts.account_id')
+            ->where([
+                ['approved_by_vp', '=', '0'],
+                ['primary_accounts.name', '=', $primary_account_ref],
+                ['secondary_accounts.name', '=', $secondary_account_ref]])
+            ->orWhere([
+                ['approved_by_acc', '=', '0'],
+                ['primary_accounts.name', '=', $primary_account_ref],
+                ['secondary_accounts.name', '=', $secondary_account_ref]])
+            ->groupBy('primary_accounts.name')
+            ->get();
+
+        return $secondary_account_ids;
+    }
+
     //get total budget of a secondary account
     public function getSecondaryAccountBudget($primary_account_ref, $secondary_account_ref){
         $sub_accounts = $this->getTertiaryAccounts($secondary_account_ref, $primary_account_ref);
@@ -440,6 +466,26 @@ class BudgetController extends Controller
             ->get();
 
         return $list;
+    }
+
+    //get individual primary account
+    public function getPrimaryAccountAndListId($primary_account_ref){
+        $primary_account_ids = DB::table('budgets')
+            ->select('list_of_primary_accounts.id as lpid', 'primary_accounts.id as pid')
+            ->join('list_of_primary_accounts', 'list_of_primary_accounts.budget_id', '=',
+                'budgets.id')
+            ->join('primary_accounts', 'primary_accounts.id', '=',
+                'list_of_primary_accounts.account_id')
+            ->where([
+                ['approved_by_vp', '=', '0'],
+                ['primary_accounts.name', '=', $primary_account_ref]])
+            ->orWhere([
+                ['approved_by_acc', '=', '0'],
+                ['primary_accounts.name', '=', $primary_account_ref]])
+            ->groupBy('primary_accounts.name')
+            ->get();
+
+        return $primary_account_ids;
     }
 
     /*
@@ -601,6 +647,7 @@ class BudgetController extends Controller
 
         return $sub_accounts;
     }
+
     //get all accounts
     public function getAccount($primary_account = null, $secondary_account = null){
         if($primary_account && $secondary_account){
@@ -654,10 +701,14 @@ class BudgetController extends Controller
                 ->back();
         }
         else if($request->submit == 'Delete'){
-            deleteAccount();
+            $this->deleteAccount($request->primary_account, $request->secondary_account, $request->tertiary_account);
+
+            return redirect()
+                ->back();
         }
     }
 
+    //edit an account
     public function editAccount($primary_account, $secondary_account, $tertiary_account, $name, $budget, $code){
         if($tertiary_account != null){
             $tid = $this->getTertiaryAccountId($primary_account, $secondary_account, $tertiary_account);
@@ -730,6 +781,45 @@ class BudgetController extends Controller
             }
 
             $account->save();
+        }
+    }
+
+    //delete an account
+    public function deleteAccount($primary_account, $secondary_account, $tertiary_account){
+        if($tertiary_account != null){
+            $tid = $this->getTertiaryAccountId($primary_account, $secondary_account, $tertiary_account);
+            TertiaryAccounts::destroy($tid);
+
+            $sid = $this->getSecondaryListId($primary_account, $secondary_account);
+            $secondary_list = ListOfSecondaryAccounts::find($sid);
+            $secondary_list->amount = $this->getSecondaryAccountBudget($primary_account, $secondary_account);
+            $secondary_list->save();
+
+            $pid = $this->getPrimaryListId($primary_account);
+            $primary_list = ListOfPrimaryAccounts::find($pid);
+            $primary_list->amount = $this->getPrimaryAccountBudget($primary_account);
+            $primary_list->save();
+
+        }
+        else if($secondary_account != null){
+            $ids = $this->getSecondaryAccountAndListId($primary_account, $secondary_account);
+            foreach($ids as $i){
+                SecondaryAccounts::destroy($i->sid);
+                ListOfSecondaryAccounts::destroy($i->lsid);
+            }
+
+            $pid = $this->getPrimaryListId($primary_account);
+            $primary_list = ListOfPrimaryAccounts::find($pid);
+            $primary_list->amount = $this->getPrimaryAccountBudget($primary_account);
+            $primary_list->save();
+
+        }
+        else if($primary_account != null){
+            $ids = $this->getPrimaryAccountAndListId($primary_account);
+            foreach($ids as $i){
+                PrimaryAccounts::destroy($i->pid);
+                ListOfPrimaryAccounts::destroy($i->lpid);
+            }
         }
     }
 
