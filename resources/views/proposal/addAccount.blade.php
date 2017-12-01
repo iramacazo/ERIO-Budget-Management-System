@@ -78,7 +78,7 @@
                     Budget: {{$s->amount}}
                         <form action="{{url('/propose/modify')}}" method="post">
                             <input type="text" placeholder="New Account Name..." name="account">
-                            @if(isset($s->list_id) && $s->list_id == null)
+                            @if($s->list_id == null)
                             <input type="number" placeholder="New Budget..." name="budget">
                             @endif
                             <input type="submit" name="submit" value="Edit">
@@ -98,7 +98,7 @@
                     Code: {{ $s->code }}
                         <form action="{{url('/propose/modify')}}" method="post">
                             <input type="text" placeholder="New Account Name..." name="account">
-                            @if(isset($s->list_id) && $s->list_id == null)
+                            @if($s->list_id == null)
                             <input type="number" placeholder="New Budget..." name="budget">
                             @endif
                             <input type="number" placeholder="New Oracle Code..." name="code">

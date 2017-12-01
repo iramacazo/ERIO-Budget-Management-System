@@ -187,7 +187,7 @@ class BudgetController extends Controller
         $validator = Validator::make($request->all(), [
             'account' => 'required',
             'budget' => 'required|numeric|min:1',
-            'code' => 'required|integer'
+            'code' => 'required|numeric'
         ]);
 
         if($validator->fails()){
@@ -533,7 +533,6 @@ class BudgetController extends Controller
 
         return $sub_accounts;
     }
-
     //get all accounts
     public function getAccount($primary_account = null, $secondary_account = null){
         if($primary_account && $secondary_account){
@@ -583,6 +582,8 @@ class BudgetController extends Controller
 
             $this->editAccount($request->primary_account, $request->secondary_account, $request->tertiary_account,
                 $request->account, $request->budget, $request->code);
+            return redirect()
+                ->back();
         }
         else if($request->submit == 'Delete'){
             deleteAccount();
@@ -592,7 +593,7 @@ class BudgetController extends Controller
     public function editAccount($primary_account, $secondary_account, $tertiary_account, $name, $budget, $code){
         if($tertiary_account != null){
             if($name != null){
-                //TODO edit tertiary account naame
+                //TODO edit tertiary account name
             }
             if($budget != null){
                 //TODO edit tertiary account budget
@@ -600,22 +601,29 @@ class BudgetController extends Controller
         }
         else if($secondary_account != null){
             if($name != null){
-                //TODO edit secondary account naame
+                //TODO edit secondary account name
             }
             if($budget != null){
                 //TODO edit secondary account budget
             }
         }
         else if($primary_account != null){
+            $pid = $this->getPrimaryAccountId($primary_account);
+            $account = PrimaryAccounts::find($pid);
+            $lid = $this->getPrimaryListId($primary_account);
+            $list = ListOfPrimaryAccounts::find($lid);
+
             if($name != null){
-                //TODO edit primary account naame
+                $account->name = $name;
             }
             if($budget != null){
-                //TODO edit primary account budget
+                $list->amount = $budget;
+                $list->save();
             }
             if($code != null){
-                //TODO edit primary account oracle code
+                $account->code = $code;
             }
+            $account->save();
         }
     }
 
