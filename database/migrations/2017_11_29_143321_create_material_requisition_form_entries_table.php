@@ -21,6 +21,7 @@ class CreateMaterialRequisitionFormEntriesTable extends Migration
             //to be filled up by requester
             $table->string('description');
             $table->integer('quantity');
+            $table->decimal('est_amount')->nullable();
             $table->integer('list_sa_id')->nullable();
             $table->integer('list_ta_id')->nullable();
             $table->foreign('list_sa_id')->references('id')->on('list_of_secondary_accounts');
@@ -31,7 +32,11 @@ class CreateMaterialRequisitionFormEntriesTable extends Migration
             $table->foreign('entry_id')->references('id')->on('journal_entries');
 
             //input once returned
-            $table->decimal('amount')->nullable();
+            $table->string('supplies')->nullable();
+            $table->decimal('unit_price')->nullable();
+            $table->integer('prs_id');
+            $table->foreign('prs_id')->references('id')->on('payment_requisition_slips');
+
             $table->timestamps();
         });
     }
