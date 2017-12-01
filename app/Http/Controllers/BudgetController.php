@@ -201,6 +201,7 @@ class BudgetController extends Controller
         return redirect('/propose');
     }
 
+    //get id of budget proposal
     public function getProposalBudgetId(){
         $proposal_id = DB::table('budgets')
                         ->select('id')
@@ -215,6 +216,7 @@ class BudgetController extends Controller
         return $proposal_id;
     }
 
+    //add new secondary account
     public function addSecondaryAccount($primary_account_ref, $name, $budget){
         $account = new SecondaryAccounts();
         $account->name = $name;
@@ -233,6 +235,7 @@ class BudgetController extends Controller
         $primary_list->save();
     }
 
+    //get all secondary accounts
     public function getSecondaryAccounts($primary_account){
         $sub_accounts = DB::table('budgets')
             ->select('secondary_accounts.name', 'list_of_secondary_accounts.amount',
@@ -259,6 +262,7 @@ class BudgetController extends Controller
         return $sub_accounts;
     }
 
+    //get id of list of secondary accounts
     public function getSecondaryListId($primary_account_ref, $secondary_account_ref){
         $secondary_list_id = DB::table('budgets')
                                 ->select('list_of_secondary_accounts.id')
@@ -287,6 +291,7 @@ class BudgetController extends Controller
         return $list_id;
     }
 
+    //get id of secondary account
     public function getSecondaryAccountId($primary_account_ref, $secondary_account_ref){
         $secondary_account_id = DB::table('budgets')
                         ->select('secondary_accounts.id')
@@ -315,6 +320,7 @@ class BudgetController extends Controller
         return $sec_acc_id;
     }
 
+    //get total budget of a secondary account
     public function getSecondaryAccountBudget($primary_account_ref, $secondary_account_ref){
         $sub_accounts = $this->getTertiaryAccounts($secondary_account_ref, $primary_account_ref);
 
@@ -327,6 +333,7 @@ class BudgetController extends Controller
         return $total_budget;
     }
 
+    //add new primary account
     public function addPrimaryAccount($name, $budget, $code){
         $account = new PrimaryAccounts();
         $account->name = $name;
@@ -340,6 +347,7 @@ class BudgetController extends Controller
         $list_account->save();
     }
 
+    //get id of list of primary accounts
     public function getPrimaryListId($primary_account_ref){
         $primary_list_id = DB::table('budgets')
                                 ->select('list_of_primary_accounts.id')
@@ -362,6 +370,7 @@ class BudgetController extends Controller
         return $list_id;
     }
 
+    //get id of primary account
     public function getPrimaryAccountId($primary_account_ref){
         $primary_account_id = DB::table('budgets')
                             ->select('primary_accounts.id')
@@ -384,6 +393,7 @@ class BudgetController extends Controller
         return $acc_id;
     }
 
+    //get total budget of a primary account
     public function getPrimaryAccountBudget($primary_account_ref){
         $sub_accounts = $this->getSecondaryAccounts($primary_account_ref);
 
@@ -396,6 +406,7 @@ class BudgetController extends Controller
         return $total_budget;
     }
 
+    //create an empty budget
     public function createEmptyBudget(Request $request){
         //isa lang pwedeng empty budget
 
@@ -412,6 +423,7 @@ class BudgetController extends Controller
         return redirect('propose/'); //redirect to add accounts page
     }
 
+    //get all primary accounts
     public function getPrimaryAccounts(){
         $list = DB::table('budgets')
             ->select('list_of_primary_accounts.amount', 'list_of_secondary_accounts.list_id',
@@ -468,6 +480,7 @@ class BudgetController extends Controller
     }
     */ //get account names
 
+    //add new tertiary account
     public function addTertiaryAccount($primary_account_ref, $secondary_account_ref, $name, $budget){
         $account = new TertiaryAccounts();
         $account->name = $name;
@@ -492,6 +505,7 @@ class BudgetController extends Controller
 
     }
 
+    //get all tertiary accounts
     public function getTertiaryAccounts($secondary_account, $primary_account){
         $sub_accounts = DB::table('budgets')
                             ->select('tertiary_accounts.name', 'list_of_tertiary_accounts.amount')
@@ -520,6 +534,7 @@ class BudgetController extends Controller
         return $sub_accounts;
     }
 
+    //get all accounts
     public function getAccount($primary_account = null, $secondary_account = null){
         if($primary_account && $secondary_account){
             $sub_accounts = $this->getTertiaryAccounts($secondary_account, $primary_account);
@@ -550,13 +565,61 @@ class BudgetController extends Controller
 
     }
 
-    //modify account functions
+    //// -- modify account functions
 
     public function modifyAccount(Request $request){
+        if($request->submit == 'Edit'){
+            $validator = Validator::make($request->all(), [
+                'code' => 'required_without_all:account,budget',
+                'account' => 'required_without_all:code,budget',
+                'budget' => 'required_without_all:code,account'
+            ]);
 
+            if($validator->fails()) {
+                return redirect()
+                    ->back()
+                    ->withErrors($validator);
+            }
+
+            $this->editAccount($request->primary_account, $request->secondary_account, $request->tertiary_account,
+                $request->account, $request->budget, $request->code);
+        }
+        else if($request->submit == 'Delete'){
+            deleteAccount();
+        }
     }
 
-    //redirect to view functions
+    public function editAccount($primary_account, $secondary_account, $tertiary_account, $name, $budget, $code){
+        if($tertiary_account != null){
+            if($name != null){
+                //TODO edit tertiary account naame
+            }
+            if($budget != null){
+                //TODO edit tertiary account budget
+            }
+        }
+        else if($secondary_account != null){
+            if($name != null){
+                //TODO edit secondary account naame
+            }
+            if($budget != null){
+                //TODO edit secondary account budget
+            }
+        }
+        else if($primary_account != null){
+            if($name != null){
+                //TODO edit primary account naame
+            }
+            if($budget != null){
+                //TODO edit primary account budget
+            }
+            if($code != null){
+                //TODO edit primary account oracle code
+            }
+        }
+    }
+
+    //  -- redirect to view functions
 
     public function showLinks(){ //TEMPO
         return view('proposal/links');

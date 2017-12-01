@@ -101,6 +101,8 @@ Route::get('/propose/create-budget-range', 'BudgetController@createRangeView');
 
 Route::get('/propose/create', 'BudgetController@createEmptyBudget');
 
+Route::post('/propose/modify', 'BudgetController@modifyAccount');
+
 Route::get('/propose/', 'BudgetController@getAccount');
 
 Route::post('/add-account-proposal', 'BudgetController@addAccount')->name('add_account');

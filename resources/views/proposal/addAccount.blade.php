@@ -58,11 +58,11 @@
                 <div class="account">
                     {{$s->name}}
                     Budget: {{$s->amount}}
-                    <form action="{{url('')}}" method="post">
+                    <form action="{{url('/propose/modify')}}" method="post">
                         <input type="text" placeholder="New Account Name..." name="account">
                         <input type="number" placeholder="New Budget..." name="budget">
-                        <input type="submit" name="edit" value="Edit">
-                        <input type="submit" name="delete" value="Delete">
+                        <input type="submit" name="submit" value="Edit">
+                        <input type="submit" name="submit" value="Delete">
                         <input type="hidden" name="tertiary_account" value="{{$s->name}}">
                         <input type="hidden" name="secondary_account" value="{{$account_2}}}">
                         <input type="hidden" name="primary_account" value="{{$account_1}}">
@@ -76,13 +76,13 @@
                     <?php $link = '/propose/'.$account_1.'/'.$s->name ?>
                     <a href="{{ url($link) }}">{{$s->name}}</a>
                     Budget: {{$s->amount}}
-                        <form action="{{url('')}}" method="post">
+                        <form action="{{url('/propose/modify')}}" method="post">
                             <input type="text" placeholder="New Account Name..." name="account">
                             @if(isset($s->list_id) && $s->list_id == null)
                             <input type="number" placeholder="New Budget..." name="budget">
                             @endif
-                            <input type="submit" name="edit" value="Edit">
-                            <input type="submit" name="delete" value="Delete">
+                            <input type="submit" name="submit" value="Edit">
+                            <input type="submit" name="submit" value="Delete">
                             <input type="hidden" name="secondary_account" value="{{$s->name}}">
                             <input type="hidden" name="primary_account" value="{{$account_1}}">
                             {{csrf_field()}}
@@ -96,14 +96,14 @@
                     <a href="{{ url($link) }}">{{$s->name}}</a>
                     Budget: {{$s->amount}}
                     Code: {{ $s->code }}
-                        <form action="{{url('')}}" method="post">
+                        <form action="{{url('/propose/modify')}}" method="post">
                             <input type="text" placeholder="New Account Name..." name="account">
                             @if(isset($s->list_id) && $s->list_id == null)
                             <input type="number" placeholder="New Budget..." name="budget">
                             @endif
                             <input type="number" placeholder="New Oracle Code..." name="code">
-                            <input type="submit" name="edit" value="Edit">
-                            <input type="submit" name="delete" value="Delete">
+                            <input type="submit" name="submit" value="Edit">
+                            <input type="submit" name="submit" value="Delete">
                             <input type="hidden" name="primary_account" value="{{$s->name}}">
                             {{csrf_field()}}
                         </form>
