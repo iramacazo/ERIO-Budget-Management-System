@@ -14,7 +14,7 @@ use DB;
 
 class BudgetController extends Controller
 {
-    //
+
     public function viewProposeBudget(){
         $budgetId = Budget::where([
             ['approved_by_vp', '=', '1'],
@@ -153,7 +153,6 @@ class BudgetController extends Controller
 
     public function addAccount(Request $request){
         //TODO validation
-        echo(isset($request->account_p));
         if(isset($request->account_p)){
                 $account = new SecondaryAccounts();
                 $account->name = $request->account;
@@ -186,10 +185,31 @@ class BudgetController extends Controller
         $account = new PrimaryAccounts();
         $account->name = $request->account;
         $account->code = $request->code;
+        $account->save();
+
+        $list_account = new ListOfPrimaryAccounts();
+        $list_account->account_id = $account->id;
+        $list_account->budget_id = $this->getProposalBudgetId(); //
+        $list_account->amount = $request->budget;
+        $list_account->save();
 
         //TODO add primary account
 
         return redirect('/propose');
+    }
+
+    public function getProposalBudgetId(){
+        $proposal_id = DB::table('budgets')
+                        ->select('id')
+                        ->where('approved_by_vp', '=', '0')
+                        ->orWhere('approved_by_acc', '=', '0')
+                        ->get();
+
+        foreach($proposal_id as $p){
+            $proposal_id = $p->id;
+        }
+
+        return $proposal_id;
     }
 
     public function getSecondaryListId($primary_account_ref, $secondary_account_ref){
