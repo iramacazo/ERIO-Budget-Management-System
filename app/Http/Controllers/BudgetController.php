@@ -323,7 +323,7 @@ class BudgetController extends Controller
     }
 
     public function createEmptyBudget(Request $request){
-        //TODO validator to check if meron na
+        //isa lang pwedeng empty budget
 
         $start_date = $request->start_date;
         $end_date = $request->end_date;
@@ -340,12 +340,17 @@ class BudgetController extends Controller
 
     public function getPrimaryAccounts(){
         $list = DB::table('budgets')
+            ->select('list_of_primary_accounts.amount', 'list_of_secondary_accounts.list_id',
+                'primary_accounts.name', 'primary_accounts.code')
             ->join('list_of_primary_accounts', 'list_of_primary_accounts.budget_id', '=',
                 'budgets.id')
             ->join('primary_accounts', 'primary_accounts.id', '=',
                 'list_of_primary_accounts.account_id')
+            ->leftJoin('list_of_secondary_accounts', 'list_of_secondary_accounts.list_id', '=',
+                'list_of_primary_accounts.id')
             ->where('approved_by_vp', '=', '0')
             ->orWhere('approved_by_acc', '=', '0')
+            ->groupBy('primary_accounts.name')
             ->get();
 
         return $list;
@@ -391,7 +396,8 @@ class BudgetController extends Controller
 
     public function getSecondaryAccounts($primary_account){
         $sub_accounts = DB::table('budgets')
-            ->select('secondary_accounts.name', 'list_of_secondary_accounts.amount')
+            ->select('secondary_accounts.name', 'list_of_secondary_accounts.amount',
+                'list_of_tertiary_accounts.list_id')
             ->join('list_of_primary_accounts', 'list_of_primary_accounts.budget_id',
                 '=', 'budgets.id')
             ->join('list_of_secondary_accounts', 'list_of_secondary_accounts.list_id', '=',
@@ -400,12 +406,15 @@ class BudgetController extends Controller
                 'list_of_secondary_accounts.account_id')
             ->join('primary_accounts', 'primary_accounts.id', '=',
                 'list_of_primary_accounts.account_id')
+            ->leftJoin('list_of_tertiary_accounts', 'list_of_tertiary_accounts.list_id', '=',
+               'list_of_secondary_accounts.id')
             ->where([
                 ['primary_accounts.name', '=', $primary_account],
                 ['approved_by_vp', '=', '0']])
             ->orWhere([
                 ['primary_accounts.name', '=', $primary_account],
                 ['approved_by_acc', '=', '0']])
+            ->groupBy('secondary_accounts.name')
             ->get();
 
         return $sub_accounts;
