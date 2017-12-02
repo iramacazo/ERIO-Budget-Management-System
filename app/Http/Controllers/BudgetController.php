@@ -707,7 +707,7 @@ class BudgetController extends Controller
                     '=', $this->getPreviousYearBudgetId())
                 ->join('primary_accounts', 'primary_accounts.id', '=',
                     'list_of_primary_accounts.account_id')
-                ->where('budgets.id', '=', $this->getProposalBudgetId())
+                ->where('budgets.id', '=', $this->getPreviousYearBudgetId())
                 ->groupBy('primary_accounts.name')
                 ->get();
 
@@ -890,7 +890,7 @@ class BudgetController extends Controller
         foreach($previous_primaries as $prv){
             $start_date = new Carbon($prv->start_range);
             $start_year = $start_date->year;
-            $end_date = new Carbon($p->end_range);
+            $end_date = new Carbon($prv->end_range);
             $end_year = $end_date->format('y');
             $previous_ay = $start_year.'-'.$end_year;
         }
