@@ -28,7 +28,7 @@ class CreateMaterialRequisitionFormsTable extends Migration
             $table->string('contact_person_email');
 
             //Primary Account for (Budget Item/Account Allocation)
-            $table->integer('list_pa_id')->nullable();
+            $table->integer('list_pa_id');
             $table->foreign('list_pa_id')->references('id')->on('list_of_primary_accounts');
 
             //when entering entries would the system only enable the user to enter sub-accounts if needed

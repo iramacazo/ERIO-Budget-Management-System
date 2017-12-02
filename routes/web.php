@@ -93,6 +93,12 @@ Route::post('/mrf/add/entry', 'MRFController@ajaxAddEntry')->name('ajaxAddEntry'
 
 Route::post('/mrf/save', 'MRFController@saveMRF')->name('saveMRF');
 
+Route::get('/mrf/exec', 'MRFController@execMRFView')->name('execMRF');
+
+Route::post('/mrf/approve', 'MRFController@approveMRF')->name('approveMRF');
+
+Route::post('/mrf/print', 'MRFController@printMRF')->name('printMRF');
+
 //Budget Proposal Routes
 
 Route::get('/links', 'BudgetController@showLinks');
