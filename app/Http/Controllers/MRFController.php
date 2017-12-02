@@ -213,4 +213,34 @@ class MRFController extends Controller
         //TODO change view
         return view('test')->with('mrf', $mrf);
     }
+
+    public function receiveAmounts(Request $request){
+        $mrf = MaterialRequisitionForm::find($request->id);
+        $entries = MaterialRequisitionFormEntries::where('mrf_id', $mrf->id)->get();
+
+        return view('receiveAmountsMRF')
+            ->with('mrf', $mrf);
+    }
+
+    public function saveAmounts(Request $request){
+        $this->validate($request, [
+           'mrf_id' => 'required'
+        ]);
+
+        $mrf = MaterialRequisitionForm::find($request->mrf_id);
+
+        $ctr = 0;
+        $entries = $mrf;
+        foreach($entries as $entry){
+            $entry->unit_price = $request->unit_price[$ctr];
+            $entry->supplies = $request->supplier[$ctr];
+            $entry->save();
+            $ctr++;
+        }
+
+        $mrf->status = 'Complete';
+        $mrf->save();
+
+        return redirect()->route('viewMRF');
+    }
 }
