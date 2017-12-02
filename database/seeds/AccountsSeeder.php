@@ -50,5 +50,44 @@ class AccountsSeeder extends Seeder
                 ]);
             }
         }
+
+        DB::table('primary_accounts')->insert([
+            'name' => 'International Events',
+            'code' => '816012',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+        ]);
+
+        $pa = DB::table('primary_accounts')->where('name', 'International Events')->first();
+
+        $subs = array("ASEAN");
+        array_push($subs, "AFRICAN");
+        array_push($subs, "EU");
+        $third = array("Supplies");
+        array_push($third, "Transportation");
+        array_push($third, "Meeting Expenses");
+
+        for($i = 0; $i < 3; $i++){
+            DB::table('secondary_accounts')->insert([
+                'name' => $subs[$i],
+                'account_id' => $pa->id,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ]);
+
+            $sa = DB::table('secondary_accounts')->where([
+                ['account_id', $pa->id],
+                ['name', $subs[$i]]
+            ])->first();
+
+            foreach($third as $t){
+                DB::table('tertiary_accounts')->insert([
+                    'name' => $t,
+                    'subaccount_id' => $sa->id,
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now()
+                ]);
+            }
+        }
     }
 }

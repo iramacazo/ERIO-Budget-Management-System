@@ -29,7 +29,6 @@ class MRFController extends Controller
     public function addMRFView(){
         $latest_budget = Budget::latest()->whereDate('start_range', '<', Carbon::now())->first(); //can cause problems
 
-        //TODO implement latest_budget in queries
         //TODO only get primary accounts then ajax the secondary&tertiary accounts of selected PA
 
         $primary = DB::table('list_of_primary_accounts')
@@ -41,23 +40,27 @@ class MRFController extends Controller
                             'list_of_primary_accounts.id as id',
                             'primary_accounts.name as pa_name'
                         )
+                        ->where('list_of_primary_accounts.budget_id', $latest_budget->id)
                         ->where('primary_accounts.name', 'not like', '%upplies%')
                         ->where('accessed_primary_accounts.user_id', Auth::user()->id)
                         ->get();
 
         $secondary = DB::table('list_of_secondary_accounts')
                         ->join('accessed_secondary_accounts', 'accessed_secondary_accounts.list_id',
-                            '=', 'list_of_secondary_accounts.id')
+                        '=', 'list_of_secondary_accounts.id')
                         ->join('secondary_accounts', 'secondary_accounts.id', '=',
                             'list_of_secondary_accounts.account_id')
                         ->join('primary_accounts', 'primary_accounts.id', '=',
                             'secondary_accounts.account_id')
+                        ->join('list_of_primary_accounts', 'list_of_primary_accounts.id',
+                            '=', 'list_of_secondary_accounts.list_id')
                         ->select(
                             'list_of_secondary_accounts.id as id',
                             'secondary_accounts.name as sa_name',
                             'primary_accounts.name as pa_name'
                         )
                         ->where('secondary_accounts.name', 'not like', '%upplies%')
+                        ->where('list_of_primary_accounts.id', $primary->first()->id)
                         ->where('accessed_secondary_accounts.user_id', Auth::user()->id)
                         ->get();
 
@@ -70,15 +73,21 @@ class MRFController extends Controller
                             '=', 'tertiary_accounts.subaccount_id')
                         ->join('primary_accounts', 'primary_accounts.id',
                             '=', 'secondary_accounts.account_id')
+                        ->join('list_of_secondary_accounts', 'list_of_secondary_accounts.id',
+                            '=', 'list_of_tertiary_accounts.list_id')
+                        ->join('list_of_primary_accounts', 'list_of_primary_accounts.id',
+                            '=', 'list_of_secondary_accounts.list_id')
                         ->select(
                             'list_of_tertiary_accounts.id as id',
                             'tertiary_accounts.name as ta_name',
                             'secondary_accounts.name as sa_name',
                             'primary_accounts.name as pa_name'
                         )
+                        ->where('primary_accounts.id', $primary->first()->id)
                         ->where('tertiary_accounts.name', 'not like', '%upplies%')
                         ->where('accessed_tertiary_accounts.user_id', Auth::user()->id)
                         ->get();
+
 
         return view('addMRFView')
             ->with('primary', $primary)
@@ -86,21 +95,9 @@ class MRFController extends Controller
             ->with('tertiary', $tertiary);
     }
 
-    public function ajaxAddEntry()
+    public function ajaxAddEntry(Request $request)
     {
-        //TODO get entries of chosen primary account
-        $primary = DB::table('list_of_primary_accounts')
-            ->join('accessed_primary_accounts', 'accessed_primary_accounts.list_id',
-                '=', 'list_of_primary_accounts.id')
-            ->join('primary_accounts', 'primary_accounts.id', '=',
-                'list_of_primary_accounts.account_id')
-            ->select(
-                'list_of_primary_accounts.id as id',
-                'primary_accounts.name as pa_name'
-            )
-            ->where('primary_accounts.name', 'not like', '%upplies%')
-            ->where('accessed_primary_accounts.user_id', Auth::user()->id)
-            ->get();
+        $id = str_after($request->pa_id, '-');
 
         $secondary = DB::table('list_of_secondary_accounts')
             ->join('accessed_secondary_accounts', 'accessed_secondary_accounts.list_id',
@@ -109,12 +106,15 @@ class MRFController extends Controller
                 'list_of_secondary_accounts.account_id')
             ->join('primary_accounts', 'primary_accounts.id', '=',
                 'secondary_accounts.account_id')
+            ->join('list_of_primary_accounts', 'list_of_primary_accounts.id',
+                '=', 'list_of_secondary_accounts.list_id')
             ->select(
                 'list_of_secondary_accounts.id as id',
                 'secondary_accounts.name as sa_name',
                 'primary_accounts.name as pa_name'
             )
             ->where('secondary_accounts.name', 'not like', '%upplies%')
+            ->where('list_of_primary_accounts.id', $id)
             ->where('accessed_secondary_accounts.user_id', Auth::user()->id)
             ->get();
 
@@ -127,18 +127,22 @@ class MRFController extends Controller
                 '=', 'tertiary_accounts.subaccount_id')
             ->join('primary_accounts', 'primary_accounts.id',
                 '=', 'secondary_accounts.account_id')
+            ->join('list_of_secondary_accounts', 'list_of_secondary_accounts.id',
+                '=', 'list_of_tertiary_accounts.list_id')
+            ->join('list_of_primary_accounts', 'list_of_primary_accounts.id',
+                '=', 'list_of_secondary_accounts.list_id')
             ->select(
                 'list_of_tertiary_accounts.id as id',
                 'tertiary_accounts.name as ta_name',
                 'secondary_accounts.name as sa_name',
                 'primary_accounts.name as pa_name'
             )
+            ->where('primary_accounts.id', $id)
             ->where('tertiary_accounts.name', 'not like', '%upplies%')
             ->where('accessed_tertiary_accounts.user_id', Auth::user()->id)
             ->get();
 
         return response()->json([
-            'primary' => $primary,
             'secondary' => $secondary,
             'tertiary' => $tertiary
         ]);
