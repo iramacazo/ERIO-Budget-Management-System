@@ -103,7 +103,8 @@ Route::post('/mrf/print', 'MRFController@printMRF')->name('printMRF');
 
 Route::get('/links', 'BudgetController@showLinks');
 
-Route::get('/propose/create-budget-range', 'BudgetController@createRangeView');
+Route::get('/propose/create-budget-range', 'BudgetController@createRangeView')
+    ->name('createBudgetProposal');
 
 Route::get('/propose/create', 'BudgetController@createEmptyBudget');
 
@@ -111,7 +112,7 @@ Route::post('/propose/modify', 'BudgetController@modifyAccount');
 
 Route::get('/propose/print', 'BudgetController@printView');
 
-Route::get('/propose/', 'BudgetController@getAccount');
+Route::get('/propose/', 'BudgetController@getAccount')->name('editBudgetProposal');
 
 Route::post('/add-account-proposal', 'BudgetController@addAccount')->name('add_account');
 

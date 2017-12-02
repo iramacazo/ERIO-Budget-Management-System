@@ -865,7 +865,7 @@ class BudgetController extends Controller
     }
 
     public function createRangeView(){
-        if($this->getProposalBudgetId()->isEmpty()){
+        if($this->getProposalBudgetId() == null){
             return view('proposal/addRange');
         }
         else return redirect('/propose');
