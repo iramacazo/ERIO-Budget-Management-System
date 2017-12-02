@@ -453,7 +453,7 @@ class BudgetController extends Controller
     public function getPrimaryAccounts(){
         $list = DB::table('budgets')
             ->select('list_of_primary_accounts.amount', 'list_of_secondary_accounts.list_id',
-                'primary_accounts.name', 'primary_accounts.code')
+                'primary_accounts.name', 'primary_accounts.code', 'budgets.approved_by_vp', 'budgets.approved_by_acc')
             ->join('list_of_primary_accounts', 'list_of_primary_accounts.budget_id', '=',
                 'budgets.id')
             ->join('primary_accounts', 'primary_accounts.id', '=',
@@ -463,6 +463,7 @@ class BudgetController extends Controller
             ->where('approved_by_vp', '=', '0')
             ->orWhere('approved_by_acc', '=', '0')
             ->groupBy('primary_accounts.name')
+            ->orderBy('list_of_primary_accounts.created_at', 'asc')
             ->get();
 
         return $list;
@@ -650,6 +651,8 @@ class BudgetController extends Controller
 
     //get all accounts
     public function getAccount($primary_account = null, $secondary_account = null){
+        if($this->getProposalBudgetId() == null)
+            return redirect('propose/create-budget-range');
         if($primary_account && $secondary_account){
             $sub_accounts = $this->getTertiaryAccounts($secondary_account, $primary_account);
             return view('proposal/AddAccount', [
@@ -680,6 +683,33 @@ class BudgetController extends Controller
             ]);
         }
 
+    }
+
+    //
+    public function getPreviousYearBudgetId(){
+        $budget_id = DB::table('budgets')
+                    ->where([
+                        ['approved_by_vp', '=', '1'],
+                        ['approved_by_acc', '=', '1']
+                    ])->orderBy('start_range', 'desc')
+                    ->value('id');
+
+        return $budget_id;
+    }
+
+    //get previous year primary accounts
+    public function getPreviousYearAccounts(){
+        $list = DB::table('budgets')
+                ->select('list_of_primary_accounts.amount', 'primary_accounts.name', 'primary_accounts.code',
+                    'list_of_primary_accounts.id')
+                ->join('list_of_primary_accounts', 'list_of_primary_accounts.budget_id',
+                    '=', $this->getPreviousYearBudgetId())
+                ->join('primary_accounts', 'primary_accounts.id', '=',
+                    'list_of_primary_accounts.account_id')
+                ->groupBy('primary_accounts.name')
+                ->get();
+
+        return $list;
     }
 
     //// -- modify account functions
@@ -833,10 +863,17 @@ class BudgetController extends Controller
     }
 
     public function createRangeView(){
-        if($this->getProposalBudgetId() == null){
+        if($this->getProposalBudgetId()->isEmpty()){
             return view('proposal/addRange');
         }
         else return redirect('/propose');
+    }
+
+    public function printView(){
+        return view('proposal/printProposal', [
+            'primary_accounts_list' => $this->getPrimaryAccounts(),
+            'prev_primary_accounts_list' => $this->getPreviousYearAccounts()
+        ]);
     }
 
 }

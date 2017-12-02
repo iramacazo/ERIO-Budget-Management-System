@@ -115,7 +115,7 @@
         @endif
     </div>
     <br>
-    <a href="{{url('')}}">Print Budget Proposal</a>
+    <a href="{{url('/propose/print')}}">Print Budget Proposal</a>
     <br>
     <br>
     @if(isset($pa) && $pa)
