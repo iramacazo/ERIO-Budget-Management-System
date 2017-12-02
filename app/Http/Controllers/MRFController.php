@@ -154,6 +154,8 @@ class MRFController extends Controller
             $total++;
         }
 
+        $pa_id = (int) str_after($request->primary_account, "-");
+
         $mrf = new MaterialRequisitionForm();
         $mrf->form_num = $request->form_num;
         $mrf->date_needed = $request->date_needed;
@@ -161,6 +163,7 @@ class MRFController extends Controller
         $mrf->requested_by = Auth::user()->id;
         $mrf->contact_person = $request->contact_person;
         $mrf->contact_person_email = $request->contact_person_email;
+        $mrf->list_pa_id = $pa_id;
         $mrf->dept = 'VPERI'; //katamad tangalin sa code
         $mrf->save();
 
@@ -173,7 +176,8 @@ class MRFController extends Controller
 
             $entryAcc = $request->acc[$i];
             $type = str_before($entryAcc, '-');
-            $id = str_after($entryAcc, '-');
+            $acc =  str_after($entryAcc, '-');
+            $id = (int) $acc;
 
             if($type == 's'){
                 $mrfEntry->list_sa_id = $id;
@@ -186,5 +190,27 @@ class MRFController extends Controller
         }
 
         return redirect()->route('viewMRF');
+    }
+
+    public function execMRFView(){
+        $pending = MaterialRequisitionForm::where('status', 'Pending')->get();
+
+        return view('execMRFView')
+            ->with('pending', $pending);
+    }
+
+    public function approveMRF(Request $request){
+        $mrf = MaterialRequisitionForm::find($request->id);
+        $mrf->status = 'Procure';
+        $mrf->save();
+
+        return redirect()->route('execMRF');
+    }
+
+    public function printMRF(Request $request){
+        $mrf = MaterialRequisitionForm::find($request->id);
+
+        //TODO change view
+        return view('test')->with('mrf', $mrf);
     }
 }

@@ -105,6 +105,7 @@
             <a href="{{ route('pettyCashView') }}">Petty Cash</a>
         @elseif(Auth::user()->usertype == 'Executive')
             <a href="{{ route('requestsForAccess') }}">Accessed Budgets</a>
+            <a href="{{ route('execMRF') }}">Material Requisition Forms</a>
         @endif
     </div>
 </div>

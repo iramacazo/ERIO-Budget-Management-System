@@ -80,7 +80,7 @@
                     var options = "";
 
                     data.secondary.forEach(function(sec){
-                        options += "<option value='s-" + sec["id"] + "'>" +
+                        options += "<option value='s-" + sec["id"] +"'>" +
                             sec["sa_name"] + " for " + sec["pa_name"]
                         "</option>";
                     })
