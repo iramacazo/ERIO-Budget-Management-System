@@ -115,8 +115,10 @@
         @endif
     </div>
     <br>
-    <a href="{{url('')}}">Print Budget Proposal</a>
+    <a href="{{url('/propose/print')}}">Print Budget Proposal</a>
     <br>
+    <br>
+    @if(isset($pa) && $pa)
     <div>
         <form action="">
             <input type="checkbox" name="approved" value="approved_vp"> Approved By Executive
@@ -124,5 +126,6 @@
             <input type="submit" value="Save Budget">
         </form>
     </div>
+    @endif
 </body>
 </html>
