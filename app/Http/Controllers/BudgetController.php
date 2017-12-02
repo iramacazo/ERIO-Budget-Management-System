@@ -660,7 +660,6 @@ class BudgetController extends Controller
             ]);
         }
         else if($primary_account){
-            // $account_name1 = $this->getPrimaryAccountName($primary_account);
             $sub_accounts = $this->getSecondaryAccounts($primary_account);
             return view('proposal/AddAccount', [
                 'account_1' => $primary_account,
@@ -669,11 +668,15 @@ class BudgetController extends Controller
         }
         else{
             $primary_accounts_list = $this->getPrimaryAccounts();
-            // $account_name1 = $this->getPrimaryAccountName($primary_account);
-            // $account_name2 = $this->getSecondaryAccountName($primary_account, $secondary_account);
+            $total_budget = DB::table('list_of_primary_accounts')
+                            ->select('amount')
+                            ->where('budget_id', '=', $this->getProposalBudgetId())
+                            ->sum('amount');
+
             return view('proposal/AddAccount', [
                 'accounts' => $primary_accounts_list,
-                'pa' => true
+                'pa' => true,
+                'total_budget' => $total_budget
             ]);
         }
 
@@ -838,4 +841,5 @@ class BudgetController extends Controller
 
 }
 
-//TODO check if accounts have subaccounts
+//TODO approval of budget proposal na lang kulang
+//no ketchup

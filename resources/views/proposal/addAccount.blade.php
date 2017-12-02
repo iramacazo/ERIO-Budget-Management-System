@@ -109,9 +109,20 @@
                         </form>
                 </div>
             @endforeach
+            {{ "Total Budget: ". $total_budget }}
         @else
             <!-- TODO sabihin walang laman -->
         @endif
+    </div>
+    <br>
+    <a href="{{url('')}}">Print Budget Proposal</a>
+    <br>
+    <div>
+        <form action="">
+            <input type="checkbox" name="approved" value="approved_vp"> Approved By Executive
+            <input type="checkbox" name="approved" value="approved_ac"> Approved By Accounting
+            <input type="submit" value="Save Budget">
+        </form>
     </div>
 </body>
 </html>
