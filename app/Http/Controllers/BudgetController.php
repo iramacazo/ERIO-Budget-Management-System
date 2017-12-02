@@ -6,6 +6,7 @@ use App\ListOfSecondaryAccounts;
 use App\ListOfTertiaryAccounts;
 use App\SecondaryAccounts;
 use App\TertiaryAccounts;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Budget;
@@ -453,7 +454,7 @@ class BudgetController extends Controller
     public function getPrimaryAccounts(){
         $list = DB::table('budgets')
             ->select('list_of_primary_accounts.amount', 'list_of_secondary_accounts.list_id',
-                'primary_accounts.name', 'primary_accounts.code', 'budgets.approved_by_vp', 'budgets.approved_by_acc')
+                'primary_accounts.name', 'primary_accounts.code', 'budgets.start_range', 'budgets.end_range')
             ->join('list_of_primary_accounts', 'list_of_primary_accounts.budget_id', '=',
                 'budgets.id')
             ->join('primary_accounts', 'primary_accounts.id', '=',
@@ -701,11 +702,12 @@ class BudgetController extends Controller
     public function getPreviousYearAccounts(){
         $list = DB::table('budgets')
                 ->select('list_of_primary_accounts.amount', 'primary_accounts.name', 'primary_accounts.code',
-                    'list_of_primary_accounts.id')
+                    'list_of_primary_accounts.id', 'budgets.start_range', 'budgets.end_range')
                 ->join('list_of_primary_accounts', 'list_of_primary_accounts.budget_id',
                     '=', $this->getPreviousYearBudgetId())
                 ->join('primary_accounts', 'primary_accounts.id', '=',
                     'list_of_primary_accounts.account_id')
+                ->where('budgets.id', '=', $this->getPreviousYearBudgetId())
                 ->groupBy('primary_accounts.name')
                 ->get();
 
@@ -870,10 +872,37 @@ class BudgetController extends Controller
     }
 
     public function printView(){
+        $primary_accounts = $this->getPrimaryAccounts();
+        $previous_primaries = $this->getPreviousYearAccounts();
+
+        $proposed_date = DB::table('budgets')
+                        ->where('id', '=', $this->getProposalBudgetId())
+                        ->get();
+
+        foreach($proposed_date as $p){
+            $start_date = new Carbon($p->start_range);
+            $start_year = $start_date->year;
+            $end_date = new Carbon($p->end_range);
+            $end_year = $end_date->format('y');
+            $proposed_ay = $start_year.'-'.$end_year;
+        }
+
+        foreach($previous_primaries as $prv){
+            $start_date = new Carbon($prv->start_range);
+            $start_year = $start_date->year;
+            $end_date = new Carbon($prv->end_range);
+            $end_year = $end_date->format('y');
+            $previous_ay = $start_year.'-'.$end_year;
+        }
+
         return view('proposal/printProposal', [
-            'primary_accounts_list' => $this->getPrimaryAccounts(),
-            'prev_primary_accounts_list' => $this->getPreviousYearAccounts()
+            'primary_accounts_list' => $primary_accounts,
+            'prev_primary_accounts_list' => $previous_primaries,
+            'proposed_ay' => $proposed_ay,
+            'previous_ay' => $previous_ay
         ]);
+
+
     }
 
 }
