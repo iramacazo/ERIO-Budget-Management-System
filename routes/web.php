@@ -89,7 +89,7 @@ Route::get('/mrf', 'MRFController@viewMRF')->name('viewMRF');
 
 Route::get('/mrf/add', 'MRFController@addMRFView')->name('addMRFView');
 
-Route::get('/mrf/add/json', 'MRFController@ajaxAddEntry')->name('ajaxAddEntry');
+Route::post('/mrf/add/entry', 'MRFController@ajaxAddEntry')->name('ajaxAddEntry');
 
 Route::post('/mrf/save', 'MRFController@saveMRF')->name('saveMRF');
 

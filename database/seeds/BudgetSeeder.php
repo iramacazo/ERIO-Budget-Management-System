@@ -58,5 +58,41 @@ class BudgetSeeder extends Seeder
                 ]);
             }
         }
+
+        //Next PA
+        $pa = PrimaryAccounts::where('name', 'International Events')->first();
+
+        DB::table('list_of_primary_accounts')->insert([
+            'budget_id' => $budget->id,
+            'account_id' => $pa->id,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+            'amount' => 4500000
+        ]);
+
+        $la = DB::table('list_of_primary_accounts')->latest()->first();
+        $sec = DB::table('secondary_accounts')->where('account_id', $pa->id)->get();
+
+        foreach($sec as $s){
+            DB::table('list_of_secondary_accounts')->insert([
+                'list_id' => $la->id,
+                'account_id' => $s->id,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+                'amount' => 1500000
+            ]);
+
+            $third = DB::table('tertiary_accounts')->where('subaccount_id', $s->id)->get();
+
+            foreach($third as $t){
+                DB::table('list_of_tertiary_accounts')->insert([
+                    'list_id' => $s->id,
+                    'account_id' => $t->id,
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now(),
+                    'amount' => 500000
+                ]);
+            }
+        }
     }
 }
