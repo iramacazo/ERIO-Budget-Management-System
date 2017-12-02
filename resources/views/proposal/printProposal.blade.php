@@ -20,10 +20,10 @@ $grand_total = 0;
         $prev_grand_total+=$prev->amount;
 @endphp
 <table>
-    <th>BUDGET: ERI AYZZZZ-ZZ</th> <!-- TODO Academic Year -->
+    <th>BUDGET: ERI {{ $proposed_ay }}</th> <!-- TODO Academic Year -->
     <th>ORACLE CODE</th>
-    <th>APPROVED BUDGET AYZZZZ-ZZ</th>
-    <th>PROPOSED BUDGET AYZZZZ-ZZ</th>
+    <th>APPROVED BUDGET {{ $previous_ay }}</th>
+    <th>PROPOSED BUDGET {{ $proposed_ay }}</th>
     <th>REMARKS</th>
     <tr>
         <td>-</td>
@@ -50,7 +50,7 @@ $grand_total = 0;
                     @endif
                 @endforeach
                 @php($grand_total+=$pal->amount)
-                @if($previous != null)
+                @if(isset($previous) && $previous != null)
                     <td class="amount">{{ $previous }}</td>
                     @php($previous = null)
                 @else
