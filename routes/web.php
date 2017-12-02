@@ -99,6 +99,10 @@ Route::post('/mrf/approve', 'MRFController@approveMRF')->name('approveMRF');
 
 Route::post('/mrf/print', 'MRFController@printMRF')->name('printMRF');
 
+Route::post('/mrf/receive-amounts', 'MRFController@receiveAmounts')->name('receiveAmountsMRF');
+
+Route::post('/mrf/receive-amounts/save', 'MRFController@saveAmounts')->name('saveAmountsMRF');
+
 //Budget Proposal Routes
 
 Route::get('/links', 'BudgetController@showLinks');
