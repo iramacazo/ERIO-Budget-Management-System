@@ -1,71 +1,105 @@
-<html>
-    <head>
-        <title> BRF </title>
-    </head>
-    <body>
-        <h1>Bookstore Requisition Forms</h1><br>
-        <a href="{{ route('brfAdd')}}">Add BRF</a><br>
-        <h2> Pending BRF with Amount </h2>
-        @if($brfB != null)
-            @foreach($brfB as $b)
-                Date:{{ $b->created_at }}<br>
-                <form action="{{ route('brfAccess') }}" method="POST">
-                    {{ csrf_field() }}
-                    <input type="hidden" value="{{ $b->id }}" name="id">
-                    <input type="submit" name='submit' value="Retrieve Amounts">
-                    <input type="submit" name='submit' value="Print">
-                </form>
-                <table>
-                    <tr>
-                        <th>quantity</th>
-                        <th>description</th>
-                    </tr>
-                    @foreach($b->entries as $entry)
-                        <tr>
-                            <td>{{ $entry->quantity }}</td>
-                            <td>{{ $entry->description }}</td>
-                        </tr>
-                    @endforeach
-                </table><br><br>
-            @endforeach
-        @else
-            <h2>There are no Pending BRF</h2>
-        @endif
-        <br>
-        <h2> BRF </h2>
-        @if($brfA != null)
+@extends('layouts.general_layout')
+
+@section('title', 'Bookstore Requisition Forms')
+
+@section('sidebar')
+    @parent
+    <li><a href="{{ route('accessedAccountsView') }}">Accessed Accounts</a></li>
+    <li class="active"><a href="{{ route('brfView') }}">Bookstore Requisition Form</a></li>
+    <li><a href="{{ route('viewMRF') }}"> Material Requisition Form </a></li>
+    <li><a href="{{ route('pettyCashView') }}">Petty Cash</a></li>
+@endsection
+
+@section('content')
+    <div class="col s8 offset-s2 white z-depth-2" style="padding: 25px">
+        <h3>Bookstore Requisition Forms</h3>
+        <div style="padding-left: 2%; padding-right: 2%;">
+            @if($brfA->isEmpty() == false)
+                <ul class="collapsible" data-collapsible="accordion">
             @foreach($brfA as $a)
-                Date:{{ $a->created_at }}<br>
-                <form action="{{ route('brfAccess') }}" method="POST">
-                    {{ csrf_field() }}
-                    <input type="hidden" value="{{ $a->id }}" name="id">
-                    <input type="print" value="Print">
-                </form>
-                <table>
-                    <tr>
-                        <th>quantity</th>
-                        <th>description</th>
-                        <th>unit price</th>
-                        <th>amount</th>
-                    </tr>
-                    <?php
-                        $total = 0;
-                    ?>
-                    @foreach($a->entries as $entry)
-                        <tr>
-                            <td>{{ $entry->quantity }}</td>
-                            <td>{{ $entry->description }}</td>
-                            <td>{{ $entry->amount/$entry->quantity }}</td>
-                            <td>{{ $entry->amount }}</td>
-                            <?php
-                                $total += $entry->amount;
-                            ?>
-                        </tr>
-                    @endforeach
-                </table><br>
-                Total Amount: {{ $total }}
-                <br>
-            @endforeach
-        @endif
-    </body>
-</html>
+                    <li>
+                        <div class="collapsible-header"><span><b>Date: </b>{{ $a->created_at }}</span></div>
+                        <div class="collapsible-body">
+                            <table class="bordered highlight">
+                                <thead>
+                                    <tr>
+                                        <th>Description</th>
+                                        <th>Quantity</th>
+                                        <th>Unit price</th>
+                                        <th class="center">Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                @php($total = 0)
+                                @foreach($a->entries as $entry)
+                                    <tr>
+                                        <td>{{ $entry->description }}</td>
+                                        <td>{{ $entry->quantity }}</td>
+                                        <td class="right-align">P{{ number_format($entry->amount/$entry->quantity, 2) }}
+                                        </td>
+                                        <td class="right-align">P{{ number_format($entry->amount, 2) }}</td>
+                                        @php($total += $entry->amount)
+                                    </tr>
+                                @endforeach
+                                    <tr>
+                                        <td class="right-align" colspan="4"><b>Total Amount: </b>P
+                                            {{number_format($total, 2)}}</td>
+                                    </tr>
+                                </tbody>
+                            </table><br>
+                            <form action="{{ route('brfAccess') }}" method="POST">
+                                {{ csrf_field() }}
+                                <input type="hidden" value="{{ $a->id }}" name="id">
+                                <button type="submit" class="waves-effect waves-light btn green darken-3 right">
+                                    <i class="material-icons left">print</i>Print</button>
+                            </form>
+                            <br>
+                        </div>
+                    </li>
+                @endforeach
+                </ul>
+                @else
+                <p class="center">There are no Complete Bookstore Requisition Forms</p>
+            @endif
+            <a class="waves-effect waves-light btn green darken-3 right" href="{{ route('brfAdd')}}">Add BRF</a><br><br>
+            <h4>Incomplete Bookstore Requisition Forms</h4>
+            @if($brfB->isEmpty() == false)
+                @foreach($brfB as $b)
+                    <div class="card">
+                        <div class="card-content">
+                            <span class="card-title"><b>Date: </b>{{ $b->created_at }}</span>
+                            <table class="bordered highlight">
+                                <thead>
+                                <tr>
+                                    <th>Description</th>
+                                    <th class="center">Quantity</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach($b->entries as $entry)
+                                    <tr>
+                                        <td>{{ $entry->description }}</td>
+                                        <td class="center">{{ $entry->quantity }}</td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                            <form action="{{ route('brfAccess') }}" method="POST" style="margin: 0">
+                                {{ csrf_field() }}
+                                <input type="hidden" value="{{ $b->id }}" name="id">
+                                <div class="card-action">
+                                    <button class="waves-effect waves-light btn green darken-3" type="submit" name='submit'
+                                            value="Retrieve Amounts">Finalize BRF</button>
+                                    <button class="waves-effect waves-light btn green darken-3" type="submit" name='submit'>
+                                        <i class="material-icons left">print</i>Print</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                @endforeach
+            @else
+                <p class="center">There are no Pending Bookstore Requisition Forms</p>
+            @endif
+        </div>
+    </div>
+@endsection
