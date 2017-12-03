@@ -28,11 +28,6 @@ class TransactionController extends Controller
         $transaction->description = $request->description;
         $transaction->amount = $request->amount;
         $transaction->user_id = Auth::user()->id;
-        //TODO change this later
-
-        $entry = new JournalEntries;
-        $entry->save();
-        $transaction->entry_id = JournalEntries::latest()->first()->id;
 
         $type = str_before($request->account, '-');
         $id = (int) str_after($request->account, '-');
@@ -46,6 +41,10 @@ class TransactionController extends Controller
         }
 
         $transaction->save();
+
+        $entry = new JournalEntries();
+        $entry->transaction_id = OtherTransactions::latest()->first()->id;
+        $entry->save();
 
         return redirect()->route('transacView');
     }
