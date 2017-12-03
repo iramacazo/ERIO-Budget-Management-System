@@ -109,6 +109,13 @@ Route::post('/mrf/receive-amounts', 'MRFController@receiveAmounts')->name('recei
 
 Route::post('/mrf/saveAmounts', 'MRFController@saveAmounts')->name('saveAmountsMRF');
 
+//Other Transactions Routes
+Route::get('/transactions', 'TransactionController@transacView')->name('transacView');
+
+Route::get('/transactions/add', 'TransactionController@addTransaction')->name('addTransaction');
+
+Route::post('/transactions/add/save', 'TransactionController@saveTransaction')->name('saveTransaction');
+
 //Budget Proposal Routes
 
 Route::get('/links', 'BudgetController@showLinks');

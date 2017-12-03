@@ -39,6 +39,18 @@ class User extends Authenticatable
         return $this->hasMany("App\PettyCashVoucher", 'received_by', 'id');
     }
 
+    public function accessedPA(){
+        return $this->hasMany('App\AccessedPrimaryAccounts', 'user_id', 'id');
+    }
+
+    public function accessedSA(){
+        return $this->hasMany('App\AccessedSecondaryAccounts', 'user_id', 'id');
+    }
+
+    public function accessedTA(){
+        return $this->hasMany('App\AccessedTertiaryAccounts', 'user_id', 'id');
+    }
+
     public function approvedRequestOfAccessPA(){
         return $this->hasMany('App\AccessedPrimaryAccounts', 'approved_by', 'id');
     }
