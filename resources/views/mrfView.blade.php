@@ -32,6 +32,7 @@
             @foreach($procure as $p)
                 Form No: {{ $p->form_num }}<br>
                 Date: {{ $p->created_at }}<br>
+                Account Name: {{ $p->list_PA->primary_accounts->name }}
                 <form action="{{ route('printMRF') }}" method="POST">
                     {{ csrf_field() }}
                     <input type="hidden" value="{{ $p->id }}" name="id">
@@ -47,11 +48,13 @@
                     Quantity: {{ $entry->quantity }}<br>
                     Account No:
                     @if($entry->list_sa_id != null)
-                        {{ $entry->list_sa_id }}
+                        {{ $entry->list_SA->secondary_accounts->name }} <br>
                     @elseif($entry->list_ta_id != null)
-                        {{ $entry->list_ta_id }}
+                        {{ $entry->list_TA->tertiary_accounts->name }} for
+                        {{ $entry->list_TA->tertiary_accounts->secondary_accounts->name }} <br>
                     @endif
                 @endforeach
+                <br>
             @endforeach
         @else
             There are currently no Pending MRFs for Approval
