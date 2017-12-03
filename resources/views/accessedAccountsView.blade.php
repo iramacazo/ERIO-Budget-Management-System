@@ -56,7 +56,7 @@
             <h4>There are no accounts</h4>
         @endif
         <h2> Pending Requests </h2><br>
-        @if($pendingPA != null)
+        @if($pendingPA->isEmpty() == false)
             @foreach($pendingPA as $p)
                 {{ $p->accessedPrimaryAccount->primary_accounts->name }}<br>
             @endforeach
