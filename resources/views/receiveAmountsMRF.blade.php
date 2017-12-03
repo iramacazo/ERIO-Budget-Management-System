@@ -11,7 +11,7 @@
         <form action="{{ route('saveAmountsMRF') }}" method="POST">
             {{ csrf_field() }}
 
-            <input type="hidden" id="{{ $mrf->id }}" name="mrf_id">
+            <input type="hidden" value="{{ $mrf->id }}" name="mrf_id">
             @foreach($mrf->entries as $entry)
                 Description: {{ $entry->description }}<br>
                 Quantity: {{ $entry->quantity }}<br>
@@ -22,7 +22,6 @@
             @endforeach
 
             <input type="submit" value="Save">
-            <button></button>
         </form>
     </body>
 </html>

@@ -229,7 +229,7 @@ class MRFController extends Controller
         $mrf = MaterialRequisitionForm::find($request->mrf_id);
 
         $ctr = 0;
-        $entries = $mrf;
+        $entries = $mrf->entries;
         foreach($entries as $entry){
             $entry->unit_price = $request->unit_price[$ctr];
             $entry->supplies = $request->supplier[$ctr];
