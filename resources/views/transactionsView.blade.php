@@ -4,6 +4,6 @@
     </head>
     <body>
         <h1> Transactions </h1> <br>
-        <a href=""> Add Transaction </a><br>
+        <a href="{{ route('addTransaction') }}"> Add Transaction </a><br>
     </body>
 </html>
