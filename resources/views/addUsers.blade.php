@@ -48,8 +48,8 @@
             <div class="background">
                 <img src="{{asset('images/dlsu.png')}}" style="width: 100%; -webkit-filter: brightness(50%)">
             </div>
-            <a href="#!name"><span class="white-text name">{{Auth::user()->name}}</span></a>
-            <a href="#!email"><span class="white-text email">{{Auth::user()->email}}</span></a>
+            <a><span class="white-text name">{{Auth::user()->name}}</span></a>
+            <a><span class="white-text email">{{Auth::user()->email}}</span></a>
         </div></li>
     <li class="active"><a href="{{route('add_user')}}">Add a New User</a></li>
     <li><a href="{{route('get-all-users')}}">View All Users</a></li>
@@ -84,7 +84,9 @@
                         <div class="row">
                             <div class="input-field col s12">
                                 <i class="material-icons prefix">lock_outline</i>
-                                <input name="password" id="password" type="password" class="validate">
+                                <input name="password" id="password" type="password"
+                                       {{ $errors->has('password') ? 'placeholder=&bull;&bull;&bull;&bull;&bull;&bull;'
+                                       : "" }} class="validate">
                                 <label for="password" data-error="Please enter a password">Password</label>
                             </div>
                         </div>
@@ -92,7 +94,8 @@
                             <div class="input-field col s12">
                                 <i class="material-icons prefix">lock</i>
                                 <input name="password_confirmation" id="password-confirm" type="password"
-                                       class="validate">
+                                       {{ $errors->has('password') ? 'placeholder=&bull;&bull;&bull;&bull;&bull;&bull;'
+                                       : "" }} class="validate">
                                 <label for="password-confirm" data-error="Please confirm your password">
                                     Confirm Password</label>
                             </div>
@@ -117,36 +120,6 @@
             </div>
             <div class="col s3"></div>
         </div>
-        @if($errors->any())
-            @if($errors->has('email'))
-                <script>
-                    var email = $("#email");
-                    email.next('label').attr('data-error', "{{ $errors->first('email') }}");
-                    email.addClass("invalid");
-                    email.prop("aria-invalid", "true");
-                    Materialize.updateTextFields();
-                </script>
-            @endif
-            @if($errors->has('name'))
-                <script>
-                    var name = $("#name");
-                    name.next('label').attr('data-error', "{{ $errors->first('name') }}");
-                    name.addClass("invalid");
-                    name.prop("aria-invalid", "true");
-                    Materialize.updateTextFields();
-                </script>
-            @endif
-            @if($errors->has('password'))
-                <script>
-                    var password = $("#password");
-                    password.next('label').attr('data-error', "{{ $errors->first('password') }}");
-                    password.addClass("invalid");
-                    password.addClass("active");
-                    password.prop("aria-invalid", "true");
-                    Materialize.updateTextFields();
-                </script>
-            @endif
-        @endif
     </div>
 </body>
 </html>
@@ -159,5 +132,26 @@
             $("#email").next('label').attr('data-error', "Please enter a valid E-mail address");
             Materialize.updateTextFields();
         });
+
+        @if($errors->any())
+                @if($errors->has('email'))
+                    var email = $("#email");
+                    email.next('label').attr('data-error', "{{ $errors->first('email') }}");
+                    email.addClass("invalid");
+                    email.prop("aria-invalid", "true");
+                @endif
+                @if($errors->has('name'))
+                    var name = $("#name");
+                    name.next('label').attr('data-error', "{{ $errors->first('name') }}");
+                    name.addClass("invalid");
+                    name.prop("aria-invalid", "true");
+                @endif
+                @if($errors->has('password'))
+                    var password = $("#password");
+                    password.next('label').attr('data-error', "{{ $errors->first('password') }}");
+                    password.attr('class', 'invalid');
+                    password.prop("aria-invalid", "true");
+                @endif
+        @endif
     });
 </script>
