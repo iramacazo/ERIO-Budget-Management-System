@@ -11,6 +11,10 @@
         <li><a href="{{route('requestsForAccess')}}">Account Access Requests</a></li>
         <li><a href="{{ route('execMRF') }}">Material Requisition Forms</a></li>
     @elseif(Auth::user()->usertype == "Budget Requestee")
+        <li><a href="{{ route('accessedAccountsView') }}">Accessed Accounts</a></li>
+        <li><a href="{{ route('brfView') }}">Bookstore Requisition Form</a></li>
+        <li><a href="{{ route('viewMRF') }}"> Material Requisition Form </a></li>
+        <li><a href="{{ route('pettyCashView') }}">Petty Cash</a></li>
     @elseif(Auth::user()->usertype == "Budget Admin")
     @endif
 @endsection

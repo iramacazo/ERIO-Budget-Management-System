@@ -16,19 +16,18 @@ use DB;
 class AccountController extends Controller
 {
     public function accessedAccountsView(){
-        $primary = AccessedPrimaryAccounts::where('user_id', Auth::user()->id)
-                                            ->where('status', 'Open')->get();
-        $secondary = AccessedSecondaryAccounts::where('user_id', Auth::user()->id)
-                                            ->where('status', 'Open')->get();
-        $tertiary = AccessedTertiaryAccounts::where('user_id', Auth::user()->id)
-                                            ->where('status', 'Open')->get();
-        $pendingPA = AccessedPrimaryAccounts::where('user_id', Auth::user()->id)
-                                            ->where('status', 'Pending')->get();
-        $pendingSA = AccessedSecondaryAccounts::where('user_id', Auth::user()->id)
-                                            ->where('status', 'Pending')->get();
-        $pendingTA = AccessedTertiaryAccounts::where('user_id', Auth::user()->id)
-                                            ->where('status', 'Pending')->get();
-
+        $primary = AccessedPrimaryAccounts::all()->where('user_id', Auth::user()->id)
+                                            ->where('status', 'Open');
+        $secondary = AccessedSecondaryAccounts::all()->where('user_id', Auth::user()->id)
+                                            ->where('status', 'Open');
+        $tertiary = AccessedTertiaryAccounts::all()->where('user_id', Auth::user()->id)
+                                            ->where('status', 'Open');
+        $pendingPA = AccessedPrimaryAccounts::all()->where('user_id', Auth::user()->id)
+                                            ->where('status', 'Pending');
+        $pendingSA = AccessedSecondaryAccounts::all()->where('user_id', Auth::user()->id)
+                                            ->where('status', 'Pending');
+        $pendingTA = AccessedTertiaryAccounts::all()->where('user_id', Auth::user()->id)
+                                            ->where('status', 'Pending');
         return view('accessedAccountsView')
             ->with('primary', $primary)
             ->with('secondary', $secondary)

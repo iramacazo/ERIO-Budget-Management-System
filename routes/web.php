@@ -17,6 +17,8 @@ Route::get('/', function(){
         return redirect("/all-users");
     }else if(Auth::user()->usertype == "Executive"){
         return redirect("/request-accounts");
+    }else if(Auth::user()->usertype == "Budget Requestee"){
+        return redirect('/accounts');
     }else{
         return view('homepage');
     }
