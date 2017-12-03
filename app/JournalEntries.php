@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class JournalEntries extends Model
 {
-    public function petty_cash_voucher(){
+    public function pcv(){
         return $this->belongsTo('App\PettyCashVoucher', 'pcv_id', 'id');
     }
 

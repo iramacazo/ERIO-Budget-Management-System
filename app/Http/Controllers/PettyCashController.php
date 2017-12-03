@@ -18,8 +18,7 @@ use Illuminate\Http\Request;
 class PettyCashController extends Controller
 {
     public function requestPettyCashForm(){
-        //TODO get all primary accounts for this year's budget
-        $budget = Budget::latest()->first();
+        $budget = Budget::latest()->whereDate('start_range', '<', Carbon::now())->first();
         $list = $budget->list_of_primary_accounts;
         return view('requestPettyCash')->with('accounts', $list);
     }
