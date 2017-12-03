@@ -7,6 +7,11 @@
     @if(Auth::user()->usertype == "System Admin")
         <li><a href="{{route('add_user')}}">Add a New User</a></li>
         <li><a href="{{route('get-all-users')}}">View All Users</a></li>
+    @elseif(Auth::user()->usertype == "Executive")
+        <li><a href="{{route('requestsForAccess')}}">Account Access Requests</a></li>
+        <li><a href="{{ route('execMRF') }}">Material Requisition Forms</a></li>
+    @elseif(Auth::user()->usertype == "Budget Requestee")
+    @elseif(Auth::user()->usertype == "Budget Admin")
     @endif
 @endsection
 
