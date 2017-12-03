@@ -1,30 +1,72 @@
-<html>
-    <head>
-        <title> Input Amounts </title>
-    </head>
-    <body>
-        <h1> Retrieve Amounts </h1>
-        <h2>Date: {{ $brf->created_at }}</h2>
+@extends('layouts.general_layout')
+
+@section('title', 'Finalize BRF')
+
+@section('sidebar')
+    @parent
+    <li><a href="{{ route('accessedAccountsView') }}">Accessed Accounts</a></li>
+    <li class="active"><a href="{{ route('brfView') }}">Bookstore Requisition Form</a></li>
+    <li><a href="{{ route('viewMRF') }}"> Material Requisition Form </a></li>
+    <li><a href="{{ route('pettyCashView') }}">Petty Cash</a></li>
+@endsection
+
+@section('content')
+    <div class="col s6 offset-s3 white z-depth-2" style="padding: 25px">
+        <h3>Finalize BRF</h3>
+        <h4><b>Date: </b>{{ $brf->created_at }}</h4>
         <form action="{{ route('saveAmountBRF') }}" method="POST">
             <table>
-                <tr>
-                    <th>Quantity</th>
-                    <th>Description</th>
-                    <th>Amount</th>
-                </tr>
-                @foreach($brf->entries as $entry)
+                <thead>
                     <tr>
-                        <td>{{ $entry->quantity }}</td>
-                        <td>{{ $entry->description }}</td>
-                        <td>
-                            <input type="hidden" name="id[]" value="{{ $entry->id }}">
-                            <input type="number" name="amount[]" placeholder="amount">
-                        </td>
+                        <th>Description</th>
+                        <th class="center">Quantity</th>
+                        <th class="center">Amount</th>
                     </tr>
+                </thead>
+
+                @foreach($brf->entries as $entry)
+                    <tbody>
+                        <tr>
+
+                            <td>{{ $entry->description }}</td>
+                            <td class="center">{{ $entry->quantity }}</td>
+                            <td class="right-align">
+                                <input type="hidden" name="id[]" value="{{ $entry->id }}">
+                                <div class="input-field">
+                                    <i class="prefix">P</i>
+                                    <input class="right-align" type="text" name="amount[]" placeholder="Amount" required>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
                 @endforeach
             </table>
             <input type="submit" value="Submit">
             {{ csrf_field() }}
         </form>
-    </body>
-</html>
+    </div>
+@endsection
+
+<script>
+    @section('script')
+        $(".number").keydown(function (e) {
+            // Allow: backspace, delete, tab, escape, enter and .
+            if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+                // Allow: Ctrl/cmd+A
+                (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) ||
+                // Allow: Ctrl/cmd+C
+                (e.keyCode === 67 && (e.ctrlKey === true || e.metaKey === true)) ||
+                // Allow: Ctrl/cmd+X
+                (e.keyCode === 88 && (e.ctrlKey === true || e.metaKey === true)) ||
+                // Allow: home, end, left, right
+                (e.keyCode >= 35 && e.keyCode <= 39)) {
+                // let it happen, don't do anything
+                return;
+            }
+            // Ensure that it is a number and stop the keypress
+            if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                e.preventDefault();
+            }
+        });
+    @endsection
+</script>
