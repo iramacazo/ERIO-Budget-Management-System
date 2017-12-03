@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\JournalEntries;
 use App\MaterialRequisitionForm;
 use App\MaterialRequisitionFormEntries;
 use Illuminate\Http\Request;
@@ -234,11 +235,16 @@ class MRFController extends Controller
             $entry->unit_price = $request->unit_price[$ctr];
             $entry->supplies = $request->supplier[$ctr];
             $entry->save();
+
+            $journal_entry = new JournalEntries();
+            $journal_entry->mrf_entry_id = $entry->id;
+            $journal_entry->save();
             $ctr++;
         }
 
         $mrf->status = 'Complete';
         $mrf->save();
+
 
         return redirect()->route('viewMRF');
     }

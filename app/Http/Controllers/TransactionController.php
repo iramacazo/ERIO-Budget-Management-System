@@ -43,7 +43,7 @@ class TransactionController extends Controller
         $transaction->save();
 
         $entry = new JournalEntries();
-        $entry->transaction_id = OtherTransactions::latest()->first()->id;
+        $entry->transaction_id = $transaction->id;
         $entry->save();
 
         return redirect()->route('transacView');

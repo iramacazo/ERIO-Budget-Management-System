@@ -25,6 +25,9 @@ class CreateJournalEntriesTable extends Migration
             $table->integer('transaction_id')->nullable();
             $table->foreign('transaction_id')->references('id')->on('other_transactions');
 
+            $table->integer('brf_id')->nullable();
+            $table->foreign('brf_id')->references('id')->on('bookstore_requisition_forms');
+
             $table->integer('prs_id')->nullable();
             $table->foreign('prs_id')->references('id')->on('payment_requisition_slips');
             $table->timestamps();

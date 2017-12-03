@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Budget;
+use App\JournalEntries;
 use App\ListOfPrimaryAccounts;
 use App\ListOfSecondaryAccounts;
 use App\ListOfTertiaryAccounts;
@@ -124,6 +125,10 @@ class PettyCashController extends Controller
         $pettyCash->received_by = Auth::user()->id;
         $pettyCash->amount_spent = $request->amount;
         $pettyCash->save();
+
+        $entry = new JournalEntries();
+        $entry->pcv_id = $pettyCash->id;
+        $entry->save();
 
         return redirect()->route('pettyCashView');
     }
