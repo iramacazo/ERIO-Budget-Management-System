@@ -84,6 +84,7 @@
             <a href="{{ route('accessedAccountsView') }}">Accessed Accounts</a>
             <a href="{{ route('brfView') }}">Bookstore Requisition Form</a>
             <a href="{{ route('viewMRF') }}"> Material Requisition Form </a>
+            <a href="{{ route('transacView') }}"> Transactions </a>
             <a class="green-text text-darken-3 menu-item" href="{{ route('logout') }}"
                onclick="event.preventDefault();
                                                  document.getElementById('logout-form').submit();">
