@@ -112,6 +112,8 @@ Route::get('/transactions', 'TransactionController@transacView')->name('transacV
 
 Route::get('/transactions/add', 'TransactionController@addTransaction')->name('addTransaction');
 
+Route::post('/transactions/add/save', 'TransactionController@saveTransaction')->name('saveTransaction');
+
 //Budget Proposal Routes
 
 Route::get('/links', 'BudgetController@showLinks');
