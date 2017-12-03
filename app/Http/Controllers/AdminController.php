@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\EditUser;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
@@ -11,6 +13,22 @@ class AdminController extends Controller
     public function getAllUsers(){
         $listOfUsers = User::all()->sortBy('usertype');
         return view('listOfUsers', ['users' => $listOfUsers]);
+    }
+
+    public function saveChangesToAccount(EditUser $request){
+        $user = Auth::user();
+        $user->password = Hash::make($request->password);
+        $user->name = $request->name;
+        $user->save();
+
+        return redirect('edit_account')->with('edited', true);
+    }
+
+    public function editAccount(){
+        if(Auth::guest())
+            return redirect('unauthorized_access');
+        else
+            return view('editAccount');
     }
 
     public function createUser(Request $request){

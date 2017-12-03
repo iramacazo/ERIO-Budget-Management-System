@@ -37,6 +37,10 @@ Route::get('/add_user', function (){
         return redirect('unauthorized_access');
 })->name('add_user');
 
+Route::get('/edit_account', 'AdminController@editAccount')->name('edit_account');
+
+Route::post('/edit_account/submit', 'AdminController@saveChangesToAccount')->name('save_account');
+
 Route::post('/add_user/submit', 'AdminController@createUser')->name('create_user');
 
 Route::get('/unauthorized_access', function (){
