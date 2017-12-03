@@ -18,7 +18,7 @@ class JournalController extends Controller
         return view('pickPrimary')->with('primary', $primary);
     }
 
-    public function journalPrimary($primary = 'null'){
+    public function journalPrimary($primary = null){
         if($primary == null){
             $budget = Budget::latest()->whereDate('start_range', '<', Carbon::now())->first();
             $id = ListOfPrimaryAccounts::where('budget_id', $budget->id)->first()->id;
@@ -39,7 +39,6 @@ class JournalController extends Controller
 
             return view('generalJournalView')->with('entries', $entries);
 
-//
             $entries = DB::table('journal_entries')
                             ->join('material_requisition_form_entries', 'material_requisition_form_entries.id',
                                 '=', 'journal_entries.mrf_entry_id')
