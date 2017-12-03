@@ -32,6 +32,6 @@ class PettyCashVoucher extends Model
     }
 
     public function journal_entry(){
-        return $this->belongsTo('App\JournalEntries', 'pcv_id', 'id');
+        return $this->hasOne('App\JournalEntries', 'pcv_id', 'id');
     }
 }
