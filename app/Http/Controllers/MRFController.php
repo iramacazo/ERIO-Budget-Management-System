@@ -215,8 +215,7 @@ class MRFController extends Controller
     }
 
     public function receiveAmounts(Request $request){
-        $mrf = MaterialRequisitionForm::find($request->id);
-        $entries = MaterialRequisitionFormEntries::where('mrf_id', $mrf->id)->get();
+        $mrf = MaterialRequisitionForm::where('id', $request->id)->first();
 
         return view('receiveAmountsMRF')
             ->with('mrf', $mrf);
