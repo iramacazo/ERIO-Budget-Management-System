@@ -57,8 +57,39 @@
                 <br>
             @endforeach
         @else
-            There are currently no Pending MRFs for Approval
+            There are currently no Pending MRFs for Procurement
         @endif
         <h2> Completed MRFs </h2><br>
+        @if($complete != null)
+            @foreach($complete as $p)
+                Form No: {{ $p->form_num }}<br>
+                Date: {{ $p->created_at }}<br>
+                Account Name: {{ $p->list_PA->primary_accounts->name }}
+                <form action="{{ route('printMRF') }}" method="POST">
+                    {{ csrf_field() }}
+                    <input type="hidden" value="{{ $p->id }}" name="id">
+                    <input type="submit" value="PRINT">
+                </form>
+                <?php $total = 0; ?>
+                @foreach($p->entries as $entry)
+                    Description: {{ $entry->description }}<br>
+                    Account No:
+                    @if($entry->list_sa_id != null)
+                        {{ $entry->list_SA->secondary_accounts->name }} <br>
+                    @elseif($entry->list_ta_id != null)
+                        {{ $entry->list_TA->tertiary_accounts->name }} for
+                        {{ $entry->list_TA->tertiary_accounts->secondary_accounts->name }} <br>
+                    @endif
+                    Quantity: {{ $entry->quantity }}<br>
+                    Unit Price: {{ $entry->unit_price }}<br>
+                    Amount: {{ $entry->unit_price * $entry->quantity }}<br>
+                    <?php $total += $entry->unit_price * $entry->quantity ?>
+                @endforeach
+                Total Amount:  {{ $total }}<br>
+                <br>
+            @endforeach
+        @else
+            There are currently no Completed MRFs
+        @endif
     </body>
 </html>
