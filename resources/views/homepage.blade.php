@@ -52,8 +52,10 @@
                 <div class="row">
                     <div class="input-field col s12">
                         <i class="material-icons prefix">email</i>
-                        <input name="email" id="email" type="email" class="validate" value="{{ old('email') }}">
-                        <label for="email" data-error="Please enter a valid e-mail address">E-mail Address</label>
+                        <input name="email" id="email" type="email" class="{{ $errors->has('email') ?
+                            'validate invalid': 'validate'}}" value="{{ old('email') }}">
+                        <label for="email" data-error="{{ $errors->has('email') ?
+                            $errors->first('email'): 'Please enter a valid e-mail'}}">E-mail Address</label>
                     </div>
                 </div>
                 <div class="row">
@@ -66,17 +68,6 @@
                 <input class="waves-effect waves-light btn green darken-3 right"
                        type="submit" value="Login">
             </form>
-            @if($errors->any())
-                @if($errors->has('email'))
-                    <script>
-                        var email = $("#email");
-                        email.next('label').attr('data-error', "{{ $errors->first('email') }}");
-                        email.addClass("invalid");
-                        email.prop("aria-invalid", "true");
-                        Materialize.updateTextFields();
-                    </script>
-                @endif
-            @endif
         @elseif(Auth::user()->usertype == "System Admin")
             <a class="green-text text-darken-3 menu-item" href="{{route('add_user')}}">Add New User</a>
             <a class="green-text text-darken-3 menu-item" href="{{route('get-all-users')}}">List of Users</a>
@@ -118,7 +109,7 @@
 <script>
     $(document).ready(function(){
         $(".dropdown-button").dropdown();
-        $('#email').on("click", function(){
+        $('#email').on("keyup", function(){
             $("#email").next('label').attr('data-error', "Please enter a valid E-mail address");
             Materialize.updateTextFields();
         });
