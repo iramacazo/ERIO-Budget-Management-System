@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\BookstoreRequisitionFormEntries;
+use App\JournalEntries;
 use Illuminate\Http\Request;
 use App\BookstoreRequisitionForm;
 use Illuminate\Support\Facades\Auth;
@@ -140,6 +141,10 @@ class BRFController extends Controller
             $brf->status = 'Billed';
             $brf->save();
         }
+
+        $entry = new JournalEntries();
+        $entry->brf_id = BookstoreRequisitionForm::latest('updated_at')->first()->id;
+        $entry->save();
 
         return redirect()->route('brfView');
     }
