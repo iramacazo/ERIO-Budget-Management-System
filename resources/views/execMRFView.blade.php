@@ -21,6 +21,18 @@
                     <input type="hidden" value="{{ $p->id }}" name="id">
                     <input type="submit" value="PRINT">
                 </form>
+
+                @foreach($p->entries as $entry)
+                    Description: {{ $entry->description }}<br>
+                    Quantity: {{ $entry->quantity }}<br>
+                    Account No:
+                    @if($entry->list_sa_id != null)
+                        {{ $entry->list_SA->secondary_accounts->name }} <br><br>
+                    @elseif($entry->list_ta_id != null)
+                        {{ $entry->list_TA->tertiary_accounts->name }} for
+                        {{ $entry->list_TA->tertiary_accounts->secondary_accounts->name }} <br><br>
+                    @endif
+                @endforeach
             @endforeach
         @else
             There are currently no Pending MRFs for Approval
