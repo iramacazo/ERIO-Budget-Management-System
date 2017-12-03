@@ -44,10 +44,6 @@ class CreatePettyCashVouchersTable extends Migration
             $table->integer("received_by")->nullable();
             $table->foreign("received_by")->references("id")->on("users");
 
-            //journal entries
-            $table->integer('entry_id')->nullable();
-            $table->foreign('entry_id')->references('id')->on('journal_entries');
-
             $table->timestamps();
         });
     }

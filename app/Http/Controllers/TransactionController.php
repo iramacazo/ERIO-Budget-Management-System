@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\JournalEntries;
 use App\OtherTransactions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -27,7 +28,11 @@ class TransactionController extends Controller
         $transaction->description = $request->description;
         $transaction->amount = $request->amount;
         $transaction->user_id = Auth::user()->id;
-        $transaction->entry_id = 0; //TODO change this later
+        //TODO change this later
+
+        $entry = new JournalEntries;
+        $entry->save();
+        $transaction->entry_id = JournalEntries::latest()->first()->id;
 
         $type = str_before($request->account, '-');
         $id = (int) str_after($request->account, '-');

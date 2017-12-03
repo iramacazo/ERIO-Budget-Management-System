@@ -18,7 +18,7 @@ class MaterialRequisitionFormEntries extends Model
         return $this->belongsTo('App\ListOfTertiaryAccounts', 'list_ta_id', 'id');
     }
 
-    public function entry(){
-        return $this->hasOne('App\JournalEntries', 'entry_id', 'id');
+    public function journal_entry(){
+        return $this->hasOne('App\JournalEntries', 'mrf_entry_id', 'id');
     }
 }
