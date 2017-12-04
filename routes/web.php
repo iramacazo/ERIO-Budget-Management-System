@@ -145,7 +145,7 @@ Route::post('propose/submit_budget', 'BudgetController@submitBudget')->name('sub
 
 Route::get('/pickPrimary', 'JournalController@primaryAccounts')->name('pickPrimary');
 
-Route::get('/generalJournal', 'JournalController@journalPrimary')->name('generalJournal');
+Route::get('/journal', 'JournalController@journalPrimary')->name('disbursementJournal');
 
 
 
