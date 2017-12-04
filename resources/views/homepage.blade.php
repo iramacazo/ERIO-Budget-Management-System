@@ -94,7 +94,7 @@
                 {{ csrf_field() }}
             </form>
         @elseif(Auth::user()->usertype == 'Budget Admin')
-            <a href="{{ route('pettyCashView') }}">Petty Cash</a>
+            <a href="{{ route('pettyCashView') }}">Petty Cash</a> <br>
             <a href="{{ route('createBudgetProposal') }}">Create Budget Proposal</a> <br>
             <a href="{{ route('editBudgetProposal') }}">Edit Budget Proposal</a> <br>
             <a href="{{ route('disbursementJournal') }}"> Disbursement Journal </a> <br>
@@ -102,6 +102,11 @@
             <a href="{{ route('requestsForAccess') }}">Accessed Budgets</a>
             <a href="{{ route('execMRF') }}">Material Requisition Forms</a>
         @endif
+        @if(session()->has('success'))
+            <div>
+                {{ session()->get('success') }}
+            </div>
+            @endif
     </div>
 </div>
 

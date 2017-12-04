@@ -9,16 +9,16 @@
 </head>
 <body>
     <ul class="breadcrumb">
-        <li><a href="{{ url('/propose')}}">Propose</a></li>
+        <li><a href="{{ url('/propose/add')}}">Propose</a></li>
         @if(isset($account_1))
             <li>
-                <?php $link = '/propose/'.$account_1 ?>
+                <?php $link = '/propose/add/'.$account_1 ?>
                 <a href="{{ url($link) }}">{{$account_1}}</a>
             </li>
         @endif
         @if(isset($account_2)&&isset($account_1))
             <li>
-                <?php $link = '/propose/'.$account_1.'/'.$account_2 ?>
+                <?php $link = '/propose/add/'.$account_1.'/'.$account_2 ?>
                 <a href="{{ url($link) }}">{{$account_2}}</a>
             </li>
         @endif
@@ -73,7 +73,7 @@
         @elseif(isset($accounts)&&isset($account_1))
             @foreach($accounts as $s)
                 <div class="account">
-                    <?php $link = '/propose/'.$account_1.'/'.$s->name ?>
+                    <?php $link = '/propose/add/'.$account_1.'/'.$s->name ?>
                     <a href="{{ url($link) }}">{{$s->name}}</a>
                     Budget: {{$s->amount}}
                         <form action="{{url('/propose/modify')}}" method="post">
@@ -92,7 +92,7 @@
         @elseif(isset($accounts))
             @foreach($accounts as $s)
                 <div class="account">
-                    <?php $link = '/propose/'.$s->name ?>
+                    <?php $link = '/propose/add/'.$s->name ?>
                     <a href="{{ url($link) }}">{{$s->name}}</a>
                     Budget: {{$s->amount}}
                     Code: {{ $s->code }}
@@ -120,10 +120,11 @@
     <br>
     @if(isset($pa) && $pa)
     <div>
-        <form action="">
-            <input type="checkbox" name="approved" value="approved_vp"> Approved By Executive
-            <input type="checkbox" name="approved" value="approved_ac"> Approved By Accounting
+        <form action="{{url('/propose/save')}}">
+            <input type="checkbox" name="approved_vp" value="approved"> Approved By Executive
+            <input type="checkbox" name="approved_ac" value="approved"> Approved By Accounting
             <input type="submit" value="Save Budget">
+            Palagay are you sure
         </form>
     </div>
     @endif
