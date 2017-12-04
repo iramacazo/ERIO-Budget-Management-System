@@ -100,5 +100,30 @@
     @else
         There are currently NO PETTY CASH VOUCHERS to be returned <br>
     @endif
+
+    <h2> Petty Cash Vouchers for Refill </h2>
+    <button href=""> Refill Petty Cash</button>
+    @if($refill != null)
+        @foreach($refill as $r)
+            Requested By: {{ $r->requested_by }}<br>
+            Approved By: {{ $r->approved_by }}<br>
+            Account:
+            @if( $r->list_pa_id != null)
+                {{ $r->primary_account->primary_accounts->name }} <br>
+            @elseif( $r->list_sa_id != null )
+                {{ $r->secondary_account->secondary_accounts->primary_accounts->name }}
+                ( {{ $r->secondary_account->secondary_accounts->name }} ) <br>
+            @else
+                {{ $r->tertiary_account->tertiary_accounts->secondary_accounts->primary_accounts->name }}
+                ( {{ $r->tertiary_account->tertiary_accounts->secondary_accounts->name }} )
+                ( {{ $r->tertiary_account->tertiary_accounts->name }} )<br>
+            @endif
+            Purpose: {{ $r->purpose }}<br>
+            Amount: {{ $r->amount }}<br>
+            <br>
+        @endforeach
+    @else
+        There are no Petty Cash for refill
+    @endif
     </body>
 </html>
