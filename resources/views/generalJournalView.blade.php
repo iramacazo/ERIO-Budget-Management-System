@@ -100,11 +100,7 @@
                             @if( $entry->pcv->prs_id != null)
                                 {{ $entry->pcv->prs->code }}
                             @else
-                                <form action="" method="POST">
-                                    {{ csrf_field() }}
-                                    <input type="hidden" value="pcv-{{ $entry->pcv->id }}">
-                                    <input type="submit" value="Generate PRS">
-                                </form>
+                                <button> Go to Petty Cash </button>
                             @endif
                         </td>
                         <td valign="top" align="right">

@@ -23,7 +23,7 @@ class JournalController extends Controller
             $id = $budget->id;
             $entries = JournalEntries::all();
 
-            //remove all that is not $id
+            //remove all that is not of the latest budget
             $entries->reject(function ($entry) use ($id){
                 if($entry->mrf_entry_id != null){
                     return $entry->mrf_entry->mrf->list_PA->budget_id != $id;
