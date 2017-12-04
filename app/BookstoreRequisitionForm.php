@@ -14,15 +14,15 @@ class BookstoreRequisitionForm extends Model
         return $this->belongsTo('App\JournalEntries', 'entry_id', 'id');
     }
 
-    public function listPrimary(){
+    public function list_PA(){
         return $this->belongsTo('App\ListOfPrimaryAccounts', 'list_pa_id', 'id');
     }
 
-    public function listSecondary(){
+    public function list_SA(){
         return $this->belongsTo('App\ListOfSecondaryAccounts', 'list_sa_id', 'id');
     }
 
-    public function listTertiary(){
+    public function list_TA(){
         return $this->belongsTo('App\ListOfTertiaryAccounts', 'list_ta_id', 'id');
     }
 

@@ -143,7 +143,7 @@ Route::post('propose/submit_budget', 'BudgetController@submitBudget')->name('sub
 
 Route::get('/pickPrimary', 'JournalController@primaryAccounts')->name('pickPrimary');
 
-Route::get('/journal/{primary?}', 'JournalController@journalPrimary')->name('journalPrimary');
+Route::get('/generalJournal', 'JournalController@journalPrimary')->name('generalJournal');
 
 
 
