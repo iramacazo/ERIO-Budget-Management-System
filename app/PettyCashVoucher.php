@@ -31,7 +31,7 @@ class PettyCashVoucher extends Model
         return $this->belongsTo('App\ListOfTertiaryAccounts', 'list_ta_id', 'id');
     }
 
-    public function journal_entry(){
-        return $this->hasOne('App\JournalEntries', 'pcv_id', 'id');
+    public function journal_entries(){
+        return $this->hasMany('App\JournalEntries', 'pcv_id', 'id');
     }
 }

@@ -7,6 +7,7 @@ use App\JournalEntries;
 use App\ListOfPrimaryAccounts;
 use App\ListOfSecondaryAccounts;
 use App\ListOfTertiaryAccounts;
+use App\PaymentRequisitionSlips;
 use App\PettyCashVoucher;
 use App\PrimaryAccounts;
 use App\SecondaryAccounts;
@@ -142,5 +143,31 @@ class PettyCashController extends Controller
         $pettyCash->save();
 
         return redirect()->route('pettyCashView');
+    }
+
+    public function pcrf(Request $request){
+        $this->validate($request, [
+            'code' => 'required'
+        ]);
+        $refill = PettyCashVoucher::where('status', 'Refill')->get();
+
+        //TODO create new PCRF
+
+        //create PRS for this...
+        $prs = new PaymentRequisitionSlips;
+        $prs->code = $request->code;
+        $prs->save();
+
+        foreach($refill as $r){
+            $entry = $r->journal_entries->first();
+            $entry->prs_id = $prs->id;
+            $entry->save();
+
+            $r->status = 'Complete';
+            $r->save();
+        }
+
+        return view('pcrf');
+
     }
 }
