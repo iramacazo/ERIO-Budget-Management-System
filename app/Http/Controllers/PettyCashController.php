@@ -122,7 +122,7 @@ class PettyCashController extends Controller
         $pettyCash->status = 'Refill';
         $pettyCash->date_returned = Carbon::now();
         $pettyCash->received_by = Auth::user()->id;
-        $pettyCash->amount_spent = $request->amount;
+        $pettyCash->amount_received = $request->amount_received;
         $pettyCash->save();
 
         $entry = new JournalEntries();

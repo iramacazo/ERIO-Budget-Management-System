@@ -39,7 +39,7 @@ class CreatePettyCashVouchersTable extends Migration
             $table->string("destination")->nullable();
             $table->decimal("distance")->nullable();
 
-            $table->decimal("amount_spent")->nullable();
+            $table->decimal("amount_received")->nullable();
             $table->dateTime("date_returned")->nullable();
             $table->integer("received_by")->nullable();
             $table->foreign("received_by")->references("id")->on("users");

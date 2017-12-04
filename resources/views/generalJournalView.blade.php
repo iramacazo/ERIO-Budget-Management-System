@@ -8,6 +8,7 @@
             <tr>
                 <th> Date </th>
                 <th> Details </th>
+                <th> Adjust </th>
                 <th> PRS Number </th>
                 <th> Amount </th>
             </tr>
@@ -27,6 +28,17 @@
                             <br>
                             Material Requisition Form<br>
                             Description: {{ $entry->mrf_entry->description }}<br>
+                        </td>
+                        <td valign="top">
+                            @if( $entry->adjust == false )
+                                <form action="" method="POST">
+                                    {{ csrf_field() }}
+                                    <input type="hidden" value="mrf-{{ $entry->mrf_entry->id }}" name="id">
+                                    <input type="submit" value="Adjust Entry">
+                                </form>
+                            @else
+                                <i>Adjusting Entry</i>
+                            @endif
                         </td>
                         <td valign="top">
                             @if( $entry->mrf_entry->prs_id != null )
@@ -63,6 +75,17 @@
                             @endforeach
                         </td>
                         <td valign="top">
+                            @if( $entry->adjust == false )
+                                <form action="" method="POST">
+                                    {{ csrf_field() }}
+                                    <input type="hidden" value="brf-{{ $entry->brf->id }}">
+                                    <input type="submit" value="Adjust Entry">
+                                </form>
+                            @else
+                                <i>Adjusting Entry</i>
+                            @endif
+                        </td>
+                        <td valign="top">
                             @if( $entry->brf->prs_id != null )
                                 {{ $entry->brf->prs->code }}
                             @else
@@ -97,6 +120,16 @@
                             Purpose: {{ $entry->pcv->purpose }}
                         </td>
                         <td valign="top">
+                            @if( $entry->adjust == false)
+                                <form action="" method="POST">
+                                    {{ csrf_field() }}
+                                    <input type="hidden" value="pcv-{{ $entry->pcv->id }}" name="id">
+                                    <input type="submit" value="Adjust Entry">
+                                </form>
+                            @else
+                            @endif
+                        </td>
+                        <td valign="top">
                             @if( $entry->pcv->prs_id != null)
                                 {{ $entry->pcv->prs->code }}
                             @else
@@ -104,7 +137,7 @@
                             @endif
                         </td>
                         <td valign="top" align="right">
-                            {{ number_format($entry->pcv->amount) }}
+                            {{ number_format($entry->pcv->amount - $entry->pcv->amount_received) }}
                         </td>
                     @elseif( $entry->transaction_id != null)
                         <td>
@@ -121,6 +154,16 @@
                             <br>
                             Other Transactions<br>
                             Description: {{ $entry->otherTransactions->description }}
+                        </td>
+                        <td valign="top">
+                            @if( $entry->adjust == false)
+                                <form action="" method="POST">
+                                    {{ csrf_field() }}
+                                    <input type="hidden" name="id" value="transac-{{ $entry->otherTransactions->id }}">
+                                    <input type="submit" value="Adjust Entry">
+                                </form>
+                            @else
+                            @endif
                         </td>
                         <td valign="top">
                             @if( $entry->otherTransactions->prs_id != null)
