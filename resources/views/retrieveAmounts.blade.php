@@ -23,9 +23,9 @@
                         <th class="center">Amount</th>
                     </tr>
                 </thead>
-
+                <tbody>
                 @foreach($brf->entries as $entry)
-                    <tbody>
+
                         <tr>
 
                             <td>{{ $entry->description }}</td>
@@ -34,12 +34,13 @@
                                 <input type="hidden" name="id[]" value="{{ $entry->id }}">
                                 <div class="input-field">
                                     <i class="prefix">P</i>
-                                    <input class="right-align" type="text" name="amount[]" placeholder="Amount" required>
+                                    <input class="right-align" type="text" name="amount[]" placeholder="Amount"
+                                           required>
                                 </div>
                             </td>
                         </tr>
-                    </tbody>
                 @endforeach
+                </tbody>
             </table>
             <input type="submit" value="Submit">
             {{ csrf_field() }}

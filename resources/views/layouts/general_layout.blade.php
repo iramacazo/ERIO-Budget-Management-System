@@ -21,6 +21,7 @@
     {{-- Use this Stylesheet on every page with a form --}}
     <link rel="stylesheet" href="{{asset('css/globalform.css')}}">
 
+    @yield('stylesheet')
 </head>
 <body class="teal lighten-5">
 <div class="navbar-fixed">

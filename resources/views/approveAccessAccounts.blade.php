@@ -10,10 +10,9 @@
 
 @section('content')
     <div class="col s8 offset-s2 white z-depth-2" style="padding: 25px">
-        <h4> Requests for Access </h4>
+        <h3> Requests for Access </h3>
         @if($primary->isEmpty() && $secondary->isEmpty() && $tertiary->isEmpty())
-            <br>
-            <h3 class="center">There are no pending requests</h3>
+            <p class="center">There are no pending requests</p>
 
         @else
             <table class="bordered highlight">

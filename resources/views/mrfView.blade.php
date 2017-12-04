@@ -20,8 +20,8 @@
                 @foreach($pending as $p)
                     <li>
                         <div class="collapsible-header"><p><b>Form No: </b>{{ $p->form_num }}
-                                <br><b>Date: </b>{{ $p->created_at }}</p><br>
-                                <b>Account Name: </b> {{$p->list_PA->primary_accounts->name}}
+                                <br><b>Date: </b>{{ $p->created_at }}<br>
+                                <b>Account Name: </b> {{$p->list_PA->primary_accounts->name}}</p>
                         </div>
                         <div class="collapsible-body">
                             <table class="bordered highlight">
@@ -47,10 +47,6 @@
                                 @endforeach
                                 </tbody>
                             </table><br>
-                            <form action="" method="POST">
-                                <button type="submit" class="waves-effect waves-light btn green darken-3
-                                right"><i class="material-icons left">print</i>Print</button>
-                            </form>
                         </div>
                     </li>
                 @endforeach
@@ -102,7 +98,7 @@
                                         {{ csrf_field() }}
                                         <input type="hidden" value="{{ $p->id }}" name="id">
                                         <button type="submit" class="waves-effect waves-light btn green darken-3">
-                                            <i class="material-icons left">print</i>Print</button>
+                                            <i class="material-icons left">print</i>Print Preview</button>
                                     </form>
                                     <form action="{{ route('receiveAmountsMRF') }}" method="POST"
                                           style="display: inline">
@@ -172,7 +168,7 @@
                                     {{ csrf_field() }}
                                     <input type="hidden" value="{{ $p->id }}" name="id">
                                     <button type="submit" class="waves-effect waves-light btn green darken-3 right">
-                                        <i class="material-icons left">print</i>Print
+                                        <i class="material-icons left">print</i>Print Preview
                                     </button><br>
                                 </form>
                             </div>
