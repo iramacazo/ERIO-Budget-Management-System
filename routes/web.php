@@ -153,5 +153,9 @@ Route::post('/journal/prsForm', 'PRSController@prsForm')->name('prsForm');
 
 Route::post('/journal/prs', 'PRSController@savePRS')->name('generatePRS');
 
+Route::get('/prs', 'PRSController@getPRS')->name('getPRS');
+
+Route::get('/ledger/{primary?}', 'JournalController@primaryLedger')->name('primaryLedger');
+
 
 
