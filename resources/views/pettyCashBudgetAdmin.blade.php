@@ -113,7 +113,7 @@
             <input type="text" name="code"><br>
             <input type="submit" value="Refill Petty Cash"><br>
         </form>
-        
+
         @if( $total >= 5000 * .7 )
             You must refill now!
         @endif

@@ -44,9 +44,9 @@
                             @if( $entry->prs_id != null )
                                 {{ $entry->prs->code }}
                             @else
-                                <form action="" method="POST">
+                                <form action="{{ route('prsForm') }}" method="POST">
                                     {{ csrf_field() }}
-                                    <input type="hidden" value="mrf-{{ $entry->mrf_entry->id }}" name="id">
+                                    <input type="hidden" value="{{ $entry->id }}" name="id">
                                     <input type="submit" value="Generate PRS">
                                 </form>
                             @endif
@@ -78,7 +78,7 @@
                             @if( $entry->adjust == false )
                                 <form action="" method="POST">
                                     {{ csrf_field() }}
-                                    <input type="hidden" value="brf-{{ $entry->brf->id }}">
+                                    <input type="hidden" value="brf-{{ $entry->brf->id }}" name="id">
                                     <input type="submit" value="Adjust Entry">
                                 </form>
                             @else
@@ -89,9 +89,9 @@
                             @if( $entry->prs_id != null )
                                 {{ $entry->prs->code }}
                             @else
-                                <form action="" method="POST">
+                                <form action="{{ route('prsForm') }}" method="POST">
                                     {{ csrf_field() }}
-                                    <input type="hidden" value="brf-{{ $entry->brf->id }}">
+                                    <input type="hidden" value="{{ $entry->id }}" name="id">
                                     <input type="submit" value="Generate PRS">
                                 </form>
                             @endif
@@ -133,7 +133,7 @@
                             @if( $entry->prs_id != null)
                                 {{ $entry->prs->code }}
                             @else
-                                <button> Go to Petty Cash </button>
+                                <button><a href="{{ route('pettyCashView') }}"> Go to Petty Cash </a></button>
                             @endif
                         </td>
                         <td valign="top" align="right">
@@ -169,9 +169,9 @@
                             @if( $entry->prs_id != null)
                                 {{ $entry->prs->code }}
                             @else
-                                <form action="" method="POST">
+                                <form action="{{ route('prsForm') }}" method="POST">
                                     {{ csrf_field() }}
-                                    <input type="hidden" value="transac-{{ $entry->otherTransactions->id }}">
+                                    <input type="hidden" value="{{ $entry->id }}" name="id">
                                     <input type="submit" value="Generate PRS">
                                 </form>
                             @endif

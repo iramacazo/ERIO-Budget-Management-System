@@ -149,5 +149,9 @@ Route::get('/pickPrimary', 'JournalController@primaryAccounts')->name('pickPrima
 
 Route::get('/journal', 'JournalController@journalPrimary')->name('disbursementJournal');
 
+Route::post('/journal/prsForm', 'PRSController@prsForm')->name('prsForm');
+
+Route::post('/journal/prs', 'PRSController@savePRS')->name('generatePRS');
+
 
 
