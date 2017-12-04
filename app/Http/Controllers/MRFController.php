@@ -211,8 +211,7 @@ class MRFController extends Controller
     public function printMRF(Request $request){
         $mrf = MaterialRequisitionForm::find($request->id);
 
-        //TODO change view
-        return view('test')->with('mrf', $mrf);
+        return view('printMRF')->with('mrf', $mrf);
     }
 
     public function receiveAmounts(Request $request){

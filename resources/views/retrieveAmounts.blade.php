@@ -13,7 +13,7 @@
 @section('content')
     <div class="col s6 offset-s3 white z-depth-2" style="padding: 25px">
         <h3>Finalize BRF</h3>
-        <h4><b>Date: </b>{{ $brf->created_at }}</h4>
+        <p><b>Date: </b>{{ \Carbon\Carbon::parse($brf->created_at)->toFormattedDateString() }}</p>
         <form action="{{ route('saveAmountBRF') }}" method="POST">
             <table>
                 <thead>
@@ -23,25 +23,23 @@
                         <th class="center">Amount</th>
                     </tr>
                 </thead>
-
+                <tbody>
                 @foreach($brf->entries as $entry)
-                    <tbody>
-                        <tr>
-
                             <td>{{ $entry->description }}</td>
                             <td class="center">{{ $entry->quantity }}</td>
                             <td class="right-align">
                                 <input type="hidden" name="id[]" value="{{ $entry->id }}">
                                 <div class="input-field">
                                     <i class="prefix">P</i>
-                                    <input class="right-align" type="text" name="amount[]" placeholder="Amount" required>
+                                    <input class="right-align number" type="text" name="amount[]" placeholder="Amount"
+                                           required>
                                 </div>
                             </td>
                         </tr>
-                    </tbody>
                 @endforeach
+                </tbody>
             </table>
-            <input type="submit" value="Submit">
+            <button class="waves-effect waves-light btn green darken-3 right" type="submit">Save</button>
             {{ csrf_field() }}
         </form>
     </div>

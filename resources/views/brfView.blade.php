@@ -67,7 +67,8 @@
                 @foreach($brfB as $b)
                     <div class="card">
                         <div class="card-content">
-                            <span class="card-title"><b>Date: </b>{{ $b->created_at }}</span>
+                            <span class="card-title"><b>Date: </b>{{ \Carbon\Carbon::parse($b->created_at)
+                            ->toFormattedDateString() }}</span>
                             <table class="bordered highlight">
                                 <thead>
                                 <tr>
