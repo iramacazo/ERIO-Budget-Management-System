@@ -28,7 +28,12 @@
         <div class="nav-wrapper">
             <a href="{{route('homepage')}}" class="brand-logo" style="padding-left: 20px">
                 <div style="height: 64px;" class="valign-wrapper">
-                    <img src="{{asset('images/Logo.png')}}" height="50px">
+                    <img src="{{asset('images/Logo.png')}}" height="50px" style="user-drag: none;
+                        user-select: none;
+                        -moz-user-select: none;
+                        -webkit-user-drag: none;
+                        -webkit-user-select: none;
+                        -ms-user-select: none;">
                 </div></a>
             @if(!Auth::guest())
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
