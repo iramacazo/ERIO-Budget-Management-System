@@ -9,24 +9,24 @@
                 <th> Date </th>
                 <th> Details </th>
                 <th> PRS Number </th>
-                <th> Credit </th>
+                <th> Amount </th>
             </tr>
             @foreach( $entries as $entry )
                 <tr>
-                    <td valign="top"> {{ $entry->created_at }} </td>
+                    <td valign="top"> {{ $entry->created_at->toFormattedDateString() }} </td>
                     @if( $entry->mrf_entry_id != null )
                         <td>
-                            {{ $entry->mrf_entry->mrf->list_PA->primary_accounts->name }}
+                            Account: {{ $entry->mrf_entry->mrf->list_PA->primary_accounts->name }}
+                            <i>{{ $entry->mrf_entry->mrf->list_PA->primary_accounts->code }}</i> <br>
                             @if( $entry->mrf_entry->list_sa_id != null)
-                                ( {{ $entry->mrf_entry->list_SA->secondary_accounts->name }} )
+                                <i>( {{ $entry->mrf_entry->list_SA->secondary_accounts->name }} )</i>
                             @elseif( $entry->mrf_entry->list_ta_id != null)
-                                ( {{ $entry->mrf_entry->list_TA->tertiary_accounts->secondary_accounts->name }} )
-                                ( {{ $entry->mrf_entry->list_TA->tertiary_accounts->name }} )
+                                <i>{{ $entry->mrf_entry->list_TA->tertiary_accounts->secondary_accounts->name }} ->
+                                    {{ $entry->mrf_entry->list_TA->tertiary_accounts->name }}</i>
                             @endif
                             <br>
-                            Insert Link<br>
-                            Insert Link<br>
-                            Insert Link<br>
+                            Material Requisition Form<br>
+                            Description: {{ $entry->mrf_entry->description }}<br>
                         </td>
                         <td valign="top">
                             @if( $entry->mrf_entry->prs_id != null )
@@ -56,9 +56,11 @@
                                 ( {{ $entry->brf->list_TA->tertiary_accounts->name }} )
                             @endif
                             <br>
-                            Insert Detail <br>
-                            Insert Detail <br>
-                            Insert Detail <br>
+                            Bookstore Requisition Form <br>
+                            Entries:<br>
+                            @foreach( $entry->brf->entries as $b)
+                                {{ $b->description }}<br>
+                            @endforeach
                         </td>
                         <td valign="top">
                             @if( $entry->brf->prs_id != null )
@@ -91,9 +93,8 @@
                                 ( {{ $entry->pcv->tertiary_account->tertiary_accounts->name }} )
                             @endif
                             <br>
-                            Insert Detail <br>
-                            Insert Detail <br>
-                            Insert Detail <br>
+                            Petty Cash<br>
+                            Purpose: {{ $entry->pcv->purpose }}
                         </td>
                         <td valign="top">
                             @if( $entry->pcv->prs_id != null)
@@ -122,9 +123,8 @@
                                 ( {{ $entry->otherTransactions->list_TA->tertiary_accounts->name }} )
                             @endif
                             <br>
-                            Insert Detail <br>
-                            Insert Detail <br>
-                            Insert Detail <br>
+                            Other Transactions<br>
+                            Description: {{ $entry->otherTransactions->description }}
                         </td>
                         <td valign="top">
                             @if( $entry->otherTransactions->prs_id != null)
