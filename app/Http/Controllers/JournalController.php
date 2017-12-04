@@ -57,7 +57,6 @@ class JournalController extends Controller
             //sort all entries by
             $sorted = $entries->sortBy('created_at');
 
-
             return view('generalJournalView')->with('entries', $sorted);
     }
 }

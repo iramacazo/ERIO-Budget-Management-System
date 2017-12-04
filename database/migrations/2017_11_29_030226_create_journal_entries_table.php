@@ -30,6 +30,9 @@ class CreateJournalEntriesTable extends Migration
 
             $table->integer('prs_id')->nullable();
             $table->foreign('prs_id')->references('id')->on('payment_requisition_slips');
+
+            $table->boolean('adjust')->default(false);
+            $table->decimal('amount')->nullable();
             $table->timestamps();
         });
     }
