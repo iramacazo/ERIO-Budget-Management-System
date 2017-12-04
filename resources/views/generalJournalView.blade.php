@@ -1,20 +1,19 @@
 <html>
     <head>
-        <title> General Journal </title>
+        <title> Disbursement Journal </title>
     </head>
     <body>
-        <h1> General Journal </h1>
+        <h1> Disbursement Journal </h1>
         <table>
             <tr>
                 <th> Date </th>
-                <th> Account </th>
-                <th> Description </th>
+                <th> Details </th>
                 <th> PRS Number </th>
                 <th> Credit </th>
             </tr>
             @foreach( $entries as $entry )
                 <tr>
-                    <td> {{ $entry->created_at }} </td>
+                    <td valign="top"> {{ $entry->created_at }} </td>
                     @if( $entry->mrf_entry_id != null )
                         <td>
                             {{ $entry->mrf_entry->mrf->list_PA->primary_accounts->name }}
@@ -24,11 +23,12 @@
                                 ( {{ $entry->mrf_entry->list_TA->tertiary_accounts->secondary_accounts->name }} )
                                 ( {{ $entry->mrf_entry->list_TA->tertiary_accounts->name }} )
                             @endif
+                            <br>
+                            Insert Link<br>
+                            Insert Link<br>
+                            Insert Link<br>
                         </td>
-                        <td>
-                            Insert Link
-                        </td>
-                        <td>
+                        <td valign="top">
                             @if( $entry->mrf_entry->prs_id != null )
                                 {{ $entry->mrf_entry->prs->code }}
                             @else
@@ -39,8 +39,9 @@
                                 </form>
                             @endif
                         </td>
-                        <td>
-                            {{ $entry->mrf_entry->unit_price * $entry->mrf_entry->quantity }}
+                        <td valign="top" align="right">
+                            @php( $total = $entry->mrf_entry->unit_price * $entry->mrf_entry->quantity )
+                            {{ number_format($total) }}
                         </td>
                     @elseif( $entry->brf_id != null)
                         <td>
@@ -54,11 +55,12 @@
                                 ( {{ $entry->brf->list_TA->tertiary_accounts->secondary_accounts->name }} )
                                 ( {{ $entry->brf->list_TA->tertiary_accounts->name }} )
                             @endif
+                            <br>
+                            Insert Detail <br>
+                            Insert Detail <br>
+                            Insert Detail <br>
                         </td>
-                        <td>
-                            Insert Link
-                        </td>
-                        <td>
+                        <td valign="top">
                             @if( $entry->brf->prs_id != null )
                                 {{ $entry->brf->prs->code }}
                             @else
@@ -69,12 +71,12 @@
                                 </form>
                             @endif
                         </td>
-                        <td>
+                        <td valign="top" align="right">
                             @php( $total = 0 )
                             @foreach($entry->brf->entries as $b)
                                 @php( $total += $b->amount )
                             @endforeach
-                            {{ $total }}
+                            {{ number_format($total) }}
                         </td>
                     @elseif( $entry->pcv_id != null)
                         <td>
@@ -88,11 +90,12 @@
                                 ( {{ $entry->pcv->tertiary_account->tertiary_accounts->secondary_accounts->name }} )
                                 ( {{ $entry->pcv->tertiary_account->tertiary_accounts->name }} )
                             @endif
+                            <br>
+                            Insert Detail <br>
+                            Insert Detail <br>
+                            Insert Detail <br>
                         </td>
-                        <td>
-                            Insert Link
-                        </td>
-                        <td>
+                        <td valign="top">
                             @if( $entry->pcv->prs_id != null)
                                 {{ $entry->pcv->prs->code }}
                             @else
@@ -103,8 +106,8 @@
                                 </form>
                             @endif
                         </td>
-                        <td>
-                            {{ $entry->pcv->amount }}
+                        <td valign="top" align="right">
+                            {{ number_format($entry->pcv->amount) }}
                         </td>
                     @elseif( $entry->transaction_id != null)
                         <td>
@@ -118,11 +121,12 @@
                                 ( {{ $entry->otherTransactions->list_TA->tertiary_accounts->secondary_accounts->name }} )
                                 ( {{ $entry->otherTransactions->list_TA->tertiary_accounts->name }} )
                             @endif
+                            <br>
+                            Insert Detail <br>
+                            Insert Detail <br>
+                            Insert Detail <br>
                         </td>
-                        <td>
-                            Insert Link
-                        </td>
-                        <td>
+                        <td valign="top">
                             @if( $entry->otherTransactions->prs_id != null)
                                 {{ $entry->otherTransactions->prs->code }}
                             @else
@@ -133,8 +137,8 @@
                                 </form>
                             @endif
                         </td>
-                        <td>
-                            {{ $entry->otherTransactions->amount }}
+                        <td valign="top" align="right">
+                            {{ number_format($entry->otherTransactions->amount) }}
                         </td>
                     @endif
                 </tr>

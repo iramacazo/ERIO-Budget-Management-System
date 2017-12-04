@@ -97,7 +97,7 @@
             <a href="{{ route('pettyCashView') }}">Petty Cash</a>
             <a href="{{ route('createBudgetProposal') }}">Create Budget Proposal</a> <br>
             <a href="{{ route('editBudgetProposal') }}">Edit Budget Proposal</a> <br>
-            <a href="{{ route('generalJournal') }}"> Journal </a> <br>
+            <a href="{{ route('disbursementJournal') }}"> Disbursement Journal </a> <br>
         @elseif(Auth::user()->usertype == 'Executive')
             <a href="{{ route('requestsForAccess') }}">Accessed Budgets</a>
             <a href="{{ route('execMRF') }}">Material Requisition Forms</a>

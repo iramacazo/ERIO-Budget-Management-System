@@ -59,23 +59,5 @@ class JournalController extends Controller
 
 
             return view('generalJournalView')->with('entries', $sorted);
-
-            $entries = DB::table('journal_entries')
-                            ->join('material_requisition_form_entries', 'material_requisition_form_entries.id',
-                                '=', 'journal_entries.mrf_entry_id')
-                            ->join('material_requisition_forms', 'material_requisition_forms.id',
-                                  '=', 'material_requisition_form_entries.id')
-                            ->join('bookstore_requisition_forms', 'bookstore_requisition_forms.id',
-                                '=', 'journal_entries.brf_id')
-                            ->join('other_transactions', 'other_transactions.id',
-                                '=', 'journal_entries.transaction_id')
-                            ->join('petty_cash_vouchers', 'petty_cash_vouchers.id',
-                                '=', 'journal_entries.pcv_id')
-                            ->where('material_requisition_forms.list_pa_id', '=', $id)
-                            ->orWhere('bookstore_requisition_forms.list_pa_id', '=', $id)
-                            ->orWhere('other_transactions.list_pa_id', '=', $id)
-                            ->orWhere('petty_cash_vouchers.list_pa_id', '=', $id)
-                            ->get();
-
     }
 }
