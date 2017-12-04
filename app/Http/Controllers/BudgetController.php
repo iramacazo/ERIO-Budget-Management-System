@@ -210,11 +210,13 @@ class BudgetController extends Controller
                         ->orWhere('approved_by_acc', '=', '0')
                         ->get();
 
+        $proposal_ids = "";
+
         foreach($proposal_id as $p){
-            $proposal_id = $p->id;
+            $proposal_ids = $p->id;
         }
 
-        return $proposal_id;
+        return $proposal_ids;
     }
 
     //add new secondary account
@@ -652,7 +654,7 @@ class BudgetController extends Controller
 
     //get all accounts
     public function getAccount($primary_account = null, $secondary_account = null){
-        if($this->getProposalBudgetId() == null)
+        if($this->getProposalBudgetId()=== "")
             return redirect('propose/create-budget-range');
         if($primary_account && $secondary_account){
             $sub_accounts = $this->getTertiaryAccounts($secondary_account, $primary_account);
@@ -865,10 +867,11 @@ class BudgetController extends Controller
     }
 
     public function createRangeView(){
-        if($this->getProposalBudgetId() == null){
+        if($this->getProposalBudgetId() === ""){
             return view('proposal/addRange');
         }
-        else return redirect('/propose');
+        else
+            return redirect('/propose');
     }
 
     public function printView(){
