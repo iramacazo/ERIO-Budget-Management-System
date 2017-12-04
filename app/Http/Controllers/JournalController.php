@@ -72,6 +72,8 @@ class JournalController extends Controller
             $pa_id = $primary;
         }
 
+        $pa = ListOfPrimaryAccounts::find($pa_id)->first();
+
         $entries->filter(function ($entry) use ($pa_id){
            if( $entry->mrf_entry_id != null ){
                return $entry->mrf_entry->mrf->list_PA->id == $pa_id;
@@ -104,6 +106,8 @@ class JournalController extends Controller
 
         $sorted = $entries->sortBy('created_at');
 
-        return view('ledger')->with('entries', $sorted);
+        return view('ledger')
+            ->with('entries', $sorted)
+            ->with('primary', $pa);
     }
 }

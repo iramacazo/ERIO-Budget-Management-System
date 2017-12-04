@@ -11,7 +11,7 @@ class ListOfPrimaryAccounts extends Model
         return $this->belongsTo("App\PrimaryAccounts", 'account_id', 'id');
     }
 
-    public function budgets(){
+    public function budget(){
         return $this->belongsTo("App\Budget", 'budget_id', 'id');
     }
 
