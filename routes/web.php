@@ -66,6 +66,8 @@ Route::post('/petty_cash/receive', 'PettyCashController@receivePettyCash')->name
 
 Route::post('/petty_cash/deny', 'PettyCashController@denyPettyCash')->name('denyPettyCash');
 
+Route::post('/petty_cash/refill', 'PettyCashController@pcrf')->name('pcrf');
+
 //Request Access Accounts Routes
 Route::get('/accounts', 'AccountController@accessedAccountsView')->name('accessedAccountsView');
 

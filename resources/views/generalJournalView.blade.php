@@ -41,8 +41,8 @@
                             @endif
                         </td>
                         <td valign="top">
-                            @if( $entry->mrf_entry->prs_id != null )
-                                {{ $entry->mrf_entry->prs->code }}
+                            @if( $entry->prs_id != null )
+                                {{ $entry->prs->code }}
                             @else
                                 <form action="" method="POST">
                                     {{ csrf_field() }}
@@ -86,8 +86,8 @@
                             @endif
                         </td>
                         <td valign="top">
-                            @if( $entry->brf->prs_id != null )
-                                {{ $entry->brf->prs->code }}
+                            @if( $entry->prs_id != null )
+                                {{ $entry->prs->code }}
                             @else
                                 <form action="" method="POST">
                                     {{ csrf_field() }}
@@ -130,8 +130,8 @@
                             @endif
                         </td>
                         <td valign="top">
-                            @if( $entry->pcv->prs_id != null)
-                                {{ $entry->pcv->prs->code }}
+                            @if( $entry->prs_id != null)
+                                {{ $entry->prs->code }}
                             @else
                                 <button> Go to Petty Cash </button>
                             @endif
@@ -166,8 +166,8 @@
                             @endif
                         </td>
                         <td valign="top">
-                            @if( $entry->otherTransactions->prs_id != null)
-                                {{ $entry->otherTransactions->prs->code }}
+                            @if( $entry->prs_id != null)
+                                {{ $entry->prs->code }}
                             @else
                                 <form action="" method="POST">
                                     {{ csrf_field() }}

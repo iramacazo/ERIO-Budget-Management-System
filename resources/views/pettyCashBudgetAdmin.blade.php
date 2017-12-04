@@ -102,8 +102,22 @@
     @endif
 
     <h2> Petty Cash Vouchers for Refill </h2>
-    <button href=""> Refill Petty Cash</button>
     @if($refill != null)
+        @php( $total = 0 )
+        @foreach($refill as $r)
+            @php( $total += $r->amount )
+        @endforeach
+        <form action="{{ route('pcrf') }}" method="POST">
+            {{ csrf_field() }}
+            <label> PRS Number: </label>
+            <input type="text" name="code"><br>
+            <input type="submit" value="Refill Petty Cash"><br>
+        </form>
+        
+        @if( $total >= 5000 * .7 )
+            You must refill now!
+        @endif
+
         @foreach($refill as $r)
             Requested By: {{ $r->requested_by }}<br>
             Approved By: {{ $r->approved_by }}<br>
