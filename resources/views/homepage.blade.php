@@ -102,6 +102,11 @@
             <a href="{{ route('requestsForAccess') }}">Accessed Budgets</a>
             <a href="{{ route('execMRF') }}">Material Requisition Forms</a>
         @endif
+        @if(session()->has('success'))
+            <div>
+                {{ session()->get('success') }}
+            </div>
+            @endif
     </div>
 </div>
 

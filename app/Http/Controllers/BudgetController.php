@@ -163,26 +163,26 @@ class BudgetController extends Controller
 
         if(isset($request->account_p) && !isset($request->account_s)){
             if($validator->fails()){
-                return redirect('/propose/'.$request->account_p)
+                return redirect('/propose/add/'.$request->account_p)
                     ->withErrors($validator)
                     ->withInput();
             }
 
             $this->addSecondaryAccount($request->account_p, $request->account, $request->budget);
 
-            return redirect('/propose/'.$request->account_p);
+            return redirect('/propose/add/'.$request->account_p);
         }
 
         if(isset($request->account_s) && isset($request->account_p)){
             if($validator->fails()){
-                return redirect('/propose/'.$request->account_p.'/'.$request->account_s)
+                return redirect('/propose/add/'.$request->account_p.'/'.$request->account_s)
                     ->withErrors($validator)
                     ->withInput();
             }
 
             $this->addTertiaryAccount($request->account_p, $request->account_s, $request->account, $request->budget);
 
-            return redirect('/propose/'.$request->account_p.'/'.$request->account_s);
+            return redirect('/propose/add/'.$request->account_p.'/'.$request->account_s);
         }
 
         $validator = Validator::make($request->all(), [
@@ -192,14 +192,14 @@ class BudgetController extends Controller
         ]);
 
         if($validator->fails()){
-            return redirect('/propose/'.$request->account_p.'/'.$request->account_s)
+            return redirect('/propose/add/'.$request->account_p.'/'.$request->account_s)
                 ->withErrors($validator)
                 ->withInput();
         }
 
         $this->addPrimaryAccount($request->account, $request->budget, $request->code);
 
-        return redirect('/propose');
+        return redirect('/propose/add/');
     }
 
     //get id of budget proposal
@@ -449,7 +449,7 @@ class BudgetController extends Controller
         $budget->approved_by_vp = 0;
         $budget->save();
 
-        return redirect('propose/'); //redirect to add accounts page
+        return redirect('propose/add'); //redirect to add accounts page
     }
 
     //get all primary accounts
@@ -860,6 +860,35 @@ class BudgetController extends Controller
         }
     }
 
+    public function saveBudget(Request $request){
+        $budget = Budget::find($this->getProposalBudgetId());
+        if($request->approved_vp == "approved"){
+            $budget->approved_by_vp = true;
+            $budget->save();
+        }
+        else{
+            $budget->approved_by_vp = false;
+        }
+        if($request->approved_ac == "approved"){
+            $budget->approved_by_acc = true;
+            $budget->save();
+        }
+        else{
+            $budget->approved_by_acc = false;
+        }
+        if($request->approved_vp == "approved" && $request->approved_ac == "approved"){
+            $budget->save();
+            return redirect('/')->with('success', 'Budget Saved. This budget will now be used for '
+                .$budget->start_range.' - '.$budget->end_range);
+        }
+        if($budget->approved_by_vp == 1 && $budget->approved_by_acc == 1){
+            return redirect('/')->with('success', 'Budget Saved. This budget will now be used for '
+                .$budget->start_range.' - '.$budget->end_range);
+        }
+
+        return redirect('/propose/add');
+    }
+
     //  -- redirect to view functions
 
     public function showLinks(){ //TEMPO
@@ -871,7 +900,7 @@ class BudgetController extends Controller
             return view('proposal/addRange');
         }
         else
-            return redirect('/propose');
+            return redirect('/propose/add');
     }
 
     public function printView(){

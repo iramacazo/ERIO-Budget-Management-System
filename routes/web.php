@@ -129,15 +129,17 @@ Route::post('/propose/modify', 'BudgetController@modifyAccount');
 
 Route::get('/propose/print', 'BudgetController@printView');
 
-Route::get('/propose/', 'BudgetController@getAccount')->name('editBudgetProposal');
+Route::get('/propose/save', 'BudgetController@saveBudget');
+
+Route::get('/propose/add', 'BudgetController@getAccount')->name('editBudgetProposal');
 
 Route::post('/add-account-proposal', 'BudgetController@addAccount')->name('add_account');
 
-Route::get('/propose/{primary_account}', 'BudgetController@getAccount');
+Route::get('/propose/add/{primary_account}', 'BudgetController@getAccount');
 
-Route::get('/propose/{primary_account}/{secondary_account}', 'BudgetController@getAccount');
+Route::get('/propose/add/{primary_account}/{secondary_account}', 'BudgetController@getAccount');
 
-Route::post('propose/submit_budget', 'BudgetController@submitBudget')->name('submit_budget');
+Route::post('propose/submit_budget', 'BudgetController@submitBudget')->name('submit_budget'); //unused
 
 //Journal Routes
 
