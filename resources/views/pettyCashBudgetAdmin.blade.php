@@ -102,13 +102,13 @@
     @endif
 
     <h2> Petty Cash Vouchers for Refill </h2>
-    <form action="{{ route('pcrf') }}" method="POST">
-        {{ csrf_field() }}
-        <label> PRS Number: </label>
-        <input type="text" name="code"><br>
-        <input type="submit" value="Refill Petty Cash"><br>
-    </form>
     @if($refill != null)
+        <form action="{{ route('pcrf') }}" method="POST">
+            {{ csrf_field() }}
+            <label> PRS Number: </label>
+            <input type="text" name="code"><br>
+            <input type="submit" value="Refill Petty Cash"><br>
+        </form>
         @foreach($refill as $r)
             Requested By: {{ $r->requested_by }}<br>
             Approved By: {{ $r->approved_by }}<br>
