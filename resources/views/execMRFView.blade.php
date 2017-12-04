@@ -10,7 +10,7 @@
 
 @section('content')
     <div class="col s8 offset-s2 white z-depth-2" style="padding: 25px">
-        <h3> Material Requisition Forms for Approval</h3>
+        <h4> Material Requisition Forms for Approval</h4>
 
         @if($pending->isEmpty())
             <br>
@@ -51,7 +51,8 @@
                                         <form action="{{ route('printMRF') }}" style="width: 0; display: inline" method="POST">
                                             {{ csrf_field() }}
                                             <input type="hidden" value="{{ $p->id }}" name="id">
-                                            <button type="submit" class="waves-effect waves-light btn green darken-3">Print</button>
+                                            <button type="submit" class="waves-effect waves-light btn green darken-3">
+                                                <i class="material-icons left">print</i>Print</button>
                                         </form>
                                     </div>
                                 </li>
