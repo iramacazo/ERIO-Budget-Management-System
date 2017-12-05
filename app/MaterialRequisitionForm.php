@@ -13,4 +13,8 @@ class MaterialRequisitionForm extends Model
     public function list_PA(){
         return $this->belongsTo('App\ListOfPrimaryAccounts', 'list_pa_id', 'id');
     }
+
+    public function requester(){
+        return $this->belongsTo('App\User', 'requested_by', 'id');
+    }
 }

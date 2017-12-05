@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class PettyCashVoucher extends Model
 {
     //
-    public function requested_by(){
+    public function requester(){
         return $this->belongsTo("App\User", "requested_by", 'id');
     }
 

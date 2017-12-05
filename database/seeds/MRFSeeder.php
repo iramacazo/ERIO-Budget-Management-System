@@ -20,7 +20,9 @@ class MRFSeeder extends Seeder
            'contact_person_email' => 'paolo@gmail.com',
            'place_of_delivery' => 'hssh',
            'dept' => 'vperi',
-           'list_pa_id' => 1
+           'list_pa_id' => 1,
+           'created_at' => Carbon::now(),
+           'updated_at' => Carbon::now()
         ]);
 
         $acc = DB::table('accessed_tertiary_accounts')
@@ -35,7 +37,9 @@ class MRFSeeder extends Seeder
                 'description' => 'test',
                 'quantity' => 2,
                 'list_ta_id' => $a->id,
-                'mrf_id' => $mrf->id
+                'mrf_id' => $mrf->id,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
             ]);
         }
     }

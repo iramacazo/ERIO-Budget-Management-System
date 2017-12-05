@@ -9,7 +9,7 @@
         <li></li>
         <li>Reports</li>
         <li><a href="{{ route('accountsActivityPA') }}"> Accounts Activity </a></li>
-        <li><a href=""> Transaction per Account </a></li>
+        <li><a href="{{ route('transactionsToday') }}"> Transactions Today </a></li>
         <li><a href=""> Budget Variance </a></li>
 @endsection
 

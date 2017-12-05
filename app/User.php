@@ -66,4 +66,8 @@ class User extends Authenticatable
     public function otherTransactions(){
         return $this->hasMany('App\OtherTransactions', 'user_id', 'id');
     }
+
+    public function mrfs(){
+        return $this->hasMany('App\MaterialRequisitionForms', 'requested_by', 'id');
+    }
 }

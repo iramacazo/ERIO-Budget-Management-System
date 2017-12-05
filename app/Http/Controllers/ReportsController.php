@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\BookstoreRequisitionForm;
 use App\JournalEntries;
 use App\ListOfPrimaryAccounts;
 use App\ListOfSecondaryAccounts;
 use App\ListOfTertiaryAccounts;
+use App\MaterialRequisitionForm;
+use App\OtherTransactions;
+use App\PettyCashVoucher;
 use Illuminate\Http\Request;
 use App\User;
 use Illuminate\Support\Collection;
@@ -292,5 +296,34 @@ class ReportsController extends Controller
         return view('accountsActivity')
             ->with('accounts', $sorted)
             ->with('type', 'Tertiary');
+    }
+
+    public function transactionsToday(){
+        $brf = BookstoreRequisitionForm::all();
+        $mrf = MaterialRequisitionForm::all();
+        $pcv = PettyCashVoucher::all();
+        $transac = OtherTransactions::all();
+
+        $b = $brf->filter(function($b){
+            return $b->updated_at->isToday();
+        });
+
+        $m = $mrf->filter(function($m){
+            return $m->updated_at->isToday();
+        });
+
+        $p = $pcv->filter(function($p){
+            return $p->updated_at->isToday();
+        });
+
+        $t = $transac->filter(function($t){
+            return $t->updated_at->isToday();
+        });
+
+        return view('transactionsToday')
+            ->with('brf', $b)
+            ->with('mrf', $m)
+            ->with('pcv', $p)
+            ->with('transac', $t);
     }
 }

@@ -119,7 +119,7 @@
         @endif
 
         @foreach($refill as $r)
-            Requested By: {{ $r->requested_by }}<br>
+            Requested By: {{ $r->requester->name }}<br>
             Approved By: {{ $r->approved_by }}<br>
             Account:
             @if( $r->list_pa_id != null)
