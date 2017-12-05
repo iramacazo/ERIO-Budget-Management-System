@@ -4,15 +4,28 @@
     </head>
     <body>
     <h1>  Ledger </h1>
-    Primary Level
     <form action="{{ route('getLedger') }}" method="POST">
         {{ csrf_field() }}
+        <label> Accounts: </label>
         <select name="id">
             @if( $list != null )
                 @foreach( $list as $l)
                     <option value="{{ $l->id }}">
                         {{ $l->primary_accounts->name }}
                     </option>
+                    @foreach( $l->list_of_secondary_accounts as $sec)
+                        <option>
+                            {{ $sec->secondary_accounts->primary_accounts->name }}:
+                            {{ $sec->secondary_accounts->name }}
+                        </option>
+                        @foreach( $sec->list_of_tertiary_accounts as $ter)
+                            <option>
+                                {{ $ter->tertiary_accounts->secondary_accounts->primary_accounts->name }}:
+                                {{ $ter->tertiary_accounts->secondary_accounts->name }}:
+                                {{ $ter->tertiary_accounts->name }}
+                            </option>
+                        @endforeach
+                    @endforeach
                 @endforeach
             @endif
         </select>
