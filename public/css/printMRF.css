@@ -14,11 +14,10 @@ p{
     body * {
         visibility: hidden;
     }
-    table, table * {
+    .print_stuff, .print_stuff * {
         visibility: visible;
     }
-    table {
-        zoom: 50%;
+    .print_stuff {
         position: absolute;
         left: 0;
         top: 0;
@@ -26,6 +25,7 @@ p{
 
     @page{
         size: landscape !important;
+        margin: 0.5cm;
     }
 
     button{
