@@ -165,5 +165,9 @@ Route::post('/adjustEntry', 'JournalController@adjustForm')->name('adjustForm');
 
 Route::post('/adjustEntry/save', 'JournalController@adjustEntry')->name('adjustEntry');
 
+//Report Routes
+
+Route::get('/reports/list_of_accessed_users', 'ReportsController@getListOfUsers');
+
 
 
