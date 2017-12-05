@@ -83,7 +83,7 @@ class PettyCashController extends Controller
 
         $pcv->save();
 
-        return view('requestPettyCashResult')->with("result", $pcv);
+        return redirect("/petty_cash")->with('result', $pcv);
     }
 
     public function cancelPettyCashRequest(Request $request){
@@ -95,7 +95,7 @@ class PettyCashController extends Controller
         $pettyCash->status = 'Canceled';
         $pettyCash->save();
 
-        return redirect()->route('pettyCashView');
+        return redirect()->route('pettyCashView')->with('cancelled', $pettyCash);
     }
 
     public function approvePettyCashRequest(Request $request){

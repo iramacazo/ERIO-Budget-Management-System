@@ -62,3 +62,13 @@
             Request Petty Cash</a>
     </div>
 @endsection
+
+<script>
+    @section('script')
+    @if(session()->has('result'))
+    Materialize.toast("Petty cash for {{session('result')->purpose}} was added!", 4000);
+    @elseif(session()->has('cancelled'))
+    Materialize.toast("Petty cash for {{session('cancelled')->purpose}} was cancelled!", 4000);
+    @endif
+    @endsection
+</script>
