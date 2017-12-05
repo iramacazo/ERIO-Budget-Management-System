@@ -168,8 +168,8 @@ class JournalController extends Controller
            'amount' => 'required'
         ]);
 
-        $type = str_before($request->id, '-');
-        $id = (int) str_after($request->id, '-');
+        $type = $request->type;
+        $id = $request->id;
 
         $entry = new JournalEntries;
 
