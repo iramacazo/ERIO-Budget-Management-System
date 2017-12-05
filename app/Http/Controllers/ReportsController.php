@@ -326,4 +326,85 @@ class ReportsController extends Controller
             ->with('pcv', $p)
             ->with('transac', $t);
     }
+
+    public function budgetVariance(){
+        $budget = Budget::latest()->whereDate('start_range', '<', Carbon::now())->first();
+        $id = $budget->id;
+        $primary = ListOfPrimaryAccounts::where('budget_id', $id)->get();
+        $entries = JournalEntries::all();
+        $list = new Collection();
+        foreach($primary as $p){
+            $pa_id = $p->id;
+
+            $filtered = $entries->filter(function ($entry) use ($pa_id){
+                if( $entry->mrf_entry_id != null ){
+                    return $entry->mrf_entry->mrf->list_PA->id == $pa_id;
+                } else if( $entry->brf_id != null ){
+                    if( $entry->brf->list_pa_id != null){
+                        return $entry->brf->list_PA->id == $pa_id;
+                    } else if( $entry->brf->list_sa_id != null){
+                        return $entry->brf->list_SA->list_of_primary_accounts->id == $pa_id;
+                    } else if( $entry->brf->list_ta_id != null){
+                        return $entry->brf->list_TA->list_of_secondary_accounts->list_of_primary_accounts->id == $pa_id;
+                    }
+                } else if( $entry->pcv_id != null ){
+                    if( $entry->pcv->list_pa_id != null){
+                        return $entry->pcv->list_PA->id == $pa_id;
+                    } else if( $entry->pcv->list_sa_id != null){
+                        return $entry->pcv->list_SA->list_of_primary_accounts->id == $pa_id;
+                    } else if( $entry->pcv->list_ta_id != null){
+                        return $entry->pcv->list_TA->list_of_secondary_accounts->list_of_primary_accounts->id == $pa_id;
+                    }
+                } else if( $entry->transaction_id != null){
+                    if( $entry->otherTransactions->list_pa_id != null){
+                        return $entry->otherTransactions->list_PA->id == $pa_id;
+                    } else if( $entry->otherTransactions->list_sa_id != null){
+                        return $entry->otherTransactions->list_SA->list_of_primary_accounts->id == $pa_id;
+                    } else if( $entry->otherTransactions->list_ta_id != null){
+                        return $entry->otherTransactions->list_TA->list_of_secondary_accounts->list_of_primary_accounts->id == $pa_id;
+                    }
+                }
+            });
+
+            $total = 0; //total expenses
+            foreach($filtered as $f){
+                if( $f->adjust == false ){
+                    if( $f->mrf_entry_id != null ){
+                        $total += $f->mrf_entry->unit_price * $f->mrf_entry->quantity;
+                    } else if( $f->brf_id != null ){
+                        $brfTotal = 0;
+                        foreach($f->brf->entries as $b){
+                            $brfTotal += $b->amount;
+                        }
+                        $total += $brfTotal;
+                    } else if( $f->pcv_id != null ){
+                        $total += $f->pcv->amount;
+                    } else if( $f->transaction_id != null){
+                        $total += $f->otherTransactions->amount;
+                    }
+                } else {
+                    if( $f->amount < 0){
+                        $total += $f->amount * -1; //had to pay more so should add to expense
+                    } else {
+                        $total -= $f->amount; //means na-over-record kayo thus bawas dapat sa expense
+                    }
+                }
+            }
+
+            $diff = $p->amount - $total;
+            $var = $diff/$p->amount;
+            $tempo = collect([
+                'code' => $p->primary_accounts->code,
+                'name' => $p->primary_accounts->name,
+                'budget' => $p->amount,
+                'actual' => $total,
+                'diff' => $diff,
+                'variance' => $var
+            ]);
+
+            $list->push($tempo);
+        }
+
+        return view('budgetVariance')->with('list', $list);
+    }
 }
