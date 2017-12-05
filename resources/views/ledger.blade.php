@@ -10,16 +10,16 @@
         <select name="id">
             @if( $list != null )
                 @foreach( $list as $l)
-                    <option value="{{ $l->id }}">
+                    <option value="p-{{ $l->id }}">
                         {{ $l->primary_accounts->name }}
                     </option>
                     @foreach( $l->list_of_secondary_accounts as $sec)
-                        <option>
+                        <option value="s-{{ $sec->id }}">
                             {{ $sec->secondary_accounts->primary_accounts->name }}:
                             {{ $sec->secondary_accounts->name }}
                         </option>
                         @foreach( $sec->list_of_tertiary_accounts as $ter)
-                            <option>
+                            <option value="t-{{ $ter->id }}">
                                 {{ $ter->tertiary_accounts->secondary_accounts->primary_accounts->name }}:
                                 {{ $ter->tertiary_accounts->secondary_accounts->name }}:
                                 {{ $ter->tertiary_accounts->name }}
@@ -42,7 +42,18 @@
         </tr>
         <tr>
             <td valign="top">
-                {{ $primary->budget->start_range->toFormattedDateString() }}
+                @isset($primary)
+                    {{ $primary->budget->start_range->toFormattedDateString() }}
+                    @php( $amount = $primary->amount )
+                @endisset
+                @isset($secondary)
+                    {{ $secondary->list_of_primary_accounts->budget->start_range->toFormattedDateString() }}
+                    @php( $amount = $secondary->amount)
+                @endisset
+                @isset($tertiary)
+                    {{ $tertiary->list_of_secondary_accounts->list_of_primary_accounts->budget->start_range->toFormattedDateString() }}
+                    @php( $amount = $tertiary->amount)
+                @endisset
             </td>
             <td>
                 Starting Balance
@@ -50,9 +61,9 @@
             <td></td>
             <td></td>
             <td></td>
-            <td align="right">{{ number_format($primary->amount) }}</td>
+            <td align="right">{{ number_format($amount) }}</td>
         </tr>
-        @php( $balance = $primary->amount )
+        @php( $balance = $amount )
         @foreach( $entries as $entry )
             <tr>
                 <td valign="top"> {{ $entry->created_at->toFormattedDateString() }} </td>
