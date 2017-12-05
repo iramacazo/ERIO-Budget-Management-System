@@ -128,7 +128,7 @@ class JournalController extends Controller
         $id = (int) str_after($request->id, '-');
 
         if( $type == 'p'){
-            $balance = ListOfPrimaryAccounts::find($id)->first();
+            $balance = ListOfPrimaryAccounts::find($id);
             $pa_id = $id;
             $filtered = $entries->filter(function ($entry) use ($pa_id){
                 if( $entry->mrf_entry_id != null ){
@@ -167,7 +167,7 @@ class JournalController extends Controller
                 ->with('list', $list_PA); //for filter
 
         } else if( $type == 's'){
-            $balance = ListOfSecondaryAccounts::find($id)->first();
+            $balance = ListOfSecondaryAccounts::find($id);
             $sa_id = $id;
             $filtered = $entries->filter(function ($entry) use ($sa_id){
                 if( $entry->mrf_entry_id != null ){
@@ -209,7 +209,7 @@ class JournalController extends Controller
                 ->with('secondary', $balance) //balance
                 ->with('list', $list_PA); //for filter
         } else {
-            $balance = ListOfTertiaryAccounts::find($id)->first();
+            $balance = ListOfTertiaryAccounts::find($id);
             $ta_id = $id;
             $filtered = $entries->filter(function ($entry) use ($ta_id){
                 if( $entry->mrf_entry_id != null ){

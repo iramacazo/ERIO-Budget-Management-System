@@ -31,6 +31,18 @@
         </select>
         <input type="submit" value="Submit">
     </form>
+    @isset($primary)
+        {{ $primary->primary_accounts->name }}
+    @endisset
+    @isset($secondary)
+        {{ $secondary->list_of_primary_accounts->primary_accounts->name }}\
+        {{ $secondary->secondary_accounts->name }}
+    @endisset
+    @isset($tertiary)
+        {{ $tertiary->list_of_secondary_accounts->list_of_primary_accounts->primary_accounts->name }}\
+        {{ $tertiary->list_of_secondary_accounts->secondary_accounts->name }}\
+        {{ $tertiary->tertiary_accounts->name }}
+    @endisset
     <table>
         <tr>
             <th> Date </th>
