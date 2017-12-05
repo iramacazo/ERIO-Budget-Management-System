@@ -174,3 +174,7 @@ Route::get('/accounts_activity/primary', 'ReportsController@accountsActivityPA')
 Route::get('/accounts_activity/secondary', 'ReportsController@accountsActivitySA')->name('accountsActivitySA');
 
 Route::get('/accounts_activity/tertiary', 'ReportsController@accountsActivityTA')->name('accountsActivityTA');
+
+Route::get('/report/transactions', 'ReportsController@transactionsToday')->name('transactionsToday');
+
+Route::get('/report/budget_variance', 'ReportsController@budgetVariance')->name('budgetVariance');
