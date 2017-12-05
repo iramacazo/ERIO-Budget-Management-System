@@ -41,11 +41,11 @@
                                     <input type="hidden" value="{{ $p->account_name }}" name="account">
                                     <input type="hidden" value="p-{{ $p->id }}" name="id">
                                     <button class="waves-effect waves-light btn green darken-3"
-                                            type="submit" value="Approve">
+                                            type="submit" value="Approve" name="submit">
                                         <i class="material-icons">check</i>
                                     </button>
                                     <button class="waves-effect waves-light btn red darken-2"
-                                            type="submit" value="Deny">
+                                            type="submit" value="Deny" name="submit">
                                         <i class="material-icons">close</i>
                                     </button>
                                 </form>
@@ -67,11 +67,11 @@
                                     <input type="hidden" value="{{ $s->account_name }}" name="account">
                                     <input type="hidden" value="s-{{ $s->id }}" name="id">
                                     <button class="waves-effect waves-light btn green darken-3"
-                                            type="submit" value="Approve">
+                                            type="submit" value="Approve" name="submit">
                                         <i class="material-icons">check</i>
                                     </button>
                                     <button class="waves-effect waves-light btn red darken-2"
-                                            type="submit" value="Deny">
+                                            type="submit" value="Deny" name="submit">
                                         <i class="material-icons">close</i>
                                     </button>
                                 </form>
@@ -93,11 +93,11 @@
                                     <input type="hidden" value="{{ $t->account_name }}" name="account">
                                     <input type="hidden" value="t-{{ $t->id }}" name="id">
                                     <button class="waves-effect waves-light btn green darken-3"
-                                            type="submit" value="Approve">
+                                            type="submit" value="Approve" name="submit">
                                         <i class="material-icons">check</i>
                                     </button>
                                     <button class="waves-effect waves-light btn red darken-2"
-                                            type="submit" value="Deny">
+                                            type="submit" value="Deny" name="submit">
                                         <i class="material-icons">close</i>
                                     </button>
                                 </form>
