@@ -4,7 +4,8 @@
     </head>
     <body>
     <h1>  Ledger </h1>
-    <form action="{{ route('mergeURL') }}" method="POST">
+    Primary Level
+    <form action="{{ route('getLedger') }}" method="POST">
         {{ csrf_field() }}
         <select name="id">
             @if( $list != null )
