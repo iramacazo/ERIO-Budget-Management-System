@@ -127,6 +127,11 @@ class BRFController extends Controller
         }
     }
 
+    public function printBRF(Request $request){
+        $brf = BookstoreRequisitionForm::find($request->id);
+        return view('printBRF')->with('brf', $brf);
+    }
+    
     public function saveAmount(Request $request){
         $total = 0;
         foreach($request->id as $id){

@@ -18,7 +18,8 @@
                 <ul class="collapsible" data-collapsible="accordion">
             @foreach($brfA as $a)
                     <li>
-                        <div class="collapsible-header"><span><b>Date: </b>{{ $a->created_at }}</span></div>
+                        <div class="collapsible-header"><span><b>Date: </b>{{ \Carbon\Carbon::parse($a->created_at)
+                        ->toFormattedDateString() }}</span></div>
                         <div class="collapsible-body">
                             <table class="bordered highlight">
                                 <thead>
@@ -47,11 +48,11 @@
                                     </tr>
                                 </tbody>
                             </table><br>
-                            <form action="{{ route('brfAccess') }}" method="POST">
+                            <form action="{{ route('printBRF') }}" method="POST">
                                 {{ csrf_field() }}
                                 <input type="hidden" value="{{ $a->id }}" name="id">
                                 <button type="submit" class="waves-effect waves-light btn green darken-3 right">
-                                    <i class="material-icons left">print</i>Print</button>
+                                    <i class="material-icons left">print</i>Print Preview</button>
                             </form>
                             <br>
                         </div>
@@ -85,16 +86,22 @@
                                 @endforeach
                                 </tbody>
                             </table>
-                            <form action="{{ route('brfAccess') }}" method="POST" style="margin: 0">
-                                {{ csrf_field() }}
-                                <input type="hidden" value="{{ $b->id }}" name="id">
-                                <div class="card-action">
-                                    <button class="waves-effect waves-light btn green darken-3" type="submit" name='submit'
-                                            value="Retrieve Amounts">Finalize BRF</button>
-                                    <button class="waves-effect waves-light btn green darken-3" type="submit" name='submit'>
-                                        <i class="material-icons left">print</i>Print</button>
-                                </div>
-                            </form>
+                            <br>
+                            <div class="right-align">
+                                <form action="{{ route('brfAccess') }}" method="POST"
+                                      style="margin: 0; display: inline">
+                                    {{ csrf_field() }}
+                                    <input type="hidden" value="{{ $b->id }}" name="id">
+                                        <button class="waves-effect waves-light btn green darken-3" type="submit" name='submit'
+                                                value="Retrieve Amounts">Finalize BRF</button>
+                                </form>
+                                <form action="{{ route('printBRF') }}" method="POST" style="display: inline">
+                                    {{ csrf_field() }}
+                                    <input type="hidden" value="{{ $b->id }}" name="id">
+                                    <button type="submit" class="waves-effect waves-light btn green darken-3">
+                                        <i class="material-icons left">print</i>Print Preview</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 @endforeach
