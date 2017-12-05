@@ -12,6 +12,7 @@
     <li class="active"><a href="{{ route('brfView') }}">Bookstore Requisition Form</a></li>
     <li><a href="{{ route('viewMRF') }}"> Material Requisition Form </a></li>
     <li><a href="{{ route('pettyCashView') }}">Petty Cash</a></li>
+    <li><a href="{{ route('transacView') }}"> Transactions </a></li>
 @endsection
 
 @section('content')

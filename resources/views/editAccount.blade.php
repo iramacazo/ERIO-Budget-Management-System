@@ -15,6 +15,7 @@
         <li><a href="{{ route('brfView') }}">Bookstore Requisition Form</a></li>
         <li><a href="{{ route('viewMRF') }}"> Material Requisition Form </a></li>
         <li><a href="{{ route('pettyCashView') }}">Petty Cash</a></li>
+        <li><a href="{{ route('transacView') }}"> Transactions </a></li>
     @elseif(Auth::user()->usertype == "Budget Admin")
     @endif
 @endsection
