@@ -171,5 +171,6 @@ Route::get('/reports/list_of_accessed_users', 'ReportsController@getListOfUsers'
 
 Route::get('/accounts_activity/primary', 'ReportsController@accountsActivityPA')->name('accountsActivityPA');
 
+Route::get('/accounts_activity/secondary', 'ReportsController@accountsActivitySA')->name('accountsActivitySA');
 
-
+Route::get('/accounts_activity/tertiary', 'ReportsController@accountsActivityTA')->name('accountsActivityTA');
