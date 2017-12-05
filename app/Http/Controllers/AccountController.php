@@ -7,6 +7,7 @@ use App\AccessedSecondaryAccounts;
 use App\AccessedTertiaryAccounts;
 use App\Budget;
 use App\ListOfPrimaryAccounts;
+use App\ListOfSecondaryAccounts;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -210,13 +211,42 @@ class AccountController extends Controller
                 $acc = AccessedPrimaryAccounts::find($id);
                 $acc->status = 'Open';
                 $acc->approved_by = Auth::user()->id;
-                $result = $acc->name;
                 $acc->save();
+                $pa = ListOfPrimaryAccounts::find($acc->list_id);
+                foreach($pa->list_of_secondary_accounts as $sec){
+                    $s = new AccessedSecondaryAccounts();
+                    $s->user_id = $acc->user_id;
+                    $s->explanation = 'Under Approved Primary Account';
+                    $s->status = 'Open';
+                    $s->list_id = $sec->id;
+                    $s->approved_by = Auth::user()->id;
+                    $s->save();
+
+                    foreach($sec->list_of_tertiary_accounts as $ter){
+                        $t = new AccessedTertiaryAccounts();
+                        $t->user_id = $acc->user_id;
+                        $t->explanation = 'Under Approved Secondary Account';
+                        $t->status = 'Open';
+                        $t->list_id = $ter->id;
+                        $t->approved_by = Auth::user()->id;
+                        $t->save();
+                    }
+                }
             } else if($type == 's'){
                 $acc = AccessedSecondaryAccounts::find($id);
                 $acc->status = 'Open';
                 $acc->approved_by = Auth::user()->id;
                 $acc->save();
+                $sa = ListOfSecondaryAccounts::find($acc->list_id);
+                foreach($sa->list_of_tertiary_accounts as $ta){
+                    $t = new AccessedTertiaryAccounts();
+                    $t->user_id = $acc->user_id;
+                    $t->explanation = 'Under Approved Secondary Account';
+                    $t->status = 'Open';
+                    $t->list_id = $ta->id;
+                    $t->approved_by = Auth::user()->id;
+                    $t->save();
+                }
             } else {
                 $acc = AccessedTertiaryAccounts::find($id);
                 $acc->status = 'Open';
