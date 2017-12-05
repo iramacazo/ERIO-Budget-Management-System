@@ -23,8 +23,9 @@
             <td></td>
             <td></td>
             <td></td>
-            <td>{{ $primary->amount }}</td>
+            <td align="right">{{ number_format($primary->amount) }}</td>
         </tr>
+        @php( $balance = $primary->amount )
         @foreach( $entries as $entry )
             <tr>
                 <td valign="top"> {{ $entry->created_at->toFormattedDateString() }} </td>
@@ -67,6 +68,10 @@
                     <td valign="top" align="right">
                         @php( $total = $entry->mrf_entry->unit_price * $entry->mrf_entry->quantity )
                         {{ number_format($total) }}
+                    </td>
+                    <td valign="top" align="right">
+                        @php( $balance -= $total )
+                        {{ number_format($balance) }}
                     </td>
                 @elseif( $entry->brf_id != null)
                     <td>
@@ -116,6 +121,10 @@
                         @endforeach
                         {{ number_format($total) }}
                     </td>
+                    <td valign="top" align="right">
+                        @php( $balance -= $total )
+                        {{ number_format($balance) }}
+                    </td>
                 @elseif( $entry->pcv_id != null)
                     <td>
                         @if( $entry->pcv->list_pa_id != null )
@@ -151,6 +160,10 @@
                     </td>
                     <td valign="top" align="right">
                         {{ number_format($entry->pcv->amount - $entry->pcv->amount_received) }}
+                    </td>
+                    <td valign="top" align="right">
+                        @php( $balance -= $entry->pcv->amount - $entry->pcv->amount_received )
+                        {{ number_format($balance) }}
                     </td>
                 @elseif( $entry->transaction_id != null)
                     <td>
@@ -192,9 +205,21 @@
                     <td valign="top" align="right">
                         {{ number_format($entry->otherTransactions->amount) }}
                     </td>
+                    <td valign="top" align="right">
+                        @php( $balance -= $entry->otherTransactions->amount )
+                        {{ number_format($balance) }}
+                    </td>
                 @endif
             </tr>
         @endforeach
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><b> Remaining Balance: </b></td>
+            <td><b> {{ number_format($balance) }} </b></td>
+        </tr>
     </table>
     </body>
 </html>
