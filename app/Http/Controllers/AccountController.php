@@ -150,23 +150,26 @@ class AccountController extends Controller
                             'primary_accounts.name as account_name',
                             'accessed_primary_accounts.explanation as explanation'
                         )
-                        ->where('status', 'Pending')
+                        ->where('accessed_primary_accounts.status', 'Pending')
                         ->get();
 
         $secondary = DB::table('accessed_secondary_accounts')
+                        ->join('list_of_secondary_accounts', 'list_of_secondary_accounts.id',
+                            '=', 'accessed_secondary_accounts.list_id')
+                        ->join('secondary_accounts', 'secondary_accounts.id',
+                            '=','list_of_secondary_accounts.account_id')
+                        ->join('primary_accounts', 'primary_accounts.id',
+                            '=', 'secondary_accounts.account_id')
                         ->join('users', 'users.id', '=',
                             'accessed_secondary_accounts.user_id')
-                        ->join('list_of_secondary_accounts', 'list_of_secondary_accounts.id', '=',
-                            'accessed_secondary_accounts.list_id')
-                        ->join('secondary_accounts', 'secondary_accounts.id', '=',
-                            'list_of_secondary_accounts.list_id')
                         ->select(
                             'accessed_secondary_accounts.id as id',
                             'users.name as user_name',
                             'secondary_accounts.name as account_name',
+                            'primary_accounts.name as pa_name',
                             'accessed_secondary_accounts.explanation as explanation'
                         )
-                        ->where('status', 'Pending')
+                        ->where('accessed_secondary_accounts.status', 'Pending')
                         ->get();
 
         $tertiary = DB::table('accessed_tertiary_accounts')
@@ -176,13 +179,19 @@ class AccountController extends Controller
                             'accessed_tertiary_accounts.list_id')
                         ->join('tertiary_accounts', 'tertiary_accounts.id', '=',
                             'list_of_tertiary_accounts.account_id')
+                        ->join('secondary_accounts', 'secondary_accounts.id', '=',
+                            'tertiary_accounts.subaccount_id')
+                        ->join('primary_accounts', 'primary_accounts.id', '=',
+                            'secondary_accounts.account_id')
                         ->select(
                             'accessed_tertiary_accounts.id as id',
                             'users.name as user_name',
+                            'primary_accounts.name as pa_name',
+                            'secondary_accounts.name as sa_name',
                             'tertiary_accounts.name as account_name',
                             'accessed_tertiary_accounts.explanation as explanation'
                         )
-                        ->where('status', 'Pending')
+                        ->where('accessed_tertiary_accounts.status', 'Pending')
                         ->get();
 
         return view('approveAccessAccounts')

@@ -57,7 +57,7 @@
                 @if($secondary != null)
                     @foreach($secondary as $s)
                         <tr>
-                            <td>{{ $s->account_name }}</td>
+                            <td>{{ $s->pa_name }}: {{ $s->account_name }}</td>
                             <td>{{ $s->user_name }}</td>
                             <td>{{ $s->explanation }}</td>
                             <td class="right">
@@ -83,7 +83,7 @@
                 @if($tertiary != null)
                     @foreach($tertiary as $t)
                         <tr>
-                            <td>{{ $t->account_name }}</td>
+                            <td>{{ $t->pa_name }}: {{ $t->sa_name }}: {{ $t->account_name }}</td>
                             <td>{{ $t->user_name }}</td>
                             <td>{{ $t->explanation }}</td>
                             <td class="right">
