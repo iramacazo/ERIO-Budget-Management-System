@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\JournalEntries;
 use App\ListOfPrimaryAccounts;
 use App\ListOfSecondaryAccounts;
+use App\ListOfTertiaryAccounts;
 use Illuminate\Http\Request;
 use App\User;
 use Illuminate\Support\Collection;
@@ -183,7 +184,7 @@ class ReportsController extends Controller
                 }
             }
 
-            $name = $s->secondary_accounts->name . ': ' . $s->secondary_accounts->primary_accounts->name;
+            $name =  $s->secondary_accounts->primary_accounts->name . ': ' .$s->secondary_accounts->name ;
             $tempo = collect([
                 'name' => $name,
                 'expense' => $total,
@@ -198,5 +199,98 @@ class ReportsController extends Controller
         return view('accountsActivity')
             ->with('accounts', $sorted)
             ->with('type', 'Secondary');
+    }
+
+    public function accountsActivityTA(){
+        $budget = Budget::latest()->whereDate('start_range', '<', Carbon::now())->first();
+        $id = $budget->id;
+        $ta = ListOfTertiaryAccounts::all();
+        $entries = JournalEntries::all();
+
+        $rightTA = $ta->filter(function($t) use ($id){
+            return $t->list_of_secondary_accounts->list_of_primary_accounts->budget_id == $id;
+        });
+
+        $list = new Collection();
+
+        foreach($rightTA as $t){
+            $ta_id = $t->id;
+
+            $filtered = $entries->filter(function ($entry) use ($ta_id){
+                if( $entry->mrf_entry_id != null ){
+                    if( $entry->mrf_entry->list_sa_id != null ){
+                        return false;
+                    } else if( $entry->mrf_entry->list_ta_id != null ){
+                        return $entry->mrf_entry->list_TA->id == $ta_id;
+                    }
+                } else if( $entry->brf_id != null ){
+                    if( $entry->brf->list_pa_id != null){
+                        return false;
+                    } else if( $entry->brf->list_sa_id != null){
+                        return false;
+                    } else if( $entry->brf->list_ta_id != null){
+                        return $entry->brf->list_TA->id == $ta_id;
+                    }
+                } else if( $entry->pcv_id != null ){
+                    if( $entry->pcv->list_pa_id != null){
+                        return false;
+                    } else if( $entry->pcv->list_sa_id != null){
+                        return false;
+                    } else if( $entry->pcv->list_ta_id != null){
+                        return $entry->pcv->list_TA->id == $ta_id;
+                    }
+                } else if( $entry->transaction_id != null){
+                    if( $entry->otherTransactions->list_pa_id != null){
+                        return false;
+                    } else if( $entry->otherTransactions->list_sa_id != null){
+                        return false;
+                    } else if( $entry->otherTransactions->list_ta_id != null){
+                        return $entry->otherTransactions->list_TA->id == $ta_id;
+                    }
+                }
+            });
+
+            $total = 0; //total expenses
+            foreach($filtered as $f){
+                if( $f->adjust == false ){
+                    if( $f->mrf_entry_id != null ){
+                        $total += $f->mrf_entry->unit_price * $f->mrf_entry->quantity;
+                    } else if( $f->brf_id != null ){
+                        $brfTotal = 0;
+                        foreach($f->brf->entries as $b){
+                            $brfTotal += $b->amount;
+                        }
+                        $total += $brfTotal;
+                    } else if( $f->pcv_id != null ){
+                        $total += $f->pcv->amount;
+                    } else if( $f->transaction_id != null){
+                        $total += $f->otherTransactions->amount;
+                    }
+                } else {
+                    if( $f->amount < 0){
+                        $total += $f->amount * -1; //had to pay more so should add to expense
+                    } else {
+                        $total -= $f->amount; //means na-over-record kayo thus bawas dapat sa expense
+                    }
+                }
+            }
+
+            $name = $t->tertiary_accounts->secondary_accounts->primary_accounts->name . ': ' .
+                    $t->tertiary_accounts->secondary_accounts->name . ': ' .
+                    $t->tertiary_accounts->name;
+            $tempo = collect([
+                'name' => $name,
+                'expense' => $total,
+                'budget' => $t->amount
+            ]);
+
+            $list->push($tempo);
+        }
+
+        $sorted = $list->sortByDesc('expense');
+
+        return view('accountsActivity')
+            ->with('accounts', $sorted)
+            ->with('type', 'Tertiary');
     }
 }
