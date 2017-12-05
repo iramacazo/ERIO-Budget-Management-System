@@ -157,5 +157,7 @@ Route::get('/prs', 'PRSController@getPRS')->name('getPRS');
 
 Route::get('/ledger/{primary?}', 'JournalController@primaryLedger')->name('primaryLedger');
 
+Route::post('/ledger/merge', 'JournalController@ledgerURL')->name('mergeURL');
+
 
 

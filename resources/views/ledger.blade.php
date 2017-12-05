@@ -4,6 +4,19 @@
     </head>
     <body>
     <h1>  Ledger </h1>
+    <form action="{{ route('mergeURL') }}" method="POST">
+        {{ csrf_field() }}
+        <select name="id">
+            @if( $list != null )
+                @foreach( $list as $l)
+                    <option value="{{ $l->id }}">
+                        {{ $l->primary_accounts->name }}
+                    </option>
+                @endforeach
+            @endif
+        </select>
+        <input type="submit" value="Submit">
+    </form>
     <table>
         <tr>
             <th> Date </th>

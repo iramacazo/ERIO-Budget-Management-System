@@ -69,9 +69,9 @@ class JournalController extends Controller
         if($primary == null){
             $pa_id = ListOfPrimaryAccounts::where('budget_id', $id)->first();
         } else {
-            $pa_id = $primary;
+            $pa_id = (int) $primary;
         }
-
+        $list_PA = ListOfPrimaryAccounts::where('budget_id', $id)->get();
         $pa = ListOfPrimaryAccounts::find($pa_id)->first();
 
         $entries->filter(function ($entry) use ($pa_id){
@@ -108,6 +108,15 @@ class JournalController extends Controller
 
         return view('ledger')
             ->with('entries', $sorted)
-            ->with('primary', $pa);
+            ->with('primary', $pa)
+            ->with('list', $list_PA);
+    }
+
+    public function ledgerURL(Request $request){
+        $this->validate($request, [
+           'id' => 'required'
+        ]);
+
+        return redirect('/ledger/' . $request->id);
     }
 }
