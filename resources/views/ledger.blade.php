@@ -80,8 +80,18 @@
                         @endif
                     </td>
                     <td valign="top" align="right">
-                        @php( $total = $entry->mrf_entry->unit_price * $entry->mrf_entry->quantity )
-                        {{ number_format($total) }}
+                        @if( $entry->adjust == false )
+                            @php( $total = $entry->mrf_entry->unit_price * $entry->mrf_entry->quantity )
+                            {{ number_format($total) }}
+                        @else
+                            @if( $entry->amount < 0 )
+                                {{ number_format($entry->amount * -1) }}
+                                @php( $total = $entry->amount )
+                            @elseif( $entry->amount > 0)
+                                ({{ number_format($entry->amount) }})
+                                @php( $total = 0 - $entry->amount )
+                            @endif
+                        @endif
                     </td>
                     <td valign="top" align="right">
                         @php( $balance -= $total )
@@ -129,11 +139,21 @@
                         @endif
                     </td>
                     <td valign="top" align="right">
-                        @php( $total = 0 )
-                        @foreach($entry->brf->entries as $b)
-                            @php( $total += $b->amount )
-                        @endforeach
-                        {{ number_format($total) }}
+                        @if( $entry->adjust == false )
+                            @php( $total = 0 )
+                            @foreach($entry->brf->entries as $b)
+                                @php( $total += $b->amount )
+                            @endforeach
+                            {{ number_format($total) }}
+                        @else
+                            @if( $entry->amount < 0 )
+                                {{ number_format($entry->amount * -1) }}
+                                @php( $total = $entry->amount )
+                            @elseif( $entry->amount > 0)
+                                ({{ number_format($entry->amount) }})
+                                @php( $total = 0 - $entry->amount )
+                            @endif
+                        @endif
                     </td>
                     <td valign="top" align="right">
                         @php( $balance -= $total )
@@ -173,10 +193,21 @@
                         @endif
                     </td>
                     <td valign="top" align="right">
-                        {{ number_format($entry->pcv->amount - $entry->pcv->amount_received) }}
+                        @if( $entry->adjust == false )
+                            @php( $total = $entry->pcv->amount - $entry->pcv->amount_received)
+                            {{ number_format($total) }}
+                        @else
+                            @if( $entry->amount < 0 )
+                                {{ number_format($entry->amount * -1) }}
+                                @php( $total = $entry->amount )
+                            @elseif( $entry->amount > 0)
+                                ({{ number_format($entry->amount) }})
+                                @php( $total = 0 - $entry->amount )
+                            @endif
+                        @endif
                     </td>
                     <td valign="top" align="right">
-                        @php( $balance -= $entry->pcv->amount - $entry->pcv->amount_received )
+                        @php( $balance -= $total )
                         {{ number_format($balance) }}
                     </td>
                 @elseif( $entry->transaction_id != null)
@@ -217,10 +248,21 @@
                         @endif
                     </td>
                     <td valign="top" align="right">
-                        {{ number_format($entry->otherTransactions->amount) }}
+                        @if( $entry->adjust == false )
+                            {{ number_format($entry->otherTransactions->amount) }}
+                            @php( $total = $entry->otherTransactions->amount )
+                        @else
+                            @if( $entry->amount < 0 )
+                                {{ number_format($entry->amount * -1) }}
+                                @php( $total = $entry->amount )
+                            @elseif( $entry->amount > 0)
+                                ({{ number_format($entry->amount) }})
+                                @php( $total = 0 - $entry->amount )
+                            @endif
+                        @endif
                     </td>
                     <td valign="top" align="right">
-                        @php( $balance -= $entry->otherTransactions->amount )
+                        @php( $balance -= $total )
                         {{ number_format($balance) }}
                     </td>
                 @endif
