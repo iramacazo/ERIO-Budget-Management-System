@@ -69,14 +69,14 @@
                     </div>
                     <div class="input-field col s4">
                         <select name="acc[]" class="accounts" id="accounts">
-                            @if($secondary != null)
+                            @if($secondary->isEmpty() == false)
                                 @foreach($secondary as $s)
                                     <option value="s-{{ $s->id }}">{{ $s->sa_name
                                         . " for " . $s->pa_name}}</option>
                                 @endforeach
                             @endif
 
-                            @if($tertiary != null)
+                            @if($tertiary->isEmpty() == false)
                                 @foreach($tertiary as $t)
                                     <option value="t-{{ $t->id }}">{{ $t->ta_name
                                         . " for " . $t->sa_name . " for " . $t->pa_name}}</option>
@@ -89,8 +89,11 @@
             </div>
 
 
-            <button id="chook"> Add Entry </button><p id="remove">Remove</p>
-            <input type="submit" name="Request">
+            <button id="chook" type="button" class="waves-effect waves-light btn green darken-3">
+                <i class="material-icons left">add</i> Add Entry </button>
+            <button class="waves-effect waves-light btn red darken-2" id="remove_field" type="button">
+                <i class="material-icons left">close</i>Remove Entry</button>
+            <button class="waves-effect waves-light btn green darken-3 right" type="submit">Submit</button>
         </form>
     </div>
 @endsection
@@ -131,18 +134,35 @@
     });
 
     $("#chook").click(function () {
-        var options = $('.accounts').html();
-        $("#remove").append('<br><input type="text" name="desc[]" placeholder="Description">' +
-            '<input type="number" name="qty[]" placeholder="Quantity"><br>' +
-            '<select name="acc[]" class="accounts">' +
-            options +
-            '</select>' +
-            '<p id="remove"> Remove </p>')
+        var options = $('select.accounts').html();
+        console.log(options);
+        $('.entries').append('<div class="row" id="succeeding_fields">' +
+            '                    <div class="input-field col s4">' +
+            '                        <input type="text" id="description" name="desc[]">' +
+            '                        <label for="description">Description</label>' +
+            '                    </div>' +
+            '                    <div class="input-field col s4">' +
+            '                        <input type="text" id="quantity" class="number" name="qty[]">' +
+            '                        <label for="quantity">Quantity</label>' +
+            '                    </div>' +
+            '                    <div class="input-field col s4">' +
+            '                        <select name="acc[]" class="accounts" id="accounts">' +
+                                        options +
+            '                        </select>' +
+            '                        <label for="accounts">Accounts</label>' +
+            '                    </div>' +
+            '                </div>');
+        $('select').material_select();
+    });
+
+    $('#remove_field').click(function () {
+        $("#succeeding_fields").remove();
     });
 
     $('#pa').on('change', function(){
         var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-
+        var accounts = $('select.accounts');
+        accounts.empty();
         $.ajax({
             type: "POST",
             url: "/mrf/add/entry",
@@ -152,24 +172,20 @@
             },
             dataType: 'JSON',
             success: function(data){
-                var options = "";
-
                 data.secondary.forEach(function(sec){
-                    options += "<option value='s-" + sec["id"] +"'>" +
-                        sec["sa_name"] + " for " + sec["pa_name"]
-                    "</option>";
+                    accounts.append($("<option></option>")
+                            .attr('value', "s-" + sec['id'])
+                            .text(sec["sa_name"] + ' for ' + sec["pa_name"]));
                 });
 
                 data.tertiary.forEach(function(ter){
-                    options += "<option value='t-" + ter["id"] + "'>" +
-                        ter["ta_name"] + " for " + ter["sa_name"] + " for " + ter["pa_name"]
-                    "</option>";
+                    accounts.append($("<option></option>")
+                            .attr('value', "t-" + ter["id"])
+                            .text(ter["ta_name"] + ' for ' + ter["sa_name"] + ' for ' + ter["pa_name"]));
                 });
-
-                $(".accounts").html(options);
+                accounts.material_select();
             }
         });
-        $('select').material_select();
     });
     @endsection
 </script>

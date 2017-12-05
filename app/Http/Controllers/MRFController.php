@@ -190,7 +190,7 @@ class MRFController extends Controller
             $mrfEntry->save();
         }
 
-        return redirect()->route('viewMRF');
+        return redirect()->route('viewMRF')->with('recently_added', $request->form_num);
     }
 
     public function execMRFView(){

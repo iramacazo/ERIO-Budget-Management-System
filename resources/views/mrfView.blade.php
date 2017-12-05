@@ -20,7 +20,8 @@
                 @foreach($pending as $p)
                     <li>
                         <div class="collapsible-header"><p><b>Form No: </b>{{ $p->form_num }}
-                                <br><b>Date: </b>{{ $p->created_at }}<br>
+                                <br><b>Date: </b>{{ \Carbon\Carbon::parse($p->created_at)->toFormattedDateString() }}
+                                <br>
                                 <b>Account Name: </b> {{$p->list_PA->primary_accounts->name}}</p>
                         </div>
                         <div class="collapsible-body">
@@ -185,5 +186,8 @@
 
 <script>
     @section('script')
+    @if(session()->has('recently_added'))
+    Materialize.toast("Form No. {{session('recently_added')}} has been requested!", 4000);
+    @endif
     @endsection
 </script>
