@@ -46,6 +46,6 @@ class TransactionController extends Controller
         $entry->transaction_id = $transaction->id;
         $entry->save();
 
-        return redirect()->route('transacView');
+        return redirect()->route('transacView')->with('recently_added', $request->description);
     }
 }

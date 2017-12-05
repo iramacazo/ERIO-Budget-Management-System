@@ -61,11 +61,11 @@
             <div class="entries">
                 <div class="row">
                     <div class="input-field col s4">
-                        <input type="text" id="description" name="desc[]">
+                        <input type="text" id="description" name="desc[]" required>
                         <label for="description">Description</label>
                     </div>
                     <div class="input-field col s4">
-                        <input type="text" id="quantity" class="number" name="qty[]">
+                        <input type="text" id="quantity" class="number" name="qty[]" required>
                         <label for="quantity">Quantity</label>
                     </div>
                     <div class="input-field col s4">
@@ -139,11 +139,11 @@
         console.log(options);
         $('.entries').append('<div class="row" id="succeeding_fields">' +
             '                    <div class="input-field col s4">' +
-            '                        <input type="text" id="description" name="desc[]">' +
+            '                        <input type="text" id="description" name="desc[]" required>' +
             '                        <label for="description">Description</label>' +
             '                    </div>' +
             '                    <div class="input-field col s4">' +
-            '                        <input type="text" id="quantity" class="number" name="qty[]">' +
+            '                        <input type="text" id="quantity" class="number" name="qty[]" required>' +
             '                        <label for="quantity">Quantity</label>' +
             '                    </div>' +
             '                    <div class="input-field col s4">' +

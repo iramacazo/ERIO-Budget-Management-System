@@ -246,5 +246,6 @@
         </SOURCES>
       </library>
     </orderEntry>
+    <orderEntry type="library" name="datatables" level="application" />
   </component>
 </module>
