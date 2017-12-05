@@ -31,7 +31,7 @@
                         </td>
                         <td valign="top">
                             @if( $entry->adjust == false )
-                                <form action="" method="POST">
+                                <form action="{{ route('adjustForm') }}" method="POST">
                                     {{ csrf_field() }}
                                     <input type="hidden" value="mrf-{{ $entry->mrf_entry->id }}" name="id">
                                     <input type="submit" value="Adjust Entry">
@@ -76,7 +76,7 @@
                         </td>
                         <td valign="top">
                             @if( $entry->adjust == false )
-                                <form action="" method="POST">
+                                <form action="{{ route('adjustForm') }}" method="POST">
                                     {{ csrf_field() }}
                                     <input type="hidden" value="brf-{{ $entry->brf->id }}" name="id">
                                     <input type="submit" value="Adjust Entry">
@@ -121,12 +121,13 @@
                         </td>
                         <td valign="top">
                             @if( $entry->adjust == false)
-                                <form action="" method="POST">
+                                <form action="{{ route('adjustForm') }}" method="POST">
                                     {{ csrf_field() }}
                                     <input type="hidden" value="pcv-{{ $entry->pcv->id }}" name="id">
                                     <input type="submit" value="Adjust Entry">
                                 </form>
                             @else
+                                <i>Adjusting Entry</i>
                             @endif
                         </td>
                         <td valign="top">
@@ -157,12 +158,13 @@
                         </td>
                         <td valign="top">
                             @if( $entry->adjust == false)
-                                <form action="" method="POST">
+                                <form action="{{ route('adjustForm') }}" method="POST">
                                     {{ csrf_field() }}
                                     <input type="hidden" name="id" value="transac-{{ $entry->otherTransactions->id }}">
                                     <input type="submit" value="Adjust Entry">
                                 </form>
                             @else
+                                <i>Adjusting Entry</i>
                             @endif
                         </td>
                         <td valign="top">

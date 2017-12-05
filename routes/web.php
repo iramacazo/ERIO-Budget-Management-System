@@ -159,9 +159,11 @@ Route::get('/prs', 'PRSController@getPRS')->name('getPRS');
 
 Route::get('/ledger', 'JournalController@primaryLedger')->name('primaryLedger');
 
-Route::post('/ledger/merge', 'JournalController@ledgerURL')->name('mergeURL');
-
 Route::post('/ledger/primary', 'JournalController@getLedger')->name('getLedger');
+
+Route::post('/adjustEntry', 'JournalController@adjustForm')->name('adjustForm');
+
+Route::post('/adjustEntry/save', 'JournalController@adjustEntry')->name('adjustEntry');
 
 
 

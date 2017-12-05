@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\BookstoreRequisitionForm;
 use App\Budget;
 use App\JournalEntries;
 use App\ListOfPrimaryAccounts;
+use App\MaterialRequisitionFormEntries;
+use App\OtherTransactions;
 use App\PaymentRequisitionSlips;
+use App\PettyCashVoucher;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use DB;
@@ -156,5 +160,68 @@ class JournalController extends Controller
             ->with('entries', $sorted) //to show stuff
             ->with('primary', $pa) //balance
             ->with('list', $list_PA); //for filter
+    }
+
+    public function adjustEntry(Request $request){
+        $this->validate($request, [
+           'id' => 'required',
+           'amount' => 'required'
+        ]);
+
+        $type = str_before($request->id, '-');
+        $id = (int) str_after($request->id, '-');
+
+        $entry = new JournalEntries;
+
+        if( $type == 'mrf'){
+            $entry->mrf_entry_id = $id;
+        } else if( $type == 'brf'){
+            $entry->brf_id = $id;
+        } else if( $type == 'pcv'){
+            $entry->pcv_id = $id;
+        } else {
+            $entry->transaction_id = $id;
+        }
+
+        $entry->amount = $request->amount;
+        $entry->adjust = true;
+        $entry->save();
+
+        return redirect()->route('disbursementJournal');
+    }
+
+    public function adjustForm(Request $request){
+        $type = str_before($request->id, '-');
+        $id = (int) str_after($request->id, '-');
+
+        if( $type == 'mrf'){
+            $mrf = MaterialRequisitionFormEntries::find($id);
+
+            return view('adjustForm')
+                ->with('id', $id)
+                ->with('type', $type)
+                ->with('mrf', $mrf);
+        } else if( $type == 'brf'){
+            $brf = BookstoreRequisitionForm::find($id);
+
+            return view('adjustForm')
+                ->with('id', $id)
+                ->with('type', $type)
+                ->with('brf', $brf);
+        } else if( $type == 'pcv'){
+            $pcv = PettyCashVoucher::find($id);
+
+            return view('adjustForm')
+                ->with('id', $id)
+                ->with('type', $type)
+                ->with('pcv', $pcv);
+        } else {
+            $transac = OtherTransactions::find($id);
+
+            return view('adjustForm')
+                ->with('id', $id)
+                ->with('type', $type)
+                ->with('transac', $transac);
+        }
     }
 }
