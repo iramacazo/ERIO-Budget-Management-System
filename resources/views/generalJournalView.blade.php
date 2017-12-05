@@ -52,8 +52,16 @@
                             @endif
                         </td>
                         <td valign="top" align="right">
-                            @php( $total = $entry->mrf_entry->unit_price * $entry->mrf_entry->quantity )
-                            {{ number_format($total) }}
+                            @if( $entry->adjust == false )
+                                @php( $total = $entry->mrf_entry->unit_price * $entry->mrf_entry->quantity )
+                                {{ number_format($total) }}
+                            @else
+                                @if( $entry->amount < 0 )
+                                    {{ number_format($entry->amount  * -1) }}
+                                @elseif( $entry->amount > 0)
+                                    ({{ number_format($entry->amount) }})
+                                @endif
+                            @endif
                         </td>
                     @elseif( $entry->brf_id != null)
                         <td>
@@ -97,11 +105,19 @@
                             @endif
                         </td>
                         <td valign="top" align="right">
-                            @php( $total = 0 )
-                            @foreach($entry->brf->entries as $b)
-                                @php( $total += $b->amount )
-                            @endforeach
-                            {{ number_format($total) }}
+                            @if( $entry->adjust == false )
+                                @php( $total = 0 )
+                                @foreach($entry->brf->entries as $b)
+                                    @php( $total += $b->amount )
+                                @endforeach
+                                {{ number_format($total) }}
+                            @else
+                                @if( $entry->amount < 0 )
+                                    {{ number_format($entry->amount * -1) }}
+                                @elseif( $entry->amount > 0)
+                                    ({{ number_format($entry->amount) }})
+                                @endif
+                            @endif
                         </td>
                     @elseif( $entry->pcv_id != null)
                         <td>
@@ -138,7 +154,15 @@
                             @endif
                         </td>
                         <td valign="top" align="right">
-                            {{ number_format($entry->pcv->amount - $entry->pcv->amount_received) }}
+                            @if( $entry->adjust == false )
+                                {{ number_format($entry->pcv->amount - $entry->pcv->amount_received) }}
+                            @else
+                                @if( $entry->amount < 0 )
+                                    {{ number_format($entry->amount * -1) }}
+                                @elseif( $entry->amount > 0)
+                                    ({{ number_format($entry->amount) }})
+                                @endif
+                            @endif
                         </td>
                     @elseif( $entry->transaction_id != null)
                         <td>
@@ -179,7 +203,15 @@
                             @endif
                         </td>
                         <td valign="top" align="right">
-                            {{ number_format($entry->otherTransactions->amount) }}
+                            @if( $entry->adjust == false )
+                                {{ number_format($entry->otherTransactions->amount) }}
+                            @else
+                                @if( $entry->amount < 0 )
+                                    {{ number_format($entry->amount * -1) }}
+                                @elseif( $entry->amount > 0)
+                                    ({{ number_format($entry->amount) }})
+                                @endif
+                            @endif
                         </td>
                     @endif
                 </tr>

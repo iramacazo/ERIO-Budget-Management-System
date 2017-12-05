@@ -175,15 +175,31 @@ class JournalController extends Controller
 
         if( $type == 'mrf'){
             $entry->mrf_entry_id = $id;
+
+            $current = $entry->mrf_entry->quantity * $entry->mrf_entry->unit_price;
+            $entry->amount = $current - $request->amount;
+
         } else if( $type == 'brf'){
             $entry->brf_id = $id;
+
+            $current = 0;
+            foreach($entry->brf->entries as $b){
+                $current += $b->amount;
+            }
+
+            $entry->amount = $current - $request->amount;
         } else if( $type == 'pcv'){
             $entry->pcv_id = $id;
+
+            $current = $entry->pcv->amount - $entry->pcv->amount_received;
+            $entry->amount = $current - $request->amount;
         } else {
             $entry->transaction_id = $id;
+
+            $current = $entry->otherTransactions->amount;
+            $entry->amount = $current - $request->amount;
         }
 
-        $entry->amount = $request->amount;
         $entry->adjust = true;
         $entry->save();
 
