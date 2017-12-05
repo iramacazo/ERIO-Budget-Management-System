@@ -10,6 +10,10 @@
     @elseif(Auth::user()->usertype == "Executive")
         <li><a href="{{route('requestsForAccess')}}">Account Access Requests</a></li>
         <li><a href="{{ route('execMRF') }}">Material Requisition Forms</a></li>
+        <li><a class="subheader">Reports</a></li>
+        <li><a href="{{ route('accountsActivityPA') }}"> Accounts Activity </a></li>
+        <li><a href="{{ route('transactionsToday') }}"> Transactions Today </a></li>
+        <li><a href="{{ route('budgetVariance') }}"> Budget Variance </a></li>
     @elseif(Auth::user()->usertype == "Budget Requestee")
         <li><a href="{{ route('accessedAccountsView') }}">Accessed Accounts</a></li>
         <li><a href="{{ route('brfView') }}">Bookstore Requisition Form</a></li>

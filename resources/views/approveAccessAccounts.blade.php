@@ -6,8 +6,7 @@
     @parent
         <li class="active"><a href="{{route('requestsForAccess')}}">Account Access Requests</a></li>
         <li><a href="{{ route('execMRF') }}">Material Requisition Forms</a></li>
-        <li></li>
-        <li>Reports</li>
+        <li><a class="subheader">Reports</a></li>
         <li><a href="{{ route('accountsActivityPA') }}"> Accounts Activity </a></li>
         <li><a href="{{ route('transactionsToday') }}"> Transactions Today </a></li>
         <li><a href="{{ route('budgetVariance') }}"> Budget Variance </a></li>
