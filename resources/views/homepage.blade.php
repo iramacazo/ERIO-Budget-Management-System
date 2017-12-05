@@ -102,6 +102,10 @@
         @elseif(Auth::user()->usertype == 'Executive')
             <a href="{{ route('requestsForAccess') }}">Accessed Budgets</a>
             <a href="{{ route('execMRF') }}">Material Requisition Forms</a>
+            Reports<br>
+            <a href="{{ route('accountsActivityPA') }}"> Accounts Activity </a><br>
+            <a href=""> Transaction per Account </a><br>
+            <a href=""> Budget Variance </a>
         @endif
         @if(session()->has('success'))
             <div>

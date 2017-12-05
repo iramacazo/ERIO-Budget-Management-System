@@ -6,6 +6,11 @@
     @parent
         <li class="active"><a href="{{route('requestsForAccess')}}">Account Access Requests</a></li>
         <li><a href="{{ route('execMRF') }}">Material Requisition Forms</a></li>
+        <li></li>
+        <li>Reports</li>
+        <li><a href="{{ route('accountsActivityPA') }}"> Accounts Activity </a></li>
+        <li><a href=""> Transaction per Account </a></li>
+        <li><a href=""> Budget Variance </a></li>
 @endsection
 
 @section('content')

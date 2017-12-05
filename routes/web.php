@@ -169,5 +169,7 @@ Route::post('/adjustEntry/save', 'JournalController@adjustEntry')->name('adjustE
 
 Route::get('/reports/list_of_accessed_users', 'ReportsController@getListOfUsers');
 
+Route::get('/accounts_activity/primary', 'ReportsController@accountsActivityPA')->name('accountsActivityPA');
+
 
 
