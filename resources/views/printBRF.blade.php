@@ -52,14 +52,14 @@
                 </tbody>
             </table>
             <br>
-            <table>
+            <table style="border: none">
                 <tr>
-                    <td style="visibility: hidden"> </td>
-                    <td style="visibility: hidden"> </td>
+                    <td style="visibility: hidden; border: none"> </td>
+                    <td style="visibility: hidden; border: none"> </td>
                     <td style="padding-top: 0"><small><b><i>Requested by:</i></b></small><br> </td>
                     <td style="padding-top: 0"><small><b><i>Approved by:</i></b></small><br> </td>
-                    <td style="visibility: hidden"> </td>
-                    <td style="visibility: hidden"> </td>
+                    <td style="visibility: hidden; border: none"> </td>
+                    <td style="visibility: hidden; border: none"> </td>
                 </tr>
             </table>
         </div>

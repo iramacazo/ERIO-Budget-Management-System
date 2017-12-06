@@ -47,6 +47,7 @@
                 @endif
             </table>
             @if($brf->isEmpty() == true)
+                <br>
                 <p class="center">No BRF Transactions Shown for Today</p>
             @endif
             <br>
@@ -76,6 +77,7 @@
                 </tbody>
             </table>
             @if($mrf->isEmpty() == true)
+                <br>
                 <p class="center">No MRF Transactions today</p>
             @endif
             <br>
@@ -105,6 +107,7 @@
                 </tbody>
             </table>
             @if($pcv->isEmpty() == true)
+                <br>
                 <p class="center">No Petty Cash Transactions Shown for today</p>
             @endif
             <br>
@@ -141,11 +144,3 @@
             <i class="material-icons left">print</i> Print</button>
     </div>
 @endsection
-<html>
-    <head>
-        <title> Transactions Today </title>
-    </head>
-    <body>
-
-    </body>
-</html>

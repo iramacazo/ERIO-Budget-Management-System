@@ -19,6 +19,8 @@ Route::get('/', function(){
         return redirect("/request-accounts");
     }else if(Auth::user()->usertype == "Budget Requestee"){
         return redirect('/accounts');
+    }else if(Auth::user()->usertype == "Budget Admin"){
+        return redirect('/petty_cash');
     }else{
         return view('homepage');
     }
@@ -127,7 +129,7 @@ Route::get('/links', 'BudgetController@showLinks');
 Route::get('/propose/create-budget-range', 'BudgetController@createRangeView')
     ->name('createBudgetProposal');
 
-Route::get('/propose/create', 'BudgetController@createEmptyBudget');
+Route::post('/propose/create', 'BudgetController@createEmptyBudget')->name('emptyBudget');
 
 Route::post('/propose/modify', 'BudgetController@modifyAccount');
 

@@ -105,6 +105,7 @@ class PettyCashController extends Controller
 
         $pettyCash = PettyCashVoucher::find($request->id);
         $pettyCash->status = 'Receive';
+        $pettyCash->approved_by = Auth::user()->id;
         $pettyCash->save();
 
         return redirect()->route('pettyCashView');

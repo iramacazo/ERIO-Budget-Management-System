@@ -438,12 +438,11 @@ class BudgetController extends Controller
     //create an empty budget
     public function createEmptyBudget(Request $request){
         //isa lang pwedeng empty budget
-
-        $start_date = $request->start_date;
-        $end_date = $request->end_date;
+        $start_date = Carbon::createFromFormat('d/m/Y', $request->start_date)->toDateTimeString();
+        $end_date = Carbon::createFromFormat('d/m/Y', $request->end_date)->toDateTimeString();
 
         $budget = new Budget();
-        $budget->start_range = $start_date;
+        $budget->start_range = $start_date ;
         $budget->end_range = $end_date;
         $budget->approved_by_acc = 0;
         $budget->approved_by_vp = 0;
