@@ -20,26 +20,26 @@
                 <ul class="collapsible" data-collapsible="expandable">
                     @foreach($primary as $p)
                         <li>
-                            <div class="collapsible-header">{{ $p->accessedPrimaryAccount->primary_accounts->name }}</div>
+                            <div class="collapsible-header">{{ $p->primary_accounts->name }}</div>
                             <div class="collapsible-body">
                                 <p><b>Secondary Accounts</b></p>
                                 <ul class="collapsible" data-collapsible="expandable">
-                                    @foreach($secondary as $s)
+                                    @foreach($p->list_of_secondary_accounts as $s)
                                         <li style="{{ $s->accessedSecondaryAccount->secondary_accounts->account_id
                                             == $p->accessedPrimaryAccount->primary_accounts->id ?
                                             'display: none' : ''}}">
                                             <div class="collapsible-header">
-                                                {{$s->accessedSecondaryAccount->secondary_accounts->name}}
+                                                {{$s->secondary_accounts->name}}
                                             </div>
                                             <div class="collapsible-body">
                                                 <p><b>Tertiary Accounts</b></p>
                                                 <ul class="collapsible" data-collapsible="expandable">
-                                                    @foreach($tertiary as $t)
+                                                    @foreach($s->list_of_tertiary_accounts as $t)
                                                         <li style="{{ $t->accessedTertiaryAccount->tertiary_accounts->subaccount_id
                                                             == $s->accessedSecondaryAccount->secondary_accounts->id ?
                                                             'display: none' : ''}}">
                                                             <div class="collapsible-header">
-                                                                {{$t->accessedTertiaryAccount->tertiary_accounts->name}}
+                                                                {{$t->tertiary_accounts->name}}
                                                             </div>
                                                         </li>
                                                     @endforeach
@@ -53,7 +53,7 @@
                     @endforeach
                 </ul>
             @else
-                <h4>There are no accounts</h4>
+                <h4>There are no Primary accounts</h4>
             @endif
             <a href="{{ route('requestAccessForm') }}" class="waves-effect waves-light btn green darken-3 right">
                 Request Access</a><br>

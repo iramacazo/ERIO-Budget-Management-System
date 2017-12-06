@@ -8,6 +8,7 @@ use App\AccessedTertiaryAccounts;
 use App\Budget;
 use App\ListOfPrimaryAccounts;
 use App\ListOfSecondaryAccounts;
+use App\ListOfTertiaryAccounts;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -17,18 +18,52 @@ use DB;
 class AccountController extends Controller
 {
     public function accessedAccountsView(){
-        $primary = AccessedPrimaryAccounts::all()->where('user_id', Auth::user()->id)
+        $budget = Budget::latest()->whereDate('start_range', '<', Carbon::now())->first();
+        $apa = AccessedPrimaryAccounts::all()->where('user_id', Auth::user()->id)
                                             ->where('status', 'Open');
-        $secondary = AccessedSecondaryAccounts::all()->where('user_id', Auth::user()->id)
+        $asa = AccessedSecondaryAccounts::all()->where('user_id', Auth::user()->id)
                                             ->where('status', 'Open');
-        $tertiary = AccessedTertiaryAccounts::all()->where('user_id', Auth::user()->id)
+        $ata = AccessedTertiaryAccounts::all()->where('user_id', Auth::user()->id)
                                             ->where('status', 'Open');
+
         $pendingPA = AccessedPrimaryAccounts::all()->where('user_id', Auth::user()->id)
                                             ->where('status', 'Pending');
         $pendingSA = AccessedSecondaryAccounts::all()->where('user_id', Auth::user()->id)
                                             ->where('status', 'Pending');
         $pendingTA = AccessedTertiaryAccounts::all()->where('user_id', Auth::user()->id)
                                             ->where('status', 'Pending');
+
+
+        $tempPA = ListOfPrimaryAccounts::where('budget_id', $budget->id)->get();
+
+        $primary = $tempPA->filter(function($p) use ($apa){
+            foreach($apa as $a){
+                if($a->list_id == $p->id)
+                    return true;
+            }
+            return false;
+        });
+
+        $tempSA = ListOfSecondaryAccounts::all();
+
+        $secondary = $tempSA->filter(function($s) use ($asa){
+            foreach($asa as $a){
+                if($a->list_id == $s->id)
+                    return true;
+            }
+            return false;
+        });
+
+        $tempTA = ListOfTertiaryAccounts::all();
+
+        $tertiary = $tempTA->filter(function($t) use ($ata){
+            foreach($ata as $a){
+                if($a->list_id == $t->id)
+                    return true;
+            }
+            return false;
+        });
+
         return view('accessedAccountsView')
             ->with('primary', $primary)
             ->with('secondary', $secondary)
