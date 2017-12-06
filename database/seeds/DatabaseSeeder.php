@@ -16,10 +16,7 @@ class DatabaseSeeder extends Seeder
             AccountsSeeder::class,
             BudgetSeeder::class,
             UsersSeeder::class,
-            PettyCashVoucherSeeder::class,
-            AccessedAccountsSeeder::class,
-            BRFSeeder::class,
-            MRFSeeder::class
+            AccessedAccountsSeeder::class
         ]);
     }
 }

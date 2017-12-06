@@ -6,6 +6,7 @@ use App\AccessedPrimaryAccounts;
 use App\AccessedSecondaryAccounts;
 use App\AccessedTertiaryAccounts;
 use Carbon\Carbon;
+use App\Budget;
 
 class AccessedAccountsSeeder extends Seeder
 {
@@ -16,105 +17,18 @@ class AccessedAccountsSeeder extends Seeder
      */
     public function run()
     {
-        $user = User::where('email', 'br@gmail.com')->first();
+        $br = User::where('name', 'Budget Requestee')->first();
+        $exec = User::where('name', 'Executive')->first();
+        $budget = Budget::latest()->first();
+        $pa = \App\ListOfPrimaryAccounts::where('budget_id', $budget->id)->get()->random();
+        $sa = $pa->list_of_secondary_accounts->random();
 
-        AccessedPrimaryAccounts::insert([
-            'user_id' => $user->id,
-            'explanation' => 'Testing',
-            'list_id' => 1,
-            'status' => 'Open',
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now()
-        ]);
-
-        AccessedSecondaryAccounts::insert([
-            'user_id' => $user->id,
-            'explanation' => 'Testing',
-            'list_id' => 1,
-            'status' => 'Open',
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now(),
-        ]);
-
-        AccessedTertiaryAccounts::insert([
-            'user_id' => $user->id,
-            'explanation' => 'Testing',
-            'list_id' => 1,
-            'status' => 'Open',
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now(),
-        ]);
-
-        AccessedTertiaryAccounts::insert([
-            'user_id' => $user->id,
-            'explanation' => 'Testing',
-            'list_id' => 2,
-            'status' => 'Open',
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now(),
-        ]);
-
-        AccessedTertiaryAccounts::insert([
-            'user_id' => $user->id,
-            'explanation' => 'Testing',
-            'list_id' => 3,
-            'status' => 'Open',
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now(),
-        ]);
-
-        AccessedPrimaryAccounts::insert([
-            'user_id' => $user->id,
-            'explanation' => 'Testing',
-            'list_id' => 2,
-            'status' => 'Open',
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now()
-        ]);
-
-        AccessedSecondaryAccounts::insert([
-            'user_id' => $user->id,
-            'explanation' => 'Testing',
-            'list_id' => 4,
-            'status' => 'Open',
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now(),
-        ]);
-
-        AccessedTertiaryAccounts::insert([
-            'user_id' => $user->id,
-            'explanation' => 'Testing',
-            'list_id' => 5,
-            'status' => 'Open',
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now(),
-        ]);
-
-        AccessedTertiaryAccounts::insert([
-            'user_id' => $user->id,
-            'explanation' => 'Testing',
-            'list_id' => 10,
-            'status' => 'Open',
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now(),
-        ]);
-
-        AccessedTertiaryAccounts::insert([
-            'user_id' => $user->id,
-            'explanation' => 'Testing',
-            'list_id' => 11,
-            'status' => 'Open',
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now(),
-        ]);
-
-        AccessedTertiaryAccounts::insert([
-            'user_id' => $user->id,
-            'explanation' => 'Testing',
-            'list_id' => 12,
-            'status' => 'Open',
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now(),
-        ]);
+        $acc = new AccessedSecondaryAccounts();
+        $acc->list_id = $sa->id;
+        $acc->explanation = 'Seeding to';
+        $acc->status = 'Open';
+        $acc->approved_by = $exec->id;
+        $acc->user_id = $br->id;
+        $acc->save();
     }
 }
