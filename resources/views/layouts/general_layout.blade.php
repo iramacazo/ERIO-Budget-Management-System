@@ -57,7 +57,7 @@
                 <img src="{{asset('images/dlsu.png')}}" style="width: 100%; -webkit-filter: brightness(50%)">
             </div>
             <a href="{{route('edit_account')}}"><span class="white-text name">{{Auth::user()->name}}</span></a>
-            <a href="{{route('edit_account')}}"><span class="white-text email">{{Auth::user()->email}}</span></a>
+            <a href="{{route('edit_account')}}"><span class="white-text email">Account Details</span></a>
         </div></li>
     @section('sidebar')
     @show
