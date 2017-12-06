@@ -54,12 +54,14 @@
                         <label for="account-budget">Account Budget</label>
                     </div>
                 </div>
+                @if(isset($account_1) == false && isset($account2) == false)
                 <div class="row">
                     <div class="input-field col s6">
                         <input class="number" type="text" id="account-code" name="code" required>
                         <label for="account-code">Account Code (Oracle Code)</label>
                     </div>
                 </div>
+                @endif
                 <br>
                 @if(isset($account_1))
                     <input type="hidden" value="{{$account_1}}" name="account_p">
@@ -117,7 +119,7 @@
                                 <p>
                                     @php($link = '/propose/add/'.$account_1.'/'.$s->name)
                                     <a href="{{ url($link) }}" style="font-weight: bold">{{$s->name}}</a><br>
-                                    <b>Budget: </b>{{number_format($s->amount)}}
+                                    <b>Budget: </b>P{{number_format($s->amount)}}
                                 </p>
                             </div>
                             <div class="collapsible-body">
