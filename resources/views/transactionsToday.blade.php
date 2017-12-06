@@ -135,6 +135,7 @@
                 <br>
                 <p class="center">No Transactions Shown for Today</p>
             @endif
+            <h3 class="center">**END OF REPORT**</h3>
         </div>
         <button onclick="window.print()" type="button" class="waves-effect waves-light btn green darken-3 right">
             <i class="material-icons left">print</i> Print</button>
