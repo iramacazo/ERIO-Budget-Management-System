@@ -19,11 +19,11 @@ class AccountController extends Controller
 {
     public function accessedAccountsView(){
         $budget = Budget::latest()->whereDate('start_range', '<', Carbon::now())->first();
-        $apa = AccessedPrimaryAccounts::all()->where('user_id', Auth::user()->id)
+        $primary = AccessedPrimaryAccounts::all()->where('user_id', Auth::user()->id)
                                             ->where('status', 'Open');
-        $asa = AccessedSecondaryAccounts::all()->where('user_id', Auth::user()->id)
+        $secondary = AccessedSecondaryAccounts::all()->where('user_id', Auth::user()->id)
                                             ->where('status', 'Open');
-        $ata = AccessedTertiaryAccounts::all()->where('user_id', Auth::user()->id)
+        $tertiary = AccessedTertiaryAccounts::all()->where('user_id', Auth::user()->id)
                                             ->where('status', 'Open');
 
         $pendingPA = AccessedPrimaryAccounts::all()->where('user_id', Auth::user()->id)
@@ -34,35 +34,35 @@ class AccountController extends Controller
                                             ->where('status', 'Pending');
 
 
-        $tempPA = ListOfPrimaryAccounts::where('budget_id', $budget->id)->get();
-
-        $primary = $tempPA->filter(function($p) use ($apa){
-            foreach($apa as $a){
-                if($a->list_id == $p->id)
-                    return true;
-            }
-            return false;
-        });
-
-        $tempSA = ListOfSecondaryAccounts::all();
-
-        $secondary = $tempSA->filter(function($s) use ($asa){
-            foreach($asa as $a){
-                if($a->list_id == $s->id)
-                    return true;
-            }
-            return false;
-        });
-
-        $tempTA = ListOfTertiaryAccounts::all();
-
-        $tertiary = $tempTA->filter(function($t) use ($ata){
-            foreach($ata as $a){
-                if($a->list_id == $t->id)
-                    return true;
-            }
-            return false;
-        });
+//        $tempPA = ListOfPrimaryAccounts::where('budget_id', $budget->id)->get();
+//
+//        $primary = $tempPA->filter(function($p) use ($apa){
+//            foreach($apa as $a){
+//                if($a->list_id == $p->id)
+//                    return true;
+//            }
+//            return false;
+//        });
+//
+//        $tempSA = ListOfSecondaryAccounts::all();
+//
+//        $secondary = $tempSA->filter(function($s) use ($asa){
+//            foreach($asa as $a){
+//                if($a->list_id == $s->id)
+//                    return true;
+//            }
+//            return false;
+//        });
+//
+//        $tempTA = ListOfTertiaryAccounts::all();
+//
+//        $tertiary = $tempTA->filter(function($t) use ($ata){
+//            foreach($ata as $a){
+//                if($a->list_id == $t->id)
+//                    return true;
+//            }
+//            return false;
+//        });
 
         return view('accessedAccountsView')
             ->with('primary', $primary)
