@@ -4,11 +4,12 @@
 
 @section('sidebar')
     @parent
+    <li><a href="{{route('budget_dash')}}">Budget</a></li>
+    <li class="active"><a href="{{ route('primaryLedger') }}"> Ledger Accounts </a></li>
     <li><a href="{{ route('pettyCashView') }}">Petty Cash</a></li>
     <li><a href="{{ route('createBudgetProposal') }}">Create Budget Proposal</a></li>
     <li><a href="{{ route('editBudgetProposal') }}">Edit Budget Proposal</a></li>
     <li><a href="{{ route('disbursementJournal') }}"> Disbursement Journal </a></li>
-    <li class="active"><a href="{{ route('primaryLedger') }}"> Ledger Accounts </a></li>
 @endsection
 
 @section('content')

@@ -14,7 +14,6 @@
 
 Route::view('/invalid-user', 'auth.user_permission')->name('invalid_user');
 
-
 Route::get('/', function(){
     if(Auth::guest()) {
         return view('homepage');
@@ -27,13 +26,19 @@ Route::get('/', function(){
     }else if(Auth::user()->usertype == "Budget Requestee"){
         return redirect('/accounts');
     }else if(Auth::user()->usertype == "Budget Admin"){
-        return redirect('/petty_cash');
+        return redirect()->route('budget_dash');
     }else{
         return view('homepage');
     }
 })->name('homepage');
 
 Auth::routes();
+
+Route::get('/edit_account', 'AdminController@editAccount')->name('edit_account');
+
+Route::post('/edit_account/submit', 'AdminController@saveChangesToAccount')->name('save_account');
+
+Route::view('/unauthorized_access','unauthorizedAccess')->name('unauthorized_access');
 
 /* System Admin Routes */
 Route::middleware(['system_admin'])->group(function (){
@@ -50,6 +55,7 @@ Route::middleware(['system_admin'])->group(function (){
 
     Route::get('/deactivate_user/{user}', function(\App\User $user){
         $user->status = 'inactive';
+        $user->last_deactivated = \Carbon\Carbon::now();
         $user->save();
         return back()->with('deactivate', $user->email);
     })->name('deactivate-user');
@@ -60,17 +66,36 @@ Route::middleware(['system_admin'])->group(function (){
         return back()->with('active', $user->email);
     })->name('reactivate-user');
 
+    Route::post('/add_user/submit', 'AdminController@createUser')->name('create_user');
 });
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::middleware(['budget_admin'])->group(function(){
+    Route::get('/budget', 'BudgetController@budgetDashboard')->name('budget_dash');
 
-Route::get('/edit_account', 'AdminController@editAccount')->name('edit_account');
+    Route::post('/budget/add-account/{id}', 'BudgetController@addAccountToCurrent')
+        ->name('add-account-to-current');
 
-Route::post('/edit_account/submit', 'AdminController@saveChangesToAccount')->name('save_account');
+    Route::get('/propose/create-budget-range', 'BudgetController@createRangeView')
+        ->name('createBudgetProposal');
 
-Route::post('/add_user/submit', 'AdminController@createUser')->name('create_user');
+    Route::post('/propose/create', 'BudgetController@createEmptyBudget')->name('emptyBudget');
 
-Route::view('/unauthorized_access','unauthorizedAccess')->name('unauthorized_access');
+    Route::post('/propose/modify', 'BudgetController@modifyAccount');
+
+    Route::get('/propose/print', 'BudgetController@printView');
+
+    Route::get('/propose/save', 'BudgetController@saveBudget');
+
+    Route::get('/propose/add', 'BudgetController@getAccount')->name('editBudgetProposal');
+
+    Route::post('/add-account-proposal', 'BudgetController@addAccount')->name('add_account');
+
+    Route::get('/propose/add/{primary_account}', 'BudgetController@getAccount');
+
+    Route::get('/propose/add/{primary_account}/{secondary_account}', 'BudgetController@getAccount');
+
+    Route::post('propose/submit_budget', 'BudgetController@submitBudget')->name('submit_budget'); //unused
+});
 
 //Petty Cash Routes
 Route::get('/request/petty_cash', 'PettyCashController@requestPettyCashForm')->name('request_petty_cash');
@@ -142,31 +167,6 @@ Route::get('/transactions', 'TransactionController@transacView')->name('transacV
 Route::get('/transactions/add', 'TransactionController@addTransaction')->name('addTransaction');
 
 Route::post('/transactions/add/save', 'TransactionController@saveTransaction')->name('saveTransaction');
-
-//Budget Proposal Routes
-
-Route::get('/links', 'BudgetController@showLinks');
-
-Route::get('/propose/create-budget-range', 'BudgetController@createRangeView')
-    ->name('createBudgetProposal');
-
-Route::post('/propose/create', 'BudgetController@createEmptyBudget')->name('emptyBudget');
-
-Route::post('/propose/modify', 'BudgetController@modifyAccount');
-
-Route::get('/propose/print', 'BudgetController@printView');
-
-Route::get('/propose/save', 'BudgetController@saveBudget');
-
-Route::get('/propose/add', 'BudgetController@getAccount')->name('editBudgetProposal');
-
-Route::post('/add-account-proposal', 'BudgetController@addAccount')->name('add_account');
-
-Route::get('/propose/add/{primary_account}', 'BudgetController@getAccount');
-
-Route::get('/propose/add/{primary_account}/{secondary_account}', 'BudgetController@getAccount');
-
-Route::post('propose/submit_budget', 'BudgetController@submitBudget')->name('submit_budget'); //unused
 
 //Journal Routes
 

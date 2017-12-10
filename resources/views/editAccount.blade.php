@@ -21,6 +21,7 @@
         <li><a href="{{ route('pettyCashView') }}">Petty Cash</a></li>
         <li><a href="{{ route('transacView') }}"> Transactions </a></li>
     @elseif(Auth::user()->usertype == "Budget Admin")
+        <li><a href="{{route('budget_dash')}}">Budget</a></li>
         <li><a href="{{ route('pettyCashView') }}">Petty Cash</a></li>
         <li><a href="{{ route('createBudgetProposal') }}">Create Budget Proposal</a></li>
         <li><a href="{{ route('editBudgetProposal') }}">Edit Budget Proposal</a></li>

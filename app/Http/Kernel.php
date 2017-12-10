@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\BudgetAdmin;
 use App\Http\Middleware\SystemAdmin;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
@@ -58,6 +59,7 @@ class Kernel extends HttpKernel
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-        'system_admin' => SystemAdmin::class
+        'system_admin' => SystemAdmin::class,
+        'budget_admin' => BudgetAdmin::class
     ];
 }

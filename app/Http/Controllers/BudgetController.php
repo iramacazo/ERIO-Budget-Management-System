@@ -16,6 +16,126 @@ use DB;
 
 class BudgetController extends Controller
 {
+    public function budgetDashboard(){
+        $current_active_budget = null;
+        $primary_accounts = null;
+        $secondary_accounts = null;
+        $tertiary_accounts = null;
+        $names = null;
+        $today = Carbon::now();
+        foreach (Budget::all() as $budget){
+            if ($budget->start_range <= $today && $budget->end_range > $today && $budget->approved_by_vp == 1
+                && $budget->approved_by_acc == 1)
+                $current_active_budget = $budget;
+        }
+
+        if($current_active_budget != null){
+            $primary_accounts = ListOfPrimaryAccounts::all()->where('budget_id', '=',
+                                $current_active_budget->id);
+            $pa_id = $primary_accounts->pluck('id');
+            $secondary_accounts = ListOfSecondaryAccounts::all()->whereIn('list_id', $pa_id);
+            $sa_id = $secondary_accounts->pluck('id');
+            $tertiary_accounts = ListOfTertiaryAccounts::all()->whereIn('list_id', $sa_id);
+        }
+        return view('budget_admin.budget.budget_dashboard')->with(['current_budget' => $current_active_budget,
+                        'primary_accounts' => $primary_accounts, 'secondary_accounts' => $secondary_accounts,
+                        'tertiary_accounts' => $tertiary_accounts]);
+    }
+
+    public function addAccountToCurrent(Request $request, $id){
+        if($request->parent_account == "parent"){
+            if(PrimaryAccounts::where('name', '=', $request->name)->exists() == false){
+                $new_account = new PrimaryAccounts;
+                $new_account->name = $request->name;
+                $new_account->code = $request->code;
+                $new_account->save();
+
+                $add_to_list = new ListOfPrimaryAccounts;
+                $add_to_list->budget_id = $id;
+                $add_to_list->amount = $request->budget;
+                $add_to_list->account_id = $new_account->id;
+                $add_to_list->save();
+                $message = $request->name . " has been added!";
+                return redirect()->route('budget_dash')->with('message', $message);
+            }else{
+                $new_account = PrimaryAccounts::where('name', '=', $request->name)->first();
+                if(ListOfPrimaryAccounts::where('account_id', '=', $new_account->id)->exists()){
+                    $message = "Error: " . $request->name . " already exists!";
+                    return redirect()->route('budget_dash')->with('message', $message);
+                }
+                $add_to_list = new ListOfPrimaryAccounts;
+                $add_to_list->budget_id = $id;
+                $add_to_list->amount = $request->budget;
+                $add_to_list->account_id = $new_account->id;
+                $add_to_list->save();
+                $message = $request->name . " has been added!";
+                return redirect()->route('budget_dash')->with('message', $message);
+            }
+        }else{
+            $explosion = explode(' ', $request->parent_account);
+            if($explosion[0] == "primary"){
+                if(SecondaryAccounts::where('name', '=', $request->name)->exists() == false){
+                    $new_account = new SecondaryAccounts;
+                    $new_account->name = $request->name;
+                    $new_account->account_id = $explosion[1];
+                    $new_account->save();
+
+                    $add_to_list = new ListOfSecondaryAccounts;
+                    $add_to_list->account_id = $new_account->id;
+                    $add_to_list->list_id = $explosion[1];
+                    $add_to_list->amount = $request->budget;
+                    $add_to_list->save();
+                    $message = $request->name . " has been added!";
+                    return redirect()->route('budget_dash')->with('message', $message);
+                }else{
+                    $new_account = SecondaryAccounts::where('name', '=', $request->name)->first();
+                    if(ListOfSecondaryAccounts::where('account_id', '=', $new_account->id)
+                                    ->where('list_id', '=', $explosion[1])
+                                    ->exists()){
+                        $message = "Error: " . $request->name . " already exists!";
+                        return redirect()->route('budget_dash')->with('message', $message);
+                    }
+                    $add_to_list = new ListOfSecondaryAccounts;
+                    $add_to_list->account_id = $new_account->id;
+                    $add_to_list->list_id = $explosion[1];
+                    $add_to_list->amount = $request->budget;
+                    $add_to_list->save();
+                    $message = $request->name . " has been added!";
+                    return redirect()->route('budget_dash')->with('message', $message);
+                }
+            }else{
+                if(TertiaryAccounts::where('name', '=', $request->name)->exists() == false){
+                    $new_account = new TertiaryAccounts;
+                    $new_account->name = $request->name;
+                    $new_account->subaccount_id = $explosion[1];
+                    $new_account->save();
+                    $add_to_list = new ListOfTertiaryAccounts;
+                    $add_to_list->account_id = $new_account->id;
+                    $add_to_list->list_id = $explosion[1];
+                    $add_to_list->amount = $request->budget;
+                    $add_to_list->save();
+                    $message = $request->name . " has been added!";
+                    return redirect()->route('budget_dash')->with('message', $message);
+                }else{
+                    $new_account = TertiaryAccounts::where('name', '=', $request->name)->first();
+                    if(ListOfTertiaryAccounts::where('account_id', '=', $new_account->id)
+                                ->where('list_id', '=', $explosion[1])
+                                ->exists()){
+                        $message = "Error: " . $request->name . " already exists!";
+                        return redirect()->route('budget_dash')->with('message', $message);
+                    }
+
+                    $add_to_list = new ListOfTertiaryAccounts;
+                    $add_to_list->account_id = $new_account->id;
+                    $add_to_list->list_id = $explosion[1];
+                    $add_to_list->amount = $request->budget;
+                    $add_to_list->save();
+                    $message = $request->name . " has been added!";
+                    return redirect()->route('budget_dash')->with('message', $message);
+                }
+            }
+        }
+    }
 
     public function viewProposeBudget(){
         $budgetId = Budget::where([
@@ -70,90 +190,6 @@ class BudgetController extends Controller
             ]); //return to view with data of previous years budget
         }
     }
-
-    /*
-    public function submitBudget(Request $request){
-        $validator = Validator::make($request->all(),[
-            'counter' => 'required|min:1',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after:start_date'
-        ]);
-
-        if($validator->fails()){
-            return redirect('/propose')
-                ->withErrors($validator);
-        }
-
-        $counter = $request->counter; //counter for proposed accounts
-        $budget_max_id = Budget::max('id');
-        if(is_null($budget_max_id))   //check max budget id
-            $budget_max_id=1;
-        else
-            $budget_max_id++;
-
-        $budget = new Budget();
-        $budget->start_range = $request->start_date;
-        $budget->end_range = $request->end_date;
-        $budget->id = $budget_max_id;
-        //TDO add boolean sa budgets DB to know if executive approves of budget
-        $budget->approved_by_acc = false;
-        $budget->approved_by_vp = false;
-        $budget->save();
-
-
-        $pal_max_id = ListOfPrimaryAccounts::max('id');
-        if(is_null($pal_max_id))   //check max primary account list id
-            $pal_max_id=1;
-        else
-            $pal_max_id++;
-        $primary_accounts_list->id = $pal_max_id;
-         //autoincrement na ba to
-
-        while($counter>0){
-            $account = new PrimaryAccounts();
-
-            $cat = 'account_num_'.$counter;
-            $name = $request->$cat;
-            //TODO check if empty, if empty break
-            $cat2 = 'budget_num_'.$counter;
-            $amt = $request->$cat2;
-            if(is_null($name)||is_null($amt)){
-                $counter--;
-                break;
-            }
-            echo($name);
-            $primary_accounts_list = new ListOfPrimaryAccounts();
-
-            $record = PrimaryAccounts::where('name', '=', $name)->first();
-            if(is_null($record)){ //check if account exists
-                $max_id = PrimaryAccounts::max('id');
-                if(is_null($max_id))   //check max primary account id
-                    $max_id=1;
-                else
-                    $max_id++;
-
-                $account->id = $max_id;
-                $account->name = $name;
-                $account->save();
-
-                $primary_accounts_list->account_id = $max_id;
-            }
-            else{
-                //get id of existing record
-                $existing_id = PrimaryAccounts::where('name', '=', $name)->pluck('id');
-                $primary_accounts_list->account_id = $existing_id;
-            }
-            $primary_accounts_list->budget_id = $budget_max_id;
-            $primary_accounts_list->amount = $amt;
-            $primary_accounts_list->save(); //save to DB
-
-            $counter--;
-
-        }
-
-        return;
-    }
-*/ //old submit proposal
 
     public function addAccount(Request $request){
         $validator = Validator::make($request->all(), [
@@ -888,11 +924,6 @@ class BudgetController extends Controller
         return redirect('/propose/add');
     }
 
-    //  -- redirect to view functions
-
-    public function showLinks(){ //TEMPO
-        return view('proposal/links');
-    }
 
     public function createRangeView(){
         if($this->getProposalBudgetId() === ""){

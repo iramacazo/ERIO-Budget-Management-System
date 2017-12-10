@@ -65,6 +65,7 @@
                         <th>Name</th>
                         <th>E-mail Address</th>
                         <th>User Type</th>
+                        <th>Deactivation Date</th>
                         <th> </th>
                     </tr>
                     </thead>
@@ -75,6 +76,7 @@
                                 <td>{{$user->name}}</td>
                                 <td>{{$user->email}}</td>
                                 <td>{{$user->usertype}}</td>
+                                <td>{{\Carbon\Carbon::parse($user->last_deactivated)->toFormattedDateString()}}</td>
                                 <td class="right">
                                     <a class="dropdown-button table-action" data-activates="dropdown{{$user->id}}">
                                         <i class="material-icons">arrow_drop_down</i></a>
