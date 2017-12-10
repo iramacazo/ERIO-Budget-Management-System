@@ -1,8 +1,18 @@
-<html>
-    <head>
-        <title> Adjust Form </title>
-    </head>
-    <body>
+@extends('layouts.general_layout')
+
+@section('title', 'Ledger')
+
+@section('sidebar')
+    @parent
+    <li><a href="{{ route('pettyCashView') }}">Petty Cash</a></li>
+    <li><a href="{{ route('createBudgetProposal') }}">Create Budget Proposal</a></li>
+    <li><a href="{{ route('editBudgetProposal') }}">Edit Budget Proposal</a></li>
+    <li><a href="{{ route('disbursementJournal') }}"> Disbursement Journal </a></li>
+    <li class="active"><a href="{{ route('primaryLedger') }}"> Ledger Accounts </a></li>
+@endsection
+
+@section('content')
+    <div class="col s8 offset-s2 white z-depth-2" style="padding: 25px">
         @isset($mrf)
             Material Requisition Form Entry<br>
             Form Num: {{ $mrf->mrf->form_num }} <br>
@@ -47,5 +57,5 @@
             <input type="text" name="reason" placeholder="Reason"><br>
             <input type="submit" name="Submit">
         </form>
-    </body>
-</html>
+    </div>
+@endsection

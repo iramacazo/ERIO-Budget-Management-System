@@ -159,7 +159,7 @@ class MRFController extends Controller
 
         $mrf = new MaterialRequisitionForm();
         $mrf->form_num = $request->form_num;
-        $mrf->date_needed = $request->date_needed;
+        $mrf->date_needed = Carbon::createFromFormat('d/m/Y', $request->date_needed)->toDateTimeString();
         $mrf->place_of_delivery = $request->place_of_delivery;
         $mrf->requested_by = Auth::user()->id;
         $mrf->contact_person = $request->contact_person;
