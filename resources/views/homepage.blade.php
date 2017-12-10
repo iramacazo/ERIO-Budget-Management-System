@@ -17,7 +17,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
     <link rel="stylesheet" type="text/css" href="{{asset('css/homepage.css')}}">
-
+    
     {{-- Use this Stylesheet on every page with a form --}}
     <link rel="stylesheet" href="{{asset('css/globalform.css')}}">
 </head>
@@ -52,8 +52,8 @@
                 <div class="row">
                     <div class="input-field col s12">
                         <i class="material-icons prefix">email</i>
-                        <input name="email" id="email" type="email" class="{{ $errors->has('email') ?
-                            'validate invalid': 'validate'}}" value="{{ old('email') }}">
+                        <input name="email" id="email" type="email" class="required {{ $errors->has('email') ?
+                            'validate invalid': 'validate'}}" value="{{ old('email') }}" autofocus>
                         <label for="email" data-error="{{ $errors->has('email') ?
                             $errors->first('email'): 'Please enter a valid e-mail'}}">E-mail Address</label>
                     </div>
@@ -65,8 +65,8 @@
                         <label for="password">Password</label>
                     </div>
                 </div>
-                <input class="waves-effect waves-light btn green darken-3 right"
-                       type="submit" value="Login">
+                <button class="waves-effect waves-light btn green darken-3 right"
+                        type="submit">Login</button>
             </form>
         @elseif(Auth::user()->usertype == "System Admin")
             <a class="green-text text-darken-3 menu-item" href="{{route('add_user')}}">Add New User</a>

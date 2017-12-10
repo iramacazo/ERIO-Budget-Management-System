@@ -1485,7 +1485,18 @@ namespace Illuminate\Support\Facades {
     }
 
     class Auth {
-        
+
+        /**
+         * Routes for authentication.
+         *
+         * @return void
+         * @static
+         */
+        public static function routes()
+        {
+            \Illuminate\Routing\Router::auth();
+        }
+
         /**
          * Attempt to get the guard from the local cache.
          *

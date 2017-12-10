@@ -1,38 +1,49 @@
 @extends('layouts.general_layout')
 
-@section('title', 'Add User')
+@section('title', 'Edit account')
 
 @section('sidebar')
     @parent
-    <li class="active"><a href="{{route('add_user')}}">Add a New User</a></li>
-    <li><a href="{{route('get-all-users')}}">View All Users</a></li>
+    <li><a href="{{route('add_user')}}">Add a New User</a></li>
+    <li class="active"><a href="{{route('get-all-users')}}">View All Users</a></li>
 @endsection
 
 @section('content')
     <div class="col s8 offset-s2 white z-depth-2" style="padding: 25px">
         <div class="row">
-            <form class="col s12" method="POST" action="{{route('create_user')}}">
+            <form class="col s12" method="POST" action="{{route('save-other-user', $user->id)}}">
                 {{csrf_field()}}
-                <h3 class="grey-text text-darken-4">Add New User</h3>
+                <h3 class="grey-text text-darken-4">Edit Account</h3>
                 <div class="row">
                     <div class="input-field col s12">
                         <i class="material-icons prefix">account_circle</i>
-                        <input name="name" id="name" type="text" value="{{old('name')}}" required=""
-                               aria-required="true" class="validate">
+                        <input name="name" id="name" type="text" value="{{$user->name}}">
                         <label for="name" data-error="Please enter your name">Name</label>
                     </div>
                 </div>
                 <div class="row">
                     <div class="input-field col s12">
                         <i class="material-icons prefix">email</i>
-                        <input name="email" id="email" value="{{old('email')}}" type="email" required=""
-                               aria-required="true" class="{{$errors->has('email') ? 'validate invalid' :
-                                       'validate'}}">
-                        <label for="email" data-error="{{$errors->has('email') ? $errors->first('email') :
-                                        'Please enter a valid e-mail address'}}">
+                        <input name="email" id="email" value="{{$user->email}}" type="email">
+                        <label for="email">
                             E-mail Address</label>
                     </div>
                 </div>
+
+                <div class="row">
+                    <div class="input-field col s12">
+                        <i class="material-icons prefix">accessibility</i>
+                        <select name="usertype" id="user_type">
+                            <option value="{{$user->usertype}}" selected>{{$user->usertype}}</option>
+                            <option value="System Admin">System Admin</option>
+                            <option value="Budget Requestee">Budget Requestee</option>
+                            <option value="Budget Admin">Budget Admin</option>
+                            <option value="Executive">Executive</option>
+                        </select>
+                        <label for="user_type">User Type</label>
+                    </div>
+                </div>
+
                 <div class="row">
                     <div class="input-field col s12">
                         <i class="material-icons prefix">lock_outline</i>
@@ -40,7 +51,7 @@
                                {{ $errors->has('password') ? 'placeholder=&bull;&bull;&bull;&bull;&bull;&bull;'
                                : "" }} class="{{$errors->has('password') ? 'validate invalid':'validate'}}">
                         <label for="password" data-error="{{$errors->has('password') ?
-                                        $errors->first('password') : 'Please input a password'}}">Password</label>
+                                        $errors->first('password') : 'Please input a password'}}">New Password</label>
                     </div>
                 </div>
                 <div class="row">
@@ -50,24 +61,12 @@
                                {{ $errors->has('password') ? 'placeholder=&bull;&bull;&bull;&bull;&bull;&bull;'
                                : "" }} class="validate" required="" aria-required="true">
                         <label for="password-confirm" data-error="Please confirm your password">
-                            Confirm Password</label>
+                            Confirm New Password</label>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="input-field col s12">
-                        <i class="material-icons prefix">accessibility</i>
-                        <select name="usertype" id="user_type" required>
-                            <option value="" disabled selected>Select User Type</option>
-                            <option value="System Admin">System Admin</option>
-                            <option value="Budget Requestee">Budget Requestee</option>
-                            <option value="Budget Admin">Budget Admin</option>
-                            <option value="Executive">Executive</option>
-                        </select>
-                        <label for="user_type">User Type</label>
-                    </div>
-                </div>
+
                 <button class="waves-effect waves-light btn green darken-3 right"
-                        type="submit">Create User</button>
+                        type="submit">Confirm Changes</button>
             </form>
         </div>
     </div>
@@ -75,9 +74,8 @@
 <script>
     @section('script')
     $('select').material_select();
-    $('#email').on("click", function(){
-        $("#email").next('label').attr('data-error', "Please enter a valid E-mail address");
-        Materialize.updateTextFields();
-    });
+    @if($errors->any())
+            console.log("{{$errors}}");
+    @endif
     @endsection
 </script>

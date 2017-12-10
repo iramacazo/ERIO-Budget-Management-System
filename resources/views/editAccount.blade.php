@@ -38,8 +38,7 @@
                 <div class="row">
                     <div class="input-field col s12">
                         <i class="material-icons prefix">account_circle</i>
-                        <input name="name" id="name" type="text" value="{{Auth::user()->name}}" required=""
-                               aria-required="true" class="validate">
+                        <input name="name" id="name" type="text" value="{{Auth::user()->name}}" disabled>
                         <label for="name" data-error="Please enter your name">Name</label>
                     </div>
                 </div>
@@ -51,26 +50,7 @@
                             E-mail Address</label>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="input-field col s12">
-                        <i class="material-icons prefix">lock_outline</i>
-                        <input name="password" id="password" type="password" required="" aria-required="true"
-                               {{ $errors->has('password') ? 'placeholder=&bull;&bull;&bull;&bull;&bull;&bull;'
-                               : "" }} class="{{$errors->has('password') ? 'validate invalid':'validate'}}">
-                        <label for="password" data-error="{{$errors->has('password') ?
-                                        $errors->first('password') : 'Please input a password'}}">Password</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="input-field col s12">
-                        <i class="material-icons prefix">lock</i>
-                        <input name="password_confirmation" id="password-confirm" type="password"
-                               {{ $errors->has('password') ? 'placeholder=&bull;&bull;&bull;&bull;&bull;&bull;'
-                               : "" }} class="validate" required="" aria-required="true">
-                        <label for="password-confirm" data-error="Please confirm your password">
-                            Confirm Password</label>
-                    </div>
-                </div>
+
                 <div class="row">
                     <div class="input-field col s12">
                         <i class="material-icons prefix">accessibility</i>
@@ -84,12 +64,33 @@
                 <div class="row">
                     <div class="input-field col s12">
                         <i class="material-icons prefix">lock_outline</i>
+                        <input name="password" id="password" type="password" required="" aria-required="true"
+                               {{ $errors->has('password') ? 'placeholder=&bull;&bull;&bull;&bull;&bull;&bull;'
+                               : "" }} class="{{$errors->has('password') ? 'validate invalid':'validate'}}">
+                        <label for="password" data-error="{{$errors->has('password') ?
+                                        $errors->first('password') : 'Please input a password'}}">New Password</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <i class="material-icons prefix">lock</i>
+                        <input name="password_confirmation" id="password-confirm" type="password"
+                               {{ $errors->has('password') ? 'placeholder=&bull;&bull;&bull;&bull;&bull;&bull;'
+                               : "" }} class="validate" required="" aria-required="true">
+                        <label for="password-confirm" data-error="Please confirm your password">
+                            Confirm New Password</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s12">
+                        <i class="material-icons prefix">lock_outline</i>
                         <input name="old_password" id="old_password" type="password" required="" aria-required="true"
                                {{ $errors->has('old_password') ? 'placeholder=&bull;&bull;&bull;&bull;&bull;&bull;'
                                : "" }} class="{{$errors->has('old_password') ? 'validate invalid':'validate'}}">
                         <label for="old_password" data-error="{{$errors->has('old_password') ?
                                         $errors->first('old_password') : 'Please input a old password'}}">
-                            Input Previous Password</label>
+                            Input Old Password</label>
                     </div>
                 </div>
 

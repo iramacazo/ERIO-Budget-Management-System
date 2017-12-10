@@ -15,6 +15,8 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.css"/>
 
     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="{{asset('datatables_style.css')}}">
 @endsection
 
 @section('content')

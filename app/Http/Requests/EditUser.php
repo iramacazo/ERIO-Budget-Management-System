@@ -30,7 +30,6 @@ class EditUser extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string|max:255',
             'password' => 'required|string|min:6|confirmed',
             'old_password' => ['required', 'min:6', 'string', new CorrectPassword],
         ];

@@ -10,10 +10,17 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+
+Route::view('/invalid-user', 'auth.user_permission')->name('invalid_user');
+
+
 Route::get('/', function(){
-    if(Auth::guest())
+    if(Auth::guest()) {
         return view('homepage');
-    else if(Auth::user()->usertype == "System Admin"){
+    }else if (Auth::user()->status == "inactive"){
+        return redirect()->route('invalid_user');
+    }else if(Auth::user()->usertype == "System Admin"){
         return redirect("/all-users");
     }else if(Auth::user()->usertype == "Executive"){
         return redirect("/request-accounts");
@@ -28,18 +35,34 @@ Route::get('/', function(){
 
 Auth::routes();
 
+/* System Admin Routes */
+Route::middleware(['system_admin'])->group(function (){
+    Route::get('/all-users', 'AdminController@getAllUsers')->name('get-all-users');
+
+    Route::view('/add_user', 'addUsers')->name('add_user');
+
+    Route::get('/edit_user/{user}', function(\App\User $user){
+        return view("editAccountAdmin", compact('user'));
+    })->name('edit-user');
+
+    Route::post('/edit_user/{user}/save', 'AdminController@saveOtherAccount')
+        ->name('save-other-user');
+
+    Route::get('/deactivate_user/{user}', function(\App\User $user){
+        $user->status = 'inactive';
+        $user->save();
+        return back()->with('deactivate', $user->email);
+    })->name('deactivate-user');
+
+    Route::get('/activate_user/{user}', function(\App\User $user){
+        $user->status = 'active';
+        $user->save();
+        return back()->with('active', $user->email);
+    })->name('reactivate-user');
+
+});
+
 Route::get('/home', 'HomeController@index')->name('home');
-
-Route::get('/all-users', 'AdminController@getAllUsers')->name('get-all-users');
-
-Route::get('/add_user', function (){
-    if(Auth::guest())
-        return redirect('unauthorized_access');
-    else if (Auth::user()->usertype == "System Admin")
-        return view('addUsers');
-    else
-        return redirect('unauthorized_access');
-})->name('add_user');
 
 Route::get('/edit_account', 'AdminController@editAccount')->name('edit_account');
 
@@ -47,9 +70,7 @@ Route::post('/edit_account/submit', 'AdminController@saveChangesToAccount')->nam
 
 Route::post('/add_user/submit', 'AdminController@createUser')->name('create_user');
 
-Route::get('/unauthorized_access', function (){
-    return view('unauthorizedAccess');
-})->name('unauthorized_access');
+Route::view('/unauthorized_access','unauthorizedAccess')->name('unauthorized_access');
 
 //Petty Cash Routes
 Route::get('/request/petty_cash', 'PettyCashController@requestPettyCashForm')->name('request_petty_cash');
